@@ -1,4 +1,13 @@
-class Solution {
+import java.util.*;
+
+class AlienDictionary {
+
+    public static void main(String[] args) {
+
+        String[] words = { "wrt","wrf","er","ett","rftt" };
+
+        System.out.println(new AlienDictionary().alienOrder(words));
+    }
 
     public String alienOrder(String[] words) {
         
@@ -61,7 +70,7 @@ class Solution {
             for (int j = 0; j < checkIndex; j++) {
                 
                 if (prevWord.charAt(j) != currWord.charAt(j)) {
-                    Set<Character> charSet = adjMat.getOrDefault(prevWord.charAt(j), new HashSet());
+                    Set<Character> charSet = adjMat.getOrDefault(prevWord.charAt(j), new HashSet<>());
                     adjMat.put(prevWord.charAt(j), charSet);
                     charSet.add(currWord.charAt(j));
                     break;
