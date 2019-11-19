@@ -2,9 +2,6 @@ import java.util.*;
 
 public class ThreeSum {
 
-    public ThreeSum() {
-    }
-
     public static void main(String[] args) {
 
         int[] array = { -1, 0, 1, 2 , -1, -4};
@@ -18,7 +15,6 @@ public class ThreeSum {
     public static List<List<Integer>> threeSum(int[] nums) {
 
         Map<Integer, List<List<Integer>>> twoSumToPairs = getTwoSumToOrderedPair(nums);
-
         List<List<Integer>> solution = new ArrayList<>();
 
         for (int k = 0 ; k < nums.length; k++) {
