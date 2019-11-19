@@ -22,16 +22,12 @@ class BinaryTreeZigZagLevelOrder {
     }
 
     public static void main(String[] args) {
-        
     }
 
     class Node {
         TreeNode tnode;
         int depth = 0;
-
-        public Node(TreeNode tnode) {
-            this.tnode = tnode;
-        }
+        Node(TreeNode tnode) { this.tnode = tnode; }
     }
 
     TreeMap<Integer, LinkedList<Integer>> map = new TreeMap<>();
