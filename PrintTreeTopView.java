@@ -39,16 +39,23 @@ public class PrintTreeTopView {
 
     public String treeTopView(TreeNode root) {
 
-        TreeMap<Integer, Integer> viewMap = new TreeMap<>();
+        //TreeMap keeps top level view from left to right
+        TreeMap<Integer, Integer> viewMap = new TreeMap<>(); 
         Queue<NodeMeta> q = new ArrayDeque<>();
         q.offer(new NodeMeta(root, 0, 0));
 
         while (!q.isEmpty()) {
+
             NodeMeta nm = q.poll();
-            if (!viewMap.containsKey(nm.hd)) {
+
+            /*
+             * Since this is a BFS, the following condition makes sure we
+             * are only storing the top most for a horizontal distance.
+             */
+            if (!viewMap.containsKey(nm.hd)) { 
                 viewMap.put(nm.hd, nm.node.value);
             }
-            
+
             if (nm.node.left != null) {
                 q.offer(new NodeMeta(nm.node.left, nm.depth + 1, nm.hd - 1));
             }
