@@ -14,7 +14,7 @@ class QuickSort {
         return nums;
     }
 
-    private void quickSort(int[] nums, int start, int end) {
+    public static void quickSort(int[] nums, int start, int end) {
 
         if (nums == null) {
             return;
@@ -29,7 +29,7 @@ class QuickSort {
         quickSort(nums, pivot + 1, end);
     }
 
-    private int partition(int[] nums, int start, int end) {
+    public static int partition(int[] nums, int start, int end) {
 
         int rand = Math.abs(new Random().nextInt());
         int pivot = start + (rand % (end - start + 1));
@@ -57,7 +57,7 @@ class QuickSort {
         }
     }
 
-    private void swap(int[] nums, int indexA, int indexB) {
+    private static void swap(int[] nums, int indexA, int indexB) {
         int c = nums[indexA];
         nums[indexA] = nums[indexB];
         nums[indexB] = c;

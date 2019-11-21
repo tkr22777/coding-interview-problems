@@ -16,14 +16,6 @@ class KClosestPoints {
         print(kthPoints);
     }
 
-    public static void print(int[][] points) {
-        StringBuilder sb = new StringBuilder();
-        for(int[] point: points) {
-            sb.append(" " +  Arrays.toString(point));
-        }
-        System.out.println(sb.toString());
-    }
-
     public int[][] kClosest(int[][] points, int k) {
 
         int[] squaredDistances = new int[points.length];
@@ -40,7 +32,7 @@ class KClosestPoints {
 
         while (left < right) {
 
-            pivot = partition(squaredDistances, left, right);
+            pivot = QuickSort.partition(squaredDistances, left, right);
 
             if (pivot == k || right - left == 1) { // kth element is already sorted at this point
                 ktSquaredDistance = squaredDistances[k];
@@ -72,37 +64,11 @@ class KClosestPoints {
         return kthDistantPointsArray;
     }
 
-    private int partition(int[] nums, int start, int end) {
-
-        int rand = Math.abs(new Random().nextInt());
-        int pivot = start + (rand % (end - start + 1));
-        swap(nums, end, pivot); //moving the pivot value to the end
-
-        int left = start;
-        int right = end - 1;
-
-        while (left < right) {
-            if (nums[left] > nums[end]) {
-                swap(nums, left, right);
-                right--;
-            } else {
-                left++;
-            }
+    public static void print(int[][] points) {
+        StringBuilder sb = new StringBuilder();
+        for(int[] point: points) {
+            sb.append(" " +  Arrays.toString(point));
         }
-
-        //left=right and we are deciding where to place the pivot
-        if (nums[left] > nums[end]) {
-            swap(nums, left, end);
-            return left;
-        } else {
-            swap(nums, left + 1, end);
-            return left + 1;
-        }
-    }
-
-    private void swap(int[] nums, int indexA, int indexB) {
-        int c = nums[indexA];
-        nums[indexA] = nums[indexB];
-        nums[indexB] = c;
+        System.out.println(sb.toString());
     }
 }
