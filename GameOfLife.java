@@ -60,31 +60,29 @@ class GameOfLife {
 
     int getUpdatedValueForNeighbours(int val, int neighbours) {
 
-        if (val % 2 == 1) { //If current val is odd
-            if (neighbours < 2) {
-                return 3;
-            } else if (neighbours >= 2 && neighbours < 4)  {
-                return 5;
-            } else {
-                return 3;
-            }
-        } else { //If current val is even
+        if (val % 2 == 1) { //If alive
 
-            if (neighbours == 3) {
-                return 4;
-            } else {
-                return 2;
+            if (!(neighbours >= 2 && neighbours < 4))  { //dies
+                return 3; 
+            }
+
+        } else { //If dead
+
+            if (neighbours == 3) { //reproduce
+                return 2; 
             }
         }
+
+        return val;
     }
 
     void finalize(int[][] board) {
         for (int row = 0; row < board.length; row++) {
             for (int column = 0; column < board[row].length; column++) {
-                if (board[row][column] == 3 || board[row][column] == 2) {
-                    board[row][column] = 0;
-                } else {
+                if (board[row][column] == 2) {
                     board[row][column] = 1;
+                } else if (board[row][column] == 3) {
+                    board[row][column] = 0;
                 }
             }
         }
