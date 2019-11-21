@@ -5,25 +5,25 @@ public class CycleInGraph {
 	public static void main(String[] args) {
 
 		int[][] graph01 = { 
-							{0, 1, 1, 0},
-						  	{0, 0, 0, 1},
-						  	{0, 1, 0, 0},
-						  	{0, 0, 1, 0}
-						  };
+            {0, 1, 1, 0},
+            {0, 0, 0, 1},
+            {0, 1, 0, 0},
+            {0, 0, 1, 0}
+        };
 
 		int[][] graph02 = { 
-							{0, 1, 1, 0},
-						  	{0, 0, 0, 1},
-						  	{0, 0, 0, 0},
-						  	{0, 0, 1, 0}
-						  };
+            {0, 1, 1, 0},
+            {0, 0, 0, 1},
+            {0, 0, 0, 0},
+            {0, 0, 1, 0}
+        };
 
 		int[][] graph03 = { 
-							{0, 1, 1, 0},
-						  	{0, 0, 0, 1},
-						  	{0, 0, 1, 0},
-						  	{0, 0, 1, 0}
-						  };
+            {0, 1, 1, 0},
+            {0, 0, 0, 1},
+            {0, 0, 1, 0},
+            {0, 0, 1, 0}
+        };
 
 		System.out.println("Graph01 contains cycle: " + containsCycle(graph01));
 		System.out.println("Graph02 contains cycle: " + containsCycle(graph02));
@@ -40,23 +40,23 @@ public class CycleInGraph {
 		return false;
 	}
 
-	public static boolean containsCycleDFS(int[][] graph, int node, Set<Integer> parentPath) {
+	public static boolean containsCycleDFS(int[][] graph, int node, Set<Integer> dfsStack) {
 
-		//System.out.println("Node: " + node + " ParentPath:" + parentPath.toString());
+        if (dfsStack.contains(node)) {
+            return true;
+        }
 
-		parentPath.add(node);
+		dfsStack.add(node);
 
 		for (int next = 0; next < graph[node].length; next++) {
 			if (graph[node][next] == 1) {
-				if (parentPath.contains(next)) {
-					return true;
-				}
-				containsCycleDFS(graph, next, parentPath);
+				if(containsCycleDFS(graph, next, dfsStack)) {
+                    return true;
+                }
 			}
 		}
 
-		parentPath.remove(node);
-
+		dfsStack.remove(node);
 		return false;
 	}
 }
