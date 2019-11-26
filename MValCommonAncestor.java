@@ -22,6 +22,10 @@ public class MValCommonAncestor {
 
     public AncestorRet findAncestor(Node root, Set<String> origin, Set<String> toFind) {
 
+        if (origin.size() < 2) {
+            return null;
+        }
+
         if (toFind.size() == 0) {
             return new AncestorRet(new HashSet<>());
         }
@@ -32,9 +36,6 @@ public class MValCommonAncestor {
         }
 
         if (found.equals(toFind)) {
-            if (found.equals(origin)) { //if origin is looking for a single value
-                return new AncestorRet(new HashSet<>(found), root.val);
-            }
             return new AncestorRet(new HashSet<>(found));
         }
 

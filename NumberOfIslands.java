@@ -40,9 +40,9 @@ class NumberOfIslands {
         short[][] visited = new short[grid.length][grid[0].length];
 
         int totalIslands = 0;
-        for (int i = 0 ; i < grid.length ; i++) {
-            for (int j = 0; j < grid[0].length ; j++) {
-                if (visit(grid, visited, i, j) > 0) {
+        for (int row = 0 ; row < grid.length ; row++) {
+            for (int col = 0; col < grid[row].length ; col++) {
+                if (visit(grid, visited, row, col) > 0) {
                     totalIslands++;
                 }
             }
@@ -51,25 +51,25 @@ class NumberOfIslands {
         return totalIslands;
     }
 
-    private int visit(char[][] grid, short[][] visited, int i, int j) {
+    private int visit(char[][] grid, short[][] visited, int row, int col) {
 
-        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length) {
+        if (row < 0 || row >= grid.length || col < 0 || col >= grid[row].length) {
             return 0;
         }
 
-        if (visited[i][j] == 1) {
+        if (visited[row][col] == 1) {
             return 0;
         }
 
-        if (grid[i][j] == '1') {
+        if (grid[row][col] == '1') {
 
-            visited[i][j] = 1; //visited
+            visited[row][col] = 1; //visited
 
             int islandArea = 1;
-            islandArea += visit(grid, visited, i + 1, j);
-            islandArea += visit(grid, visited, i - 1, j);
-            islandArea += visit(grid, visited, i, j + 1);
-            islandArea += visit(grid, visited, i, j - 1);
+            islandArea += visit(grid, visited, row + 1, col);
+            islandArea += visit(grid, visited, row - 1, col);
+            islandArea += visit(grid, visited, row, col + 1);
+            islandArea += visit(grid, visited, row, col - 1);
             return islandArea;
 
         } else {
