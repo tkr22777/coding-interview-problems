@@ -7,10 +7,8 @@ class Solution(object):
         """
 
         outMap = {}
-        for i in range(0, len(strs)):
-
+        for str in strs):
             key = ''.join(sorted(strs[i]))
-
             outMap.setdefault(key, []).append(strs[i])
 
         output = []
