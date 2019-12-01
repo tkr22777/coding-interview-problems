@@ -1,5 +1,9 @@
 import java.util.*;
 
+/* Given a list of co-ordinates, an integer k, where k <= N return the co-ordinate(s) whose distance
+ * from the origin is kth among all possible distances.
+ */
+
 class KClosestPoints {
 
     public static void main(String[] args) {
@@ -24,7 +28,7 @@ class KClosestPoints {
             squaredDistances[i] = points[i][0] * points[i][0] + points[i][1] * points[i][1];
         }
 
-        k--;
+        k--; //kth item for the user is the (k-1)th distance item on the distance array
         int left = 0;
         int right = squaredDistances.length - 1;
         int pivot = -1;
@@ -34,15 +38,15 @@ class KClosestPoints {
 
             pivot = QuickSort.partition(squaredDistances, left, right);
 
-            if (pivot == k || right - left == 1) { // kth element is already sorted at this point
+            if (pivot == k || right - left == 1) { //kth distance is now at kth position
                 ktSquaredDistance = squaredDistances[k];
                 break;
             }
-
-            if (pivot > k && pivot - 1 != k) { //we do not want the right to be k
-                right = pivot - 1;
-            } else if (pivot < k - 1) { //we do not want the left to be k
-                left = pivot + 1;
+            
+            if (k < pivot) {  //pivot is on the right of K, set right to the pivot
+                right = pivot;
+            } else if (pivot < k) {  //pivot is on the left of K, set left to the pivot
+                left = pivot;
             }
         }
 
@@ -65,10 +69,8 @@ class KClosestPoints {
     }
 
     public static void print(int[][] points) {
-        StringBuilder sb = new StringBuilder();
-        for(int[] point: points) {
-            sb.append(" " +  Arrays.toString(point));
-        }
-        System.out.println(sb.toString());
+        StringJoiner sj = new StringJoiner(", ", "Points: ", ".");
+        Arrays.stream(points).forEach(point -> sj.add(Arrays.toString(point)));
+        System.out.println(sj.toString());
     }
 }
