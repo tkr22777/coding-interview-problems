@@ -24,6 +24,7 @@ class MaxProductSubArray {
         int currentMin = nums[0]; 
         int maxProd = nums[0];
 
+        /* Note that i starts from 1 */
         for (int i = 1; i < nums.length; ++i) {
             int tempCurrentMax = currentMax;
             currentMax = Math.max( Math.max(currentMax * nums[i], currentMin * nums[i]) , nums[i]);
