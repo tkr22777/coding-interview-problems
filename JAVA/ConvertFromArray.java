@@ -20,6 +20,11 @@ public class ConvertFromArray {
         Arrays.stream(vals).forEach(v -> sjAr.add(Integer.toString(v)));
         System.out.println(sjAr.toString());
 
+        StringJoiner sjNAr = new StringJoiner(", ", "To new Array: ", ".");
+        Integer[] newArray = Stream.of(1, 2, 4, 7, 11, 17).map( v -> Integer.valueOf(v)).toArray(Integer[]::new);
+        Arrays.stream(newArray).forEach(v -> sjNAr.add(Integer.toString(v)));
+        System.out.println(sjNAr.toString());
+
         StringJoiner sjList = new StringJoiner(", ", "List collected from stream boxed array: ", ".");
         List<Integer> integerList = Arrays.stream(vals).boxed().collect(Collectors.toList());
         integerList.forEach(v -> sjList.add(Integer.toString(v)));
