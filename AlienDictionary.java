@@ -65,7 +65,7 @@ class AlienDictionary {
             
             String prevWord = words[i - 1];
             String currWord = words[i];
-            int checkIndex = Math.max(prevWord.length(), currWord.length());
+            int checkIndex = Math.min(prevWord.length(), currWord.length());
             
             for (int j = 0; j < checkIndex; j++) {
                 
