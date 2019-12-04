@@ -14,9 +14,8 @@ class BuySellStockIII {
         for (int i = prices.length - 1; i >= 0 ; --i) {
             if (prices[i] > maxSellPrice) {
                 maxSellPrice = prices[i];
-            } else {
-                maxProfit = Math.max(maxProfit, maxSellPrice - prices[i]);
-            }
+            } 
+            maxProfit = Math.max(maxProfit, maxSellPrice - prices[i]);
             singleTxnProfit[i] = maxProfit;
         }
 
@@ -25,11 +24,10 @@ class BuySellStockIII {
         for (int i = 0; i < prices.length; i++) {
             if (minBuyPrice > prices[i]) {
                 minBuyPrice = prices[i];
-            } else {
-                int currentProfit = prices[i] - minBuyPrice;
-                int nextProfit = i + 1 < singleTxnProfit.length ? singleTxnProfit[i + 1]: 0;
-                maxProfit = Math.max(maxProfit, currentProfit + nextProfit);
-            }
+            } 
+            int currentProfit = prices[i] - minBuyPrice;
+            int nextProfit = i + 1 < singleTxnProfit.length ? singleTxnProfit[i + 1]: 0;
+            maxProfit = Math.max(maxProfit, currentProfit + nextProfit);
         }
         return maxProfit;
     }

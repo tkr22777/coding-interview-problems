@@ -20,18 +20,11 @@ class ReconstructItinary {
         for (List<String> ticket: tickets) {
             String depart = ticket.get(0);
             String arrive = ticket.get(1);
-
-            List<String> arrivals = new ArrayList<String>();
-            if (departToArrive.containsKey(depart)) {
-                arrivals = departToArrive.get(depart);
-            }
-            arrivals.add(arrive);
-            departToArrive.put(depart, arrivals);
+            departToArrive.computeIfAbsent(depart, a -> new ArrayList<String>()).add(arrive);;
         }
 
         departToArrive.keySet().forEach(k -> Collections.sort(departToArrive.get(k)));
-
-        departToArrive.keySet().forEach(k -> System.out.println("Key: " + k + " Val: " + departToArrive.get(k).toString()));
+        //departToArrive.keySet().forEach(k -> System.out.println("Key: " + k + " Val: " + departToArrive.get(k).toString()));
         return findItineraryRecursive(departToArrive, "JFK", totalTickets);
     }
 
