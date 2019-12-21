@@ -34,8 +34,8 @@ class ReconstructItinary {
             return new ArrayList<>(Arrays.asList(depart));
         }
 
-        if (!departToArrive.containsKey(depart)) { //unacceptable base case
-            return null;
+        if (!departToArrive.containsKey(depart)) { //unacceptable base case, empty itinary
+            return new ArrayList<>(); 
         }
 
         List<String> arrivals = departToArrive.get(depart);
@@ -52,12 +52,12 @@ class ReconstructItinary {
 
             arrivals.add(arrival);
 
-            if (anItin != null) {
+            if (anItin.size() > 0) {
                 break;
             }
         }
 
-        if (anItin == null) {
+        if (anItin.size() <= 0) {
             return null;
         }
 
