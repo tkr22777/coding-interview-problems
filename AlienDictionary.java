@@ -24,32 +24,8 @@ class AlienDictionary {
         ordered.forEach(v -> sb.append(v));
         return sb.toString();
     }
-    
-    public int dfs(Character cur,
-                   Map<Character, Set<Character>> adjMat,
-                   Set<Character> visited,
-                   Set<Character> inDFSStack,
-                   List<Character> ordered) {
-        
-        if (visited.contains(cur)) return 0;
-        if (inDFSStack.contains(cur)) return -1;  
-       
-        inDFSStack.add(cur);
-        
-        Set<Character> children = adjMat.getOrDefault(cur, new HashSet<>());
-        for(Character child: children) {
-            if (dfs(child, adjMat, visited, inDFSStack, ordered) == -1) {
-                return -1;
-            }
-        }
-        
-        inDFSStack.remove(cur);
-        visited.add(cur);
-        ordered.add(cur);
-        return 0;
-    }
-    
-    public Map<Character, Set<Character>> convertToAdjMat(String[] words) {
+
+    private Map<Character, Set<Character>> convertToAdjMat(String[] words) {
                 
         Map<Character, Set<Character>> adjMat = new HashMap<>();
         
@@ -67,6 +43,30 @@ class AlienDictionary {
             }
         }
         return adjMat;
+    }
+
+    private int dfs(Character cur,
+                   Map<Character, Set<Character>> adjMat,
+                   Set<Character> visited,
+                   Set<Character> inDFSStack,
+                   List<Character> ordered) {
+        
+        if (inDFSStack.contains(cur)) return -1;  
+        inDFSStack.add(cur);
+
+        if (visited.contains(cur)) return 0;
+        visited.add(cur);
+        
+        Set<Character> children = adjMat.getOrDefault(cur, new HashSet<>());
+        for(Character child: children) {
+            if (dfs(child, adjMat, visited, inDFSStack, ordered) == -1) {
+                return -1;
+            }
+        }
+        
+        inDFSStack.remove(cur);
+        ordered.add(cur);
+        return 0;
     }
 }
 
