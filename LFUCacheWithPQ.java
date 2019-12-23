@@ -34,16 +34,15 @@ class LFUCacheWithPQ {
         }
     }
 
-    int capacity = 0;
-    int logicalTime = 0;
+    int capacity = 0, logicalTime = 0;
     HashMap<Integer, KeyFrequency> dataMap = new HashMap<Integer, KeyFrequency>(); 
     PriorityQueue<KeyFrequency> pq;
 
     public LFUCacheWithPQ(int capacity) {
         this.capacity = capacity;
         this.pq = new PriorityQueue<KeyFrequency>((a, b) -> {
-            int comp = Integer.compare(a.frequency, b.frequency); // least frequent first
-            return comp != 0? comp : Integer.compare(a.time, b.time); //least recent first
+            int comp = Integer.compare(a.frequency, b.frequency); /* least frequent first */
+            return comp != 0? comp : Integer.compare(a.time, b.time); /* least recent first */
         });
     }
 
