@@ -3,9 +3,9 @@ import java.util.*;
 class GenerateParenthesis {
 
     public static void main(String[] args) {
-        List<String> parenthesis = new GenerateParenthesis().generateParenthesis(4);
         System.out.println("All possible parenthesis combination:");
-        parenthesis.stream().forEach(p -> System.out.println(p));
+        new GenerateParenthesis().generateParenthesis(4)
+            .forEach(p -> System.out.println(p));
     }
 
     public List<String> generateParenthesis(int n) {
@@ -14,7 +14,7 @@ class GenerateParenthesis {
 
     private List<String> generateParenthesis(int open, int close) {
 
-        //Open brackets are not required anymore, only close brackets are required
+        /* Open brackets are not required anymore, only close brackets are required */
         if (open == 0) {
             char[] chars = new char[close];
             Arrays.fill(chars, ')');
@@ -35,9 +35,7 @@ class GenerateParenthesis {
                 results.add(")" + rUsedClose);
             }
         }
-
         return results;
     }
 }
-
 
