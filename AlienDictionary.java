@@ -3,9 +3,7 @@ import java.util.*;
 class AlienDictionary {
 
     public static void main(String[] args) {
-
         String[] words = { "wrt","wrf","er","ett","rftt" };
-
         System.out.println(new AlienDictionary().alienOrder(words));
     }
 
@@ -16,20 +14,14 @@ class AlienDictionary {
         List<Character> ordered = new ArrayList<>();
         
         for (char node: adjMat.keySet()) {
-            if( dfs(node, adjMat, visited, new HashSet<>(), ordered) == -1 ) {
+            if (dfs(node, adjMat, visited, new HashSet<>(), ordered) == -1 ) {
                 return "";
             };
         }
 
-        return toOutString(ordered);
-    }
-    
-    public String toOutString( List<Character> ordered ) {
         Collections.reverse(ordered);
         StringBuilder sb = new StringBuilder();
-        for (Character aChar: ordered) {
-            sb.append(aChar);
-        }
+        ordered.forEach(v -> sb.append(v));
         return sb.toString();
     }
     
@@ -62,29 +54,18 @@ class AlienDictionary {
         Map<Character, Set<Character>> adjMat = new HashMap<>();
         
         for (int i = 1; i < words.length; i++) {
-            
             String prevWord = words[i - 1];
             String currWord = words[i];
             int checkIndex = Math.min(prevWord.length(), currWord.length());
             
             for (int j = 0; j < checkIndex; j++) {
-                
                 if (prevWord.charAt(j) != currWord.charAt(j)) {
-                    Set<Character> charSet = adjMat.getOrDefault(prevWord.charAt(j), new HashSet<>());
-                    adjMat.put(prevWord.charAt(j), charSet);
-                    charSet.add(currWord.charAt(j));
+                    adjMat.computeIfAbsent(prevWord.charAt(j), v -> new HashSet<Character>())
+                        .add(currWord.charAt(j));
                     break;
                 }
             }
         }
-        
-        /*
-        for (Character aChar: adjMat.keySet()) {
-            Set<Character> charSet = adjMat.get(aChar);
-            System.out.println( String.format("Char: %s to Set:%s", aChar, charSet.toString()));
-        }
-        */
-        
         return adjMat;
     }
 }
