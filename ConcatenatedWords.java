@@ -35,7 +35,7 @@ class ConcatenatedWords {
 
         for (int i = start + 1; i <= word.length(); ++i) { //begining from start + 1 to discard empty string
             if (this.isSubStringAWord(root, word, start, i)) { // substring is word from start to i - 1 
-                if (i == word.length()) { //found the word itself as substring
+                if (i == word.length()) { //from start to word.length() is a substring
                     return 1;
                 } 
 
