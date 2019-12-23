@@ -27,7 +27,7 @@ class FindNumberOfValidWords {
                 if ((pChar1Rep & wordBinRep[j]) == 0) {
                     continue;
                 }
-                if (wordBinRep[j] == (puzzleBinRep & wordBinRep[j]))  {
+                if (wordBinRep[j] == (puzzleBinRep & wordBinRep[j])) {
                     results[i] += 1;
                 }
             }
@@ -38,8 +38,7 @@ class FindNumberOfValidWords {
     private int getBinRep(String word) {
         int binRep = 0;
         for(int j = 0; j < word.length(); j++) {
-            int currentBitPosition = 1 << word.charAt(j) - 'a';
-            binRep |= currentBitPosition;
+            binRep |= 1 << word.charAt(j) - 'a';
         }
         System.out.print(String.format("Word:%20s -> ", word));
         System.out.println(String.format("Bin:%26s", Integer.toBinaryString(binRep)).replace(' ','0'));
