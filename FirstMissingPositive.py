@@ -13,7 +13,8 @@ class Solution(object):
             if num <= len(nums) and num > 0:
                 numMap[num] = True
 
+        #The first missing positive must be from 1 to N + 1
         for i in range(1, len(nums) + 2):
-            if i not in numMap:
+            if i not in numMap: 
                 return i
 
