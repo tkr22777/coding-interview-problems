@@ -1,6 +1,12 @@
-class Solution {
+import java.util.*;
+
+class CourseSchedule {
 
     //https://leetcode.com/problems/course-schedule/submissions/
+
+    public static void main(String[] args) {
+        System.out.println("Compiling");
+    }
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
 
@@ -10,13 +16,14 @@ class Solution {
         //build the graph
         Map<Integer, List<Integer>> graph = new HashMap<>();
         for (int[] edge: prerequisites) {
-            //[ a, b ] <- to take course a, you need to take course b first
-            graph.computeIfAbsent(edge[1], v -> new LinkedList<Integer>()).add(edge[0]);
+            /* { a, b } <- to take course a, you need to take course b first */
+            graph.computeIfAbsent(edge[1], v -> new LinkedList<Integer>())
+                .add(edge[0]);
         }
 
         for (Integer node: graph.keySet()) {
-            //If there is a cycle, the given course schedule is impossible
-            if (containsCycleDFS(node, graph, callStack, visited,)) {
+            /* course schedule would be impossible if there is a cycle */
+            if (containsCycleDFS(node, graph, callStack, visited)) {
                 return false;
             }
         }
