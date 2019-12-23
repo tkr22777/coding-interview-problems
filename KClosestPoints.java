@@ -9,12 +9,12 @@ class KClosestPoints {
     public static void main(String[] args) {
         int[][] kthPoints;
 
-        int[][] points01 = { {8,8}, {-5,5}, {5,4}, {-10,2}, {1,8}, {5,9}, {-2,-3} };
+        int[][] points01 = {{8,8}, {-5,5}, {5,4}, {-10,2}, {1,8}, {5,9}, {-2,-3}};
         print(points01);
         kthPoints = new KClosestPoints().kClosest(points01, 2);
         print(kthPoints);
 
-        int[][] points02 = { {-2,-6}, {-7,-2}, {-9,6}, {10,3}, {-8,1}, {2,8} };
+        int[][] points02 = {{-2,-6}, {-7,-2}, {-9,6}, {10,3}, {-8,1}, {2,8}};
         print(points02);
         kthPoints = new KClosestPoints().kClosest(points02, 3);
         print(kthPoints);
@@ -22,24 +22,23 @@ class KClosestPoints {
 
     public int[][] kClosest(int[][] points, int k) {
 
-        int[] squaredDistances = new int[points.length];
+        int[] squaredDists = new int[points.length];
 
-        for(int i = 0; i < points.length; i++) {
-            squaredDistances[i] = points[i][0] * points[i][0] + points[i][1] * points[i][1];
+        for (int i = 0; i < points.length; i++) {
+            squaredDists[i] = points[i][0] * points[i][0] + points[i][1] * points[i][1];
         }
 
         k--; //kth item for the user is the (k-1)th distance item on the distance array
         int left = 0;
-        int right = squaredDistances.length - 1;
+        int right = squaredDists.length - 1;
         int pivot = -1;
-        int ktSquaredDistance = -1;
+        int kthSquaredDists = -1;
 
         while (left < right) {
 
-            pivot = QuickSort.partition(squaredDistances, left, right);
-
+            pivot = QuickSort.partition(squaredDists, left, right);
             if (pivot == k || right - left == 1) { //kth distance is now at kth position
-                ktSquaredDistance = squaredDistances[k];
+                kthSquaredDists = squaredDists[k];
                 break;
             }
             
@@ -51,20 +50,16 @@ class KClosestPoints {
         }
 
         ArrayList<int[]> kthDistantPoints = new ArrayList<>();
-        for(int i = 0; i < points.length ; i++) {
-            if (ktSquaredDistance >= (points[i][0] * points[i][0] + points[i][1] * points[i][1]) ) {
-                int[] aPoint = new int[2];
-                aPoint[0] = points[i][0];
-                aPoint[1] = points[i][1];
-                kthDistantPoints.add(aPoint);
+        for (int i = 0; i < points.length ; i++) {
+            if (kthSquaredDists >= (points[i][0] * points[i][0] + points[i][1] * points[i][1])) {
+                kthDistantPoints.add(new int[] {points[i][0], points[i][1]});
             }
         }
 
         int[][] kthDistantPointsArray = new int[kthDistantPoints.size()][2];
-        for(int i = 0; i < kthDistantPoints.size(); i++) {
+        for (int i = 0; i < kthDistantPoints.size(); i++) {
             kthDistantPointsArray[i] = kthDistantPoints.get(i);
         }
-
         return kthDistantPointsArray;
     }
 
