@@ -45,7 +45,6 @@ public class CycleInGraph {
         if (dfsStack.contains(node)) {
             return true;
         }
-
         dfsStack.add(node);
 
         for (int next = 0; next < graph[node].length; next++) {
