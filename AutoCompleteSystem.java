@@ -5,7 +5,6 @@ import java.util.stream.*;
 
 class AutocompleteSystem {
 
-    int LIMIT = 3;
     TrieNode root = new TrieNode();
     TrieNode current = root;
 
@@ -21,7 +20,7 @@ class AutocompleteSystem {
         if (('a' <= c && c <= 'z') || (c == ' ')) {
             searchString.append(c);
             current = current.nextNodes.computeIfAbsent(c, tn -> new TrieNode());
-            return getTopNSentences(LIMIT, current.sentences);
+            return getTopNSentences(sentenceUsage, current.sentences, 3);
         } else if (c == '#') {
             searchString = new StringBuilder();
             current = this.root;
@@ -54,10 +53,10 @@ class AutocompleteSystem {
         public SentenceUsage(String sentence, int usage) { this.sentence = sentence; this.usage = usage;};
     }
 
-    private List<String> getTopNSentences(int N, HashSet<String> sentences) {
+    private List<String> getTopNSentences(HashMap<String, Integer> sUsage, HashSet<String> sentences, int N) {
 
         List<SentenceUsage> usage = sentences.stream()
-            .map(s -> new SentenceUsage(s, sentenceUsage.get(s)))
+            .map(s -> new SentenceUsage(s, sUsage.get(s)))
             .collect(Collectors.toList());
 
         Collections.sort(usage, (a, b) -> {
