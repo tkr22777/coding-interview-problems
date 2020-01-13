@@ -11,16 +11,13 @@ class BinaryTreeZigZagLevelOrder {
         TreeNode(int x) { val = x; }
     }
 
-    public static void main(String[] args) {
-    }
-
     class Node {
         TreeNode tnode;
         int depth = 0;
         Node(TreeNode tnode) { this.tnode = tnode; }
     }
 
-    //TreeMap is keeps the order of lists by depth
+    /* TreeMap keeps the order of lists by depth */
     TreeMap<Integer, LinkedList<Integer>> map = new TreeMap<>();
 
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
@@ -38,6 +35,7 @@ class BinaryTreeZigZagLevelOrder {
 
             LinkedList<Integer> list = map.computeIfAbsent(node.depth, l -> new LinkedList<>());
 
+            /* Starting from 0th node, left -> right */
             if (node.depth % 2 == 0) {
                 list.offerLast(node.tnode.val);
             } else {
@@ -56,7 +54,6 @@ class BinaryTreeZigZagLevelOrder {
                 queue.offer(rightNode);
             }
         }
-
         return new LinkedList(map.values());
     }
 }
