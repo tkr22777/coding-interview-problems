@@ -16,7 +16,7 @@ class CourseSchedule {
         //build the graph
         Map<Integer, List<Integer>> graph = new HashMap<>();
         for (int[] edge: prerequisites) {
-            /* { a, b } <- to take course a, you need to take course b first */
+            /* {a, b} <- to take course a, you need to take course b first */
             graph.computeIfAbsent(edge[1], v -> new LinkedList<Integer>())
                 .add(edge[0]);
         }
