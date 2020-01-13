@@ -30,11 +30,11 @@ class Solution(object):
                 return False
 
         if p[pi] == '*':
-            if self.match(s, p, si, pi + 1, memo):
+            if self.match(s, p, si, pi + 1, memo): #did not use *
                 return self.setAnReturn(memo, si, pi, True)
-            if self.match(s, p, si + 1, pi + 1, memo):
+            if self.match(s, p, si + 1, pi + 1, memo): #used * for a char
                 return self.setAnReturn(memo, si, pi, True)
-            match = self.match(s, p, si + 1, pi, memo))
+            match = self.match(s, p, si + 1, pi, memo)) #used * for one or more chars
             return self.setAnReturn(memo, si, pi, match)
 
         if p[pi] == '?' or p[pi] == s[si]:

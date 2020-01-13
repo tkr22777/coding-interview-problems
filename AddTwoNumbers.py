@@ -2,12 +2,13 @@
 """
 Question:
 
-You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+You are given two non-empty linked lists representing two non-negative integers.
+The digits are stored in reverse order and each of their nodes contain a single digit.
+Add the two numbers and return it as a linked list.
 
 You may assume the two numbers do not contain any leading zero, except the number 0 itself.
 
 Example:
-
     Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
     Output: 7 -> 0 -> 8
     Explanation: 342 + 465 = 807.
@@ -20,15 +21,6 @@ class ListNode(object):
         self.val = x
         self.next = None
 
-    def append(self, anotherList):
-        self.next = anotherList
-
-    def appendNumber(self, number):
-        if self.next == None:
-            self.append(ListNode(number))
-        else:
-            self.next.appendNumber(number)
-
     def __str__(self):
         if self.next is None:
             return str(self.val)
@@ -37,15 +29,7 @@ class ListNode(object):
 
 class Solution(object):
 
-    """
-    :type l1: ListNode
-    :type l2: ListNode
-    :rtype: ListNode
-    """
     def addTwoNumbers(self, l1, l2):
-
-        if l1 is None and l2 is None:
-            return None
 
         return self.addTwoNumbersHelper(l1, l2, 0);
 
@@ -65,10 +49,10 @@ class Solution(object):
         if l2 is not None:
             currentSum = currentSum + l2.val
 
-        currentCarry = 0
+        carry = 0
 
         if currentSum > 9:
-            currentCarry = 1 
+            carry = 1 
             currentSum = currentSum % 10
 
         l1Next = None
@@ -79,22 +63,23 @@ class Solution(object):
         if l2 is not None:
             l2Next = l2.next
 
-        lsum = ListNode(currentSum)
-        lsum.next = self.addTwoNumbersHelper(l1Next, l2Next, currentCarry);
+        summedNode = ListNode(currentSum)
+        summedNode.next = self.addTwoNumbersHelper(l1Next, l2Next, carry);
 
-        return lsum
-
+        return summedNode
 
 #Number 243
 list1 = ListNode(2)
-list1.appendNumber(4)
-list1.appendNumber(3)
+list1Nxt = ListNode(4)
+list1.next = list1Nxt
+list1Nxt.next = ListNode(3)
 print list1
 
 #Number 243
 list2 = ListNode(5)
-list2.appendNumber(6)
-list2.appendNumber(4)
+list2Nxt = ListNode(6)
+list2.next = list2Nxt
+list2Nxt.next = ListNode(4)
 print list2
 
 summer = Solution()

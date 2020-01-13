@@ -11,7 +11,6 @@ class PascalsTriangle {
     public List<Integer> getRow(int rowIndex) {
 
         int totalColumn = rowIndex + 1;
-
         int array[][] = new int[2][totalColumn];
 
         for (int row = 0; row < totalColumn; row++) {

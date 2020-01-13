@@ -18,7 +18,7 @@ class AddBinaryString {
 
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < max_len ; i++) {
+        for (int i = 0; i < max_len; i++) {
 
             short currSum = 0;
 
