@@ -4,11 +4,6 @@ import java.util.stream.*;
 
 class ConcatenatedWords {
 
-    public static void main(String[] args) {
-        String[] words = {"cat","cats","catsdogcats","dog","dogcatsdog","hippopotamuses","rat","ratcatdogcat"};
-        System.out.println(new ConcatenatedWords().findAllConcatenatedWordsInADict(words));
-    }
-
     class Trie {
         HashMap<Character, Trie> nexts = new HashMap<Character, Trie>();
         boolean complete = false;
@@ -16,8 +11,13 @@ class ConcatenatedWords {
 
     Trie root = new Trie();
 
-    private void addWord(Trie node, String word) {
-        Trie curr = node;
+    public static void main(String[] args) {
+        String[] words = {"cat","cats","catsdogcats","dog","dogcatsdog","hippopotamuses","rat","ratcatdogcat"};
+        System.out.println(new ConcatenatedWords().findAllConcatenatedWordsInADict(words));
+    }
+
+    private void addWord(Trie root, String word) {
+        Trie curr = root;
         for (int i = 0; i < word.length(); i++) {
             curr = curr.nexts.computeIfAbsent(word.charAt(i), t -> new Trie());
         }
@@ -25,9 +25,9 @@ class ConcatenatedWords {
     }
 
     public List<String> findAllConcatenatedWordsInADict(String[] words) {
-        Arrays.stream(words).forEach( w -> addWord(root, w));
+        Arrays.stream(words).forEach(word -> addWord(root, word));
         return Arrays.stream(words)
-            .filter(w -> isConcatenated(root, w, 0) > 1)
+            .filter(word -> isConcatenated(root, word, 0) > 1)
             .collect(Collectors.toList());
     }
 
@@ -40,7 +40,7 @@ class ConcatenatedWords {
                 } 
 
                 int count = this.isConcatenated(root, word, i);
-                if (count > 0) {
+                if (count > 0) { /* greater than 0 means the substring is concatenated */
                     return 1 + count;
                 }
             }
