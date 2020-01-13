@@ -12,7 +12,7 @@ public class CommonAncestorNary {
         boolean found = false;
         String ancestor;
         public AncestorRet02(String ancestor) {this.ancestor = ancestor;} 
-        public AncestorRet02(boolean found, String ancestor) { this.found = found; this.ancestor = ancestor;} 
+        public AncestorRet02(String ancestor, boolean found) { this.found = found; this.ancestor = ancestor;} 
     }
 
     public AncestorRet02 findAncestor02(Node root, String loc1, String loc2) {
@@ -39,17 +39,17 @@ public class CommonAncestorNary {
             for (Node next: root.next) {
                 AncestorRet02 res = findAncestor02(next, loc2, null);
                 if (res != null) {
-                    return new AncestorRet02(true, root.val); //current node is the common ancestor
+                    return new AncestorRet02(root.val, true); //current node is the common ancestor
                 }
             }
             return new AncestorRet02(loc1);  //loc1 is matches with the current node
         } 
 
-        if(root.val.equals(loc2)) {
+        if (root.val.equals(loc2)) {
             for (Node next: root.next) {
                 AncestorRet02 res = findAncestor02(next, loc1, null);
                 if (res != null) {
-                    return new AncestorRet02(true, root.val); //current node is the common ancestor
+                    return new AncestorRet02(root.val, true); //current node is the common ancestor
                 }
             }
             return new AncestorRet02(loc2);  //loc2 is matches with the current node
@@ -68,7 +68,7 @@ public class CommonAncestorNary {
         } else if (results.size() == 1) { //one match under this root 
             return results.get(0);
         } else {
-            return new AncestorRet02(true, root.val); //current node is the common ancestor
+            return new AncestorRet02(root.val, true); //current node is the common ancestor
         }
     }
 
