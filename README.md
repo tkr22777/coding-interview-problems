@@ -1,5 +1,5 @@
 This repo contains solutions to problem-solving sections of the Software Engineering interview.
 
-I have tried mostly to write code in a way that the solution is understandable later.
+I tried to create a clean and functionally decomposed solutions for better understanability.
 
-Please feel free to clone or create a PR for a more clear and understandable solution.
+Please feel free to clone or create a PR if you have a more clear solution.
