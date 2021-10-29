@@ -1,21 +1,31 @@
+/*
+ https://leetcode.com/problems/design-search-autocomplete-system/
+*/
+
 import java.util.*;
 import java.util.stream.*;
 
-//https://leetcode.com/problems/design-search-autocomplete-system/submissions/
+class TrieNode {
+    HashMap<Character, TrieNode> nextNodes = new HashMap<Character, TrieNode>();
+    HashSet<String> sentences = new HashSet<String>();
+}
+
+class SentenceUsage {
+    int usage;
+    String sentence;
+    public SentenceUsage(String sentence, int usage) { this.sentence = sentence; this.usage = usage;};
+}
 
 class AutoCompleteSystem {
-
-    class TrieNode {
-        HashMap<Character, TrieNode> nextNodes = new HashMap<Character, TrieNode>();
-        HashSet<String> sentences = new HashSet<String>();
-    }
-
-    HashMap<String, Integer> sentenceUsage = new HashMap<String, Integer>(); ;
-
     TrieNode root = new TrieNode();
     TrieNode current = root;
-
+    HashMap<String, Integer> sentenceUsage = new HashMap<String, Integer>(); ;
     StringBuilder searchString = new StringBuilder();;
+
+    public AutoCompleteSystem(String[] sentences, int[] times) {
+        IntStream.range(0, sentences.length)
+            .forEach( i -> addSentence(this.root, sentences[i], times[i]));
+    }
 
     public List<String> input(char c) {
         if (('a' <= c && c <= 'z') || (c == ' ')) {
@@ -31,31 +41,18 @@ class AutoCompleteSystem {
     }
 
     private void addSentence(TrieNode node, String sentence, int usage) {
-
-        /* Updating the TrieNode */
+        /* Update TrieNode */
         TrieNode curr = node;
         for (int i = 0; i < sentence.length(); i++) {
             curr = curr.nextNodes.computeIfAbsent(sentence.charAt(i), tn -> new TrieNode());
             curr.sentences.add(sentence);
         }
 
-        /* Updating usage */
+        /* Update usage */
         sentenceUsage.put(sentence, sentenceUsage.getOrDefault(sentence, 0) + usage);
     }
 
-    public AutoCompleteSystem(String[] sentences, int[] times) {
-        IntStream.range(0, sentences.length)
-            .forEach( i -> addSentence(this.root, sentences[i], times[i]));
-    }
-
-    class SentenceUsage {
-        int usage;
-        String sentence;
-        public SentenceUsage(String sentence, int usage) { this.sentence = sentence; this.usage = usage;};
-    }
-
     private List<String> getTopThreeSentences(HashMap<String, Integer> sUsage, HashSet<String> sentences) {
-
         List<SentenceUsage> usage = sentences.stream()
             .map(s -> new SentenceUsage(s, sUsage.get(s)))
             .collect(Collectors.toList());
@@ -71,4 +68,3 @@ class AutoCompleteSystem {
             .collect(Collectors.toList());
     }
 }
-
