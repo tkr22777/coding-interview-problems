@@ -1,4 +1,6 @@
-import java.util.*;
+/*
+    The problem: https://leetcode.com/problems/add-binary/
+*/
 
 class AddBinaryString {
 
