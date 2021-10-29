@@ -1,7 +1,6 @@
 import java.util.*;
 
 class BinarySearch {
-
     public static void main(String[] args) {
         int[] sortedAr = {1, 2, 5, 7, 9, 11};
         System.out.println("Given Array: " + Arrays.toString(sortedAr));
@@ -11,7 +10,6 @@ class BinarySearch {
     }
 
     public static int search(int[] nums, int target) {
-
         int start = 0;
         int end  = nums.length - 1;
 
@@ -21,7 +19,6 @@ class BinarySearch {
         }
 
         while (start <= end) {
-                
             int mid = (start + end) / 2;
             
             if (nums[mid] == target) {
@@ -34,8 +31,6 @@ class BinarySearch {
                 end = mid - 1;
             }
         }
-
         return -1;
     }
 }
-
