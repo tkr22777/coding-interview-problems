@@ -1,4 +1,9 @@
 import java.util.*;
+/*
+    The problem: https://leetcode.com/problems/alien-dictionary/
+    The words provided sorted lexicographically, not the characters in the words.
+    From the sorted word order, figure out the possible characters order.
+*/
 
 class AlienDictionary {
 
@@ -8,14 +13,13 @@ class AlienDictionary {
     }
 
     public String alienOrder(String[] words) {
-        
         Map<Character, Set<Character>> adjMat = convertToAdjMat(words);
         Set<Character> visited = new HashSet<>();
         List<Character> ordered = new ArrayList<>();
         
         for (char node: adjMat.keySet()) {
             if (dfs(node, adjMat, visited, new HashSet<>(), ordered) == -1 ) {
-                return "";  /* there is a cycle */
+                return "";  /* there is a cycle (in the order) */
             };
         }
 
@@ -50,19 +54,17 @@ class AlienDictionary {
     }
 
     private Map<Character, Set<Character>> convertToAdjMat(String[] words) {
-
         Map<Character, Set<Character>> adjMat = new HashMap<>();
 
         for (int i = 1; i < words.length; i++) {
             String prevWord = words[i - 1];
             String currWord = words[i];
             int maxIndex = Math.min(prevWord.length(), currWord.length());
-
             for (int j = 0; j < maxIndex; j++) {
                 if (prevWord.charAt(j) != currWord.charAt(j)) {
-                    adjMat.computeIfAbsent(prevWord.charAt(j), v -> new HashSet<Character>())
+                    adjMat.computeIfAbsent(prevWord.charAt(j), v -> new HashSet<>())
                         .add(currWord.charAt(j));
-                    break;
+                    break; //as the first diff is found, we cannot infer anything else going forward
                 }
             }
         }
