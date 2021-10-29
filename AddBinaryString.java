@@ -2,6 +2,16 @@ import java.util.*;
 
 class AddBinaryString {
 
+    /*
+     string binStr = `0101`,
+     len(binStr) -> 4
+
+     binStr[0]   -> 0
+     binStr[1]   -> 1
+     binStr[2]   -> 0
+     binStr[3]   -> 1
+    */
+
     public static void main(String[] args) {
         String a = "1011001";
         String b = "1011101";
@@ -19,7 +29,6 @@ class AddBinaryString {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < max_len; i++) {
-
             short currSum = 0;
 
             if (a.length() - 1 - i >= 0 && a.charAt(a.length() - 1 - i) == '1') {
