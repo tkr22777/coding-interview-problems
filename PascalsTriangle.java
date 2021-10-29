@@ -4,7 +4,7 @@ class PascalsTriangle {
 
     public static void main(String[] args) {
         for(int i = 0; i <= 5; i++) {
-            System.out.println(new Solution().getRow(i).toString());
+            System.out.println(new PascalsTriangle().getRow(i).toString());
         }
     }
 

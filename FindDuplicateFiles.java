@@ -1,4 +1,3 @@
-import java.*;
 import java.util.*;
 
 class FindDuplicateFiles {

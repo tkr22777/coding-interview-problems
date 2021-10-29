@@ -1,4 +1,4 @@
 .PHONY:
 
 javac-java:
-	javac ${FILENAME}.java; java ${FILENAME}
+	javac ${FILENAME}.java; java ${FILENAME}; rm ${FILENAME}.class

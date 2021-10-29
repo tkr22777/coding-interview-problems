@@ -2,7 +2,7 @@ import java.util.*;
 
 //https://leetcode.com/problems/reorder-data-in-log-files/
 
-class Solution {
+class ReorderLogs {
 
     public String[] reorderLogFiles(String[] logs) {
 
