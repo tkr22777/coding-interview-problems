@@ -11,7 +11,7 @@ class Node {
 
 class AncestorRet {
     String val;
-    boolean foundBoth = false;
+    boolean foundBoth;
     public AncestorRet(String val, boolean foundBoth) { this.val = val; this.foundBoth = foundBoth;}
 }
 
