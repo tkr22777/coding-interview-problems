@@ -71,4 +71,3 @@ class ConcatenatedWords {
         return current.complete;
     }
 }
-
