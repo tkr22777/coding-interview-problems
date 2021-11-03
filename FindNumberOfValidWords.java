@@ -12,7 +12,6 @@ class FindNumberOfValidWords {
     }
 
     public List<Integer> findNumOfValidWords(String[] words, String[] puzzles) {
-
         int[] wordBinRep = new int[words.length];
         for (int i = 0; i < words.length; i++) {
             wordBinRep[i] = getBinRep(words[i]);
@@ -32,7 +31,9 @@ class FindNumberOfValidWords {
                 }
             }
         }
-        return Arrays.stream(results).boxed().collect(Collectors.toList());
+        return Arrays.stream(results)
+            .boxed() //to convert from primitives
+            .collect(Collectors.toList());
     }
 
     private int getBinRep(String word) {

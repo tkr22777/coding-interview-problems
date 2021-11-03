@@ -1,9 +1,5 @@
 class Solution(object):
     def firstMissingPositive(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
         numMap = {}
 
         if len(nums) is 0:
@@ -17,4 +13,3 @@ class Solution(object):
         for i in range(1, len(nums) + 2):
             if i not in numMap: 
                 return i
-

@@ -1,7 +1,6 @@
 import java.util.*;
 
 class FindDuplicateFiles {
-
     public static void main(String[] args) {
         String[] paths = { 
             "root/a 1.txt(abcd) 2.txt(efgh)",
@@ -13,7 +12,6 @@ class FindDuplicateFiles {
     }
 
     public List<List<String>> findDuplicate(String[] paths) {
-
         HashMap<String, Set<String>> contentToFiles = new HashMap<String, Set<String>>();
 
         for (String path: paths) {
@@ -38,7 +36,6 @@ class FindDuplicateFiles {
                 toReturn.add(new ArrayList<String>(duplicateFiles));
             }
         }
-
         return toReturn;
     }
 }
