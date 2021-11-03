@@ -1,10 +1,18 @@
+/*
+    https://leetcode.com/problems/generate-parentheses/
+    for n = 3,
+    ((()))
+    (()())
+    (())()
+    ()(())
+    ()()()
+ */
 import java.util.*;
 
 class GenerateParenthesis {
-
     public static void main(String[] args) {
         System.out.println("All possible parenthesis combination:");
-        new GenerateParenthesis().generateParenthesis(4)
+        new GenerateParenthesis().generateParenthesis(3)
             .forEach(p -> System.out.println(p));
     }
 
@@ -13,7 +21,6 @@ class GenerateParenthesis {
     }
 
     private List<String> generateParenthesis(int open, int close) {
-
         /* Open brackets are not required anymore, only close brackets are required */
         if (open == 0) {
             char[] chars = new char[close];
@@ -38,4 +45,3 @@ class GenerateParenthesis {
         return results;
     }
 }
-

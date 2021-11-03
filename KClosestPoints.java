@@ -1,11 +1,10 @@
-import java.util.*;
-
-/* Given a list of co-ordinates, an integer k, where k <= N return the co-ordinate(s) whose distance
+/*
+ * Given a list of co-ordinates, an integer k, where k <= N return the co-ordinate(s) whose distance
  * from the origin is kth among all possible distances.
  */
+import java.util.*;
 
 class KClosestPoints {
-
     public static void main(String[] args) {
         int[][] kthPoints;
 
@@ -21,24 +20,21 @@ class KClosestPoints {
     }
 
     public int[][] kClosest(int[][] points, int k) {
-
-        int[] squaredDists = new int[points.length];
-
+        int[] squaredDistances = new int[points.length];
         for (int i = 0; i < points.length; i++) {
-            squaredDists[i] = points[i][0] * points[i][0] + points[i][1] * points[i][1];
+            squaredDistances[i] = points[i][0] * points[i][0] + points[i][1] * points[i][1];
         }
 
-        k--; //kth item for the user is the (k-1)th distance item on the distance array
+        k--; //the user provided kth items, are the 0 .. (k-1)th items on the array
         int left = 0;
-        int right = squaredDists.length - 1;
+        int right = squaredDistances.length - 1;
         int pivot = -1;
-        int kthSquaredDists = -1;
+        int kthSquaredDistance = -1;
 
         while (left < right) {
-
-            pivot = QuickSort.partition(squaredDists, left, right);
+            pivot = QuickSort.partition(squaredDistances, left, right);
             if (pivot == k || right - left == 1) { //kth distance is now at kth position
-                kthSquaredDists = squaredDists[k];
+                kthSquaredDistance = squaredDistances[k];
                 break;
             }
             
@@ -51,7 +47,7 @@ class KClosestPoints {
 
         ArrayList<int[]> kthDistantPoints = new ArrayList<>();
         for (int i = 0; i < points.length ; i++) {
-            if (kthSquaredDists >= (points[i][0] * points[i][0] + points[i][1] * points[i][1])) {
+            if (kthSquaredDistance >= (points[i][0] * points[i][0] + points[i][1] * points[i][1])) {
                 kthDistantPoints.add(new int[] {points[i][0], points[i][1]});
             }
         }

@@ -1,7 +1,8 @@
+/*
+    https://leetcode.com/problems/game-of-life/
+ */
 import java.util.*;
 class GameOfLife {
-
-    //Problem: https://leetcode.com/problems/game-of-life/
 
     public static void main(String[] args) {
         int[][] board = {
@@ -28,21 +29,21 @@ class GameOfLife {
     }
 
     int countNeighbours(int[][] board, int row, int column) {
-
         int[] shifts = {-1, 0, 1};
 
         int neighbours = 0;
         for (int i = 0; i < shifts.length; i++) {
             for (int j = 0; j < shifts.length; j++) {
-
-                int x = shifts[i], y = shifts[j];
-
+                int x = shifts[i];
+                int y = shifts[j];
                 if (x == 0 && y == 0) {
                     continue;
                 }
 
-                if (row + x < 0 || row + x >= board.length || 
-                    column + y < 0 || column + y >= board[row].length) {
+                if (row + x < 0 ||
+                    row + x >= board.length ||
+                    column + y < 0 ||
+                    column + y >= board[row].length) {
                     continue;
                 }
 
@@ -53,22 +54,17 @@ class GameOfLife {
     }
 
     int getUpdatedValueForNeighbours(int val, int neighbours) {
-
         if (val % 2 == 1) { /* currently alive */
-
             if (!(neighbours >= 2 && neighbours < 4))  { /* dies */
                 /* odd value flags that the cell was alive at start */
                 return 3; 
             }
-
         } else { /* currently dead */
-
             if (neighbours == 3) { /* reproduces */
                 /* even value flags that the cell was dead at start */
                 return 2; 
             }
         }
-
         return val;
     }
 
