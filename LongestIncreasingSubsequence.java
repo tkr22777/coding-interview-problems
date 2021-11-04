@@ -1,7 +1,6 @@
-import java.io.*;
 import java.util.*;
-import java.util.stream.*;
 
+/* TODO add explanation */
 class LongestIncreasingSubsequence {
 
     /* LIS is the Longest Increasing Subsequence */
@@ -25,7 +24,6 @@ class LongestIncreasingSubsequence {
     //    j = 1, val = 5, DP[3] -> DP[1] + 1 -> 2 + 1 -> 3
     //    j = 2, val = 4, DP[3] -> DP[3] -> 3
     public int lengthOfLISArray(int[] numbers) {
-
         int[] dp = new int[numbers.length];
         Arrays.fill(dp, 1);
 
@@ -42,14 +40,12 @@ class LongestIncreasingSubsequence {
     }
 
     public int lengthOfLIS(int[] numbers) {
-
         //We are going to keep the candidate results
         List<int[]> results = new ArrayList<int[]>();
 
         //for each number we are going to calculate if a 
         //number is greater than an existing result
         for (int i = 0; i < numbers.length; i++) {
-
             int val = numbers[i];
 
             int[] toAddVal = { 1, val };
@@ -79,4 +75,3 @@ class LongestIncreasingSubsequence {
         return LIS;
     }
 }
-

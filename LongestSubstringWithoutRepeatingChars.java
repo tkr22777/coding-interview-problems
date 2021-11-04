@@ -14,14 +14,9 @@ class LongestSubstringWithoutRepeatingChars {
     }
 
     public static int lengthOfLongestSubstring(String s) {
+        if (s == null) return 0;
 
-        if (s == null) {
-            return 0;
-        }
-
-        if (s.length() < 2) {
-            return s.length();
-        }
+        if (s.length() < 2) return s.length();
 
         int longest = 1;
 
@@ -29,17 +24,15 @@ class LongestSubstringWithoutRepeatingChars {
         Add chars to set until duplicate found. Since char at j created duplicate,
         that char must be somewhere in between i to j - 1. Move i to right until you
         confront the char again. after the last incident of s.charAt(j)
-        remove all characters from i to inew
+        remove all characters from i to inew.
+        How does that make the solution correct?
         */
 
         HashSet<Character> set = new HashSet<>();
         int i = 0, j = 0;
         while (j < s.length()) {
-
             if (set.contains(s.charAt(j))) {
-
                 longest = Math.max(j-i, longest);
-
                 while(i < j) {
                     set.remove(s.charAt(i));
                     if (s.charAt(i) == s.charAt(j)) {

@@ -1,9 +1,21 @@
 import java.util.*;
 
+class ListNode {
+    int key;
+    int value;
+    ListNode prev;
+    ListNode next;
+
+    public ListNode(int key, int value) {
+        this.key = key;
+        this.value = value;
+    }
+}
+
+/* Could this be implemented using built in linkedList/arrayList? */
 public class LRUCache {
 
     public static void main(String[] args) {
-
         LRUCache cache = new LRUCache(2);
         cache.put(1,1);
         cache.printList();
@@ -18,18 +30,6 @@ public class LRUCache {
         cache.printList();
         System.out.println(cache.get(2));
         cache.printList();
-    }
-
-    class ListNode {
-        int key;
-        int value;
-        ListNode prev;
-        ListNode next;
-
-        public ListNode(int key, int value) {
-            this.key = key;
-            this.value = value;
-        }
     }
 
     int capacity = 0;
@@ -53,7 +53,6 @@ public class LRUCache {
     }
 
     public void put(int key, int value) {
-
         if (keyToNodeMap.containsKey(key)) {
             ListNode node = keyToNodeMap.get(key);
             node.value = value;
@@ -72,7 +71,6 @@ public class LRUCache {
     }
 
     private void addToHead(ListNode node) {
-
         if (node == null) {
             return;
         }
@@ -92,7 +90,6 @@ public class LRUCache {
     }
 
     private void makeMostRecent(ListNode node) {
-
         if (head == node) {
             return;
         } 

@@ -20,6 +20,7 @@ class GenerateParenthesis {
         return generateParenthesis(n, 0);
     }
 
+    /* TODO add explanation */
     private List<String> generateParenthesis(int open, int close) {
         /* Open brackets are not required anymore, only close brackets are required */
         if (open == 0) {

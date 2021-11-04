@@ -2,6 +2,7 @@ import java.util.*;
 
 //https://leetcode.com/problems/partition-array-for-maximum-sum/submissions/
 
+/* TODO add explanation */
 class MaximumSumAfterPartitioning {
 
     public static void main(String[] args) {
@@ -15,15 +16,14 @@ class MaximumSumAfterPartitioning {
     }
 
     public int maxSumAfterPartitioningRec(int[] A, int index, int K, Map<Integer, Integer> memo) {
-
         if (index >= A.length) return 0;
 
         if (memo.containsKey(index)) {
             return memo.get(index);
         }
 
-        int maxInK = A[index], maxSumB = A[index];
-
+        int maxInK = A[index];
+        int maxSumB = A[index];
         for (int i = index; i < index + K && i < A.length; i++) {
             maxInK = Math.max(A[i], maxInK);
             maxSumB = Math.max((maxInK * (i - index + 1)) + maxSumAfterPartitioningRec(A, i + 1, K, memo), maxSumB);
