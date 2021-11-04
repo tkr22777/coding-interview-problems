@@ -1,5 +1,6 @@
 import java.util.*;
 
+/* Kind of stupid, fix imp */
 public class ReverseLinkedList {
 
     public static void main(String[] args) {
@@ -28,9 +29,9 @@ public class ReverseLinkedList {
         }
 
         ListNode copyHead = new ListNode(node.val);
+
         ListNode copyCurrent = copyHead;
         ListNode current = node.next;
-
         while (current != null) {
             copyCurrent.next = new ListNode(current.val);
             current = current.next;

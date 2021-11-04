@@ -12,7 +12,6 @@ public class ValidParentheses {
 
         Stack<Character> stk = new Stack();
         for (int i = 0; i < s.length(); i++) {
-
             Character charI = s.charAt(i);
             if (open.contains(charI)) {
                 stk.push(charI);
@@ -22,12 +21,10 @@ public class ValidParentheses {
                 return false;
             }
         }
-
         return stk.size() == 0;
     }
 
     private static boolean openCloseMatch(Character open, Character close) {
-
         if ((open == '[' && close == ']') ||
             (open == '{' && close == '}') ||
             (open == '(' && close == ')')) {
@@ -37,4 +34,3 @@ public class ValidParentheses {
         }
     }
 }
-

@@ -1,11 +1,10 @@
-import java.util.*;
+/* https://leetcode.com/problems/reorder-data-in-log-files/ */
 
-//https://leetcode.com/problems/reorder-data-in-log-files/
+import java.util.*;
 
 class ReorderLogs {
 
     public String[] reorderLogFiles(String[] logs) {
-
         ArrayList<String> digitLogs = new ArrayList<>();
         ArrayList<String[]> charLogs = new ArrayList<>();
 

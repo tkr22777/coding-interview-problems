@@ -8,7 +8,6 @@ public class WordLadder {
     }
 
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-
         ArrayList<String> wordArList = new ArrayList<>(wordList);
         Map<String, Set<String>> adjMap = new HashMap<>();
         Queue<String> queue = new LinkedList<String>();
@@ -17,10 +16,9 @@ public class WordLadder {
         queue.offer(beginWord);
 
         int depth = 0;
-
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             int breadth = queue.size();
-            for(int i = 0; i < breadth; ++i) {
+            for (int i = 0; i < breadth; ++i) {
                 String word = queue.poll();
                 if (word.equals(endWord)) {
                     return depth + 1;
@@ -35,14 +33,14 @@ public class WordLadder {
                     }
                 }
             }
-            ++depth;
+            depth++;
         }
         return 0;
     }
 
     public Set<String> getNeighbors(ArrayList<String> wordList, String word) {
         Set<String> neighbors = new HashSet<String>();
-        for (int i = 0; i < wordList.size(); ++i) {
+        for (int i = 0; i < wordList.size(); i++) {
             if (isNeighbour(word, wordList.get(i))) {
                 neighbors.add(wordList.get(i));
             }
@@ -52,12 +50,11 @@ public class WordLadder {
 
     public boolean isNeighbour(String wordA, String wordB) {
         int diff = 0;
-        for (int i = 0; i < wordA.length(); ++i) {
+        for (int i = 0; i < wordA.length(); i++) {
             if (wordA.charAt(i) != wordB.charAt(i)) {
-                ++diff;
+                diff++;
             }
         }
         return diff == 1;
     }
 }
-
