@@ -1,8 +1,11 @@
+/*
+ * Problem: https://leetcode.com/problems/maximum-product-subarray/
+ */
+
 import java.util.*;
 
+/* TODO add explanation */
 class MaxProductSubArray {
-
-    /* Problem: https://leetcode.com/problems/maximum-product-subarray/ */
 
     public static void main(String[] args) {
         System.out.println(Arrays.toString(args));
@@ -19,7 +22,6 @@ class MaxProductSubArray {
     /* we keep the current min since a negative current min could flip to 
      * current max when current max is multiplied by another negative number */
     public int maxProduct(int[] nums) {
-
         int currentMax = nums[0];
         int currentMin = nums[0]; 
         int maxProd = nums[0];

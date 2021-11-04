@@ -1,5 +1,6 @@
 import java.util.*;
 
+/* TODO add explanation */
 public class MaxSumSubArray{
 
     public static void main(String[] args)  {
@@ -12,7 +13,6 @@ public class MaxSumSubArray{
     }
 
     public int maxSubArray(int[] nums) {
-
         int maxSum = nums[0];
         int currentSum = nums[0];
 
