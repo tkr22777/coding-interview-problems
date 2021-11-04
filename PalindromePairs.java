@@ -1,5 +1,12 @@
 import java.util.*;
 
+class PTrieNode {
+    HashMap<Character, PTrieNode> next = new HashMap<>();
+    Set<Integer> completeIndices = new HashSet<>();
+    Set<Integer> partialIndices = new HashSet<>();
+}
+
+/* TODO add explanation */
 public class PalindromePairs {
 
     public static void main(String[] args) {
@@ -9,15 +16,8 @@ public class PalindromePairs {
         pairs.forEach(pair -> System.out.println(pair.toString()));
     }
 
-    class TrieNode {
-        HashMap<Character, TrieNode> next = new HashMap<>();
-        Set<Integer> completeIndices = new HashSet<>();
-        Set<Integer> partialIndices = new HashSet<>();
-    }
-
     public List<List<Integer>> palindromePairs(String[] words) {
-
-        TrieNode root = new TrieNode();
+        PTrieNode root = new PTrieNode();
         for (int i = 0; i < words.length; i++) {
             addWord(root, i, words[i], 0);
         }
@@ -40,21 +40,19 @@ public class PalindromePairs {
         return new StringBuilder(a).reverse().toString().equals(a);
     }
 
-    private void addWord(TrieNode root, int wordIndex, String word, int charIndex) {
-
-        TrieNode current = root;
+    private void addWord(PTrieNode root, int wordIndex, String word, int charIndex) {
+        PTrieNode current = root;
         for (int i = 0; i < word.length(); i++) {
             char charAtI = word.charAt(i);
             if (isSubstringPalindrome(word, i)) {
                 current.partialIndices.add(wordIndex);
             }
-            current = current.next.computeIfAbsent(charAtI, n -> new TrieNode());
+            current = current.next.computeIfAbsent(charAtI, n -> new PTrieNode());
         }
         current.completeIndices.add(wordIndex);
     }
 
-    public Set<Integer> getPalindromes(TrieNode node, String word, int charIndex) {
-
+    public Set<Integer> getPalindromes(PTrieNode node, String word, int charIndex) {
         if (node == null) {
             return new HashSet<>();
         }
@@ -70,11 +68,10 @@ public class PalindromePairs {
             indices.addAll(node.completeIndices);
         }
 
-        TrieNode nextNode = node.next.get(word.charAt(charIndex));
+        PTrieNode nextNode = node.next.get(word.charAt(charIndex));
         Set<Integer> nextIndices = getPalindromes(nextNode, word, charIndex + 1);
 
         indices.addAll(nextIndices);
         return indices;
     }
 }
-

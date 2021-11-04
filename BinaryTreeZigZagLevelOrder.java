@@ -6,10 +6,15 @@ import java.util.*;
  then right to left..
 */
 class TreeNode {
-    int val;
     TreeNode left;
     TreeNode right;
-    TreeNode(int x) { val = x; }
+    int value;
+
+    public TreeNode(int val, TreeNode left, TreeNode right) {
+        this.value = val;
+        this.left = left;
+        this.right = right;
+    }
 }
 
 class NodeDepth {
@@ -40,9 +45,9 @@ class BinaryTreeZigZagLevelOrder {
 
             /* Starting from 0th node, left -> right */
             if (node.depth % 2 == 0) {
-                list.offerLast(node.tnode.val); //left to right
+                list.offerLast(node.tnode.value); //left to right
             } else {
-                list.offerFirst(node.tnode.val); //right to left
+                list.offerFirst(node.tnode.value); //right to left
             }
 
             if (node.tnode.left != null) {

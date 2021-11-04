@@ -1,9 +1,6 @@
-import java.util.*;
-
 class NumberOfIslands {
 
     public static void main(String[] args) {
-
         char[][] grid = {
             { '1', '0'},
             { '0', '1'}
@@ -32,7 +29,6 @@ class NumberOfIslands {
     }
 
     public int numIslands(char[][] grid) {
-
         if (grid == null || grid.length == 0) {
             return 0;
         }
@@ -52,7 +48,6 @@ class NumberOfIslands {
     }
 
     private int visit(char[][] grid, short[][] visited, int row, int col) {
-
         if (row < 0 || row >= grid.length || col < 0 || col >= grid[row].length) {
             return 0;
         }
@@ -62,20 +57,16 @@ class NumberOfIslands {
         }
 
         if (grid[row][col] == '1') {
-
             visited[row][col] = 1; //visited
-
             int islandArea = 1;
             islandArea += visit(grid, visited, row + 1, col);
             islandArea += visit(grid, visited, row - 1, col);
             islandArea += visit(grid, visited, row, col + 1);
             islandArea += visit(grid, visited, row, col - 1);
             return islandArea;
-
-        } else {
-
-            return 0;
         }
+
+        return 0;
     }
 }
 
