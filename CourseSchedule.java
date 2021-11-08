@@ -3,6 +3,12 @@
     You have to take, courses labeled from 0 to numCourses - 1.
     The prerequisites[i] = [ai, bi] implies bi must be taken before ai.
     Return true if you can finish all courses given the params.
+
+    The idea for the solution:
+    -> there are no time limitations
+    -> we can take any course unless there is pre-req
+    -> for pre-reqs we can take them and then move and take the next ones
+    -> we will not be able to finish if there is a cyclic pre-reqs among courses
 */
 
 import java.util.*;
@@ -22,6 +28,7 @@ class CourseSchedule {
                 .add(edge[0]);
         }
 
+        /* total courses are 0, 1, ... numCourses - 1 */
         boolean[] visited = new boolean[numCourses];
         boolean[] dfsStack = new boolean[numCourses];
         for (Integer node: graph.keySet()) {
@@ -33,24 +40,23 @@ class CourseSchedule {
         return true;
     }
 
-    public boolean containsCycleDFS(Integer node,
+    public boolean containsCycleDFS(Integer courseID,
                                     Map<Integer, List<Integer>> graph,
                                     boolean[] dfsStack,
                                     boolean[] visited) {
-        if (dfsStack[node]) return true;
-        dfsStack[node] = true;
+        if (dfsStack[courseID]) return true;
+        dfsStack[courseID] = true;
 
-        if (visited[node]) return false;
-        visited[node] = true;
+        if (visited[courseID]) return false;
+        visited[courseID] = true;
 
-        List<Integer> adjacents = graph.getOrDefault(node, new LinkedList<>());
-        for (Integer adj: adjacents) {
-            if (containsCycleDFS(adj, graph, visited, dfsStack)) {
+        List<Integer> dependentCourses = graph.getOrDefault(courseID, new LinkedList<>());
+        for (Integer dependentCID: dependentCourses) {
+            if (containsCycleDFS(dependentCID, graph, visited, dfsStack)) {
                 return true;
             }
         }
-        dfsStack[node] = false;
+        dfsStack[courseID] = false;
         return false;
     }
 }
-
