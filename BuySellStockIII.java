@@ -4,12 +4,12 @@
 */
 class BuySellStockIII {
 
-    /* TODO add explanation */
     public static void main(String[] args) {
         int[] ar = {3,3,5,0,0,3,1,4};
         System.out.println(new BuySellStockIII().maxProfit(ar));
     }
 
+    // single transaction profit from day i
     private int[] maxSingleTxnProfit(int[] prices) {
         int[] singleTxnProfit = new int[prices.length];
 
@@ -35,7 +35,10 @@ class BuySellStockIII {
                 minBuyPrice = prices[i];
             } 
             int currentProfit = prices[i] - minBuyPrice;
-            int nextProfit = i + 1 < singleTxnProfit.length ? singleTxnProfit[i + 1]: 0;
+            int nextProfit = 0;
+            if (i + 1 < singleTxnProfit.length) {
+                nextProfit = singleTxnProfit[i + 1];
+            }
             maxProfit = Math.max(maxProfit, currentProfit + nextProfit);
         }
         return maxProfit;
