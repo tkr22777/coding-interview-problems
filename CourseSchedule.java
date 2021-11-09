@@ -18,7 +18,6 @@ class CourseSchedule {
         System.out.println("Compiling");
     }
 
-    /* TODO add explanation */
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         //build the graph
         Map<Integer, List<Integer>> graph = new HashMap<>();

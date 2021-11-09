@@ -9,12 +9,10 @@ import java.util.stream.*;
 public class ConvertFromArray {
 
     public static void main(String[] args) {
-
         new ConvertFromArray().testArrays();
     }
 
     public void testArrays() {
-
         int[] vals = {5, 1, 2, 3, 5, 3};
         StringJoiner sjAr = new StringJoiner(", ", "Initial Array: ", ".");
         Arrays.stream(vals).forEach(v -> sjAr.add(Integer.toString(v)));
