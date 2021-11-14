@@ -6,6 +6,27 @@
     (())()
     ()(())
     ()()()
+
+    genPOC(3, 0)
+    -> (
+        -> ((
+            -> (((
+                -> ((()))
+            -> (()
+                -> (()(
+                    -> (()())
+                -> (())
+                    -> (())(
+                        -> (())()
+        -> ()
+            -> ()(
+                -> ()((
+                   -> ()(()
+                     -> ()(())
+                -> ()()
+                   -> ()()(
+                    -> ()()()
+
  */
 import java.util.*;
 
@@ -20,13 +41,13 @@ class GenerateParenthesis {
         return generateParenthesis(n, 0);
     }
 
-    /* TODO add explanation */
     private List<String> generateParenthesis(int open, int close) {
         /* Open brackets are not required anymore, only close brackets are required */
         if (open == 0) {
             char[] chars = new char[close];
             Arrays.fill(chars, ')');
-            return Arrays.asList(new String(chars));
+            String str = new String(chars);
+            return Arrays.asList(str);
         }
 
         //Open > 0
