@@ -45,24 +45,23 @@ public class LRUCache {
     public int get(int key) {
         if (keyToNodeMap.containsKey(key)) {
             ListNode node = keyToNodeMap.get(key);
-            makeMostRecent(node); 
+            moveToHead(node);
             return node.value;
-        } else {
-            return -1;
         }
+        return -1;
     }
 
     public void put(int key, int value) {
         if (keyToNodeMap.containsKey(key)) {
             ListNode node = keyToNodeMap.get(key);
             node.value = value;
-            makeMostRecent(node);
+            moveToHead(node);
             return;
         }
 
         //making a space by evicting the last element
         if (keyToNodeMap.size() == capacity) {
-            removeLeastRecentlyUsed();
+            removeTail();
         }
 
         ListNode node = new ListNode(key, value);
@@ -83,32 +82,32 @@ public class LRUCache {
             return;
         }
 
-        node.next = head;
-        head.prev = node;
-        head = node;
-        node.prev = null;
+        node.next = head; // node.next next-> node at head
+        head.prev = node; //  node <-prev node at head
+        head = node; // head -> node
+        node.prev = null; // null <-p node
     }
 
-    private void makeMostRecent(ListNode node) {
-        if (head == node) {
+    private void moveToHead(ListNode node) {
+        if (node == head) {
             return;
-        } 
-
-        if (tail == node) { 
-            tail = node.prev; //if node is at the tail, tail should be node.prev
-        } else { 
-            node.next.prev = node.prev; //non-tail node's next.prev should be node prev
         }
 
-        node.prev.next = node.next; //node's prev.next should be node next
+        node.prev.next = node.next; //circuit prev with next
+
+        if (node == tail) {
+            tail = node.prev; //if node is at the tail, tail should point to node.prev
+        } else { 
+            node.next.prev = node.prev; //or circuit next with prev
+        }
+
         node.next = null;
         node.prev = null;
-
         addToHead(node);
     }
 
     /* Remove the last element from the list and also from the map */
-    private void removeLeastRecentlyUsed() {
+    private void removeTail() {
         if (head == null || tail == null) {
             return;
         }
