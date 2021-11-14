@@ -18,7 +18,6 @@ class MergeIntervals {
     }
 
     public int[][] merge(int[][] intervals) {
-
         if (intervals.length == 0) {
             return new int[0][2];
         }
@@ -27,14 +26,14 @@ class MergeIntervals {
         Arrays.sort(intervals, Comparator.comparingInt(a -> a[BEGIN]));
 
         ArrayList<int[]> merged = new ArrayList<>();
-
         int begin = intervals[0][BEGIN];
         int end = intervals[0][END];
         for (int i = 1 ; i < intervals.length; i++) {
             if (begin <= intervals[i][BEGIN] && intervals[i][BEGIN] <= end) { //the beginning is inside the interval
                 if (end < intervals[i][END]) {
                     end = intervals[i][END]; //extending end time to merge the previous end time
-                } //else we don't do anything, intervals[i] is already included
+                }
+                //else we don't do anything, intervals[i] is already included
             } else { //beginning is outside the current interval, add it to merged results.
                 merged.add(new int[] {begin, end});  //a merged interval
                 // new interval
