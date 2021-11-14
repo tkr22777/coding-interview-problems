@@ -1,26 +1,27 @@
-class NumberOfIslands {
+/* https://leetcode.com/problems/number-of-islands/ */
 
+class NumberOfIslands {
     public static void main(String[] args) {
-        char[][] grid = {
+        char[][] grid = { //two islands
             { '1', '0'},
             { '0', '1'}
         };
         System.out.println(new NumberOfIslands().numIslands(grid));
 
-        char[][] grid2 = {
+        char[][] grid2 = { //one island
             { '1', '1'},
             { '0', '1'}
         };
         System.out.println(new NumberOfIslands().numIslands(grid2));
 
-        char[][] grid3 = {
+        char[][] grid3 = { //three islands
             { '1', '0' , '1'},
             { '0', '1' , '1'},
             { '1', '0' , '0'}
         };
         System.out.println(new NumberOfIslands().numIslands(grid3));
 
-        char[][] grid4 = {
+        char[][] grid4 = { //one island
             { '1', '0' , '1'},
             { '1', '1' , '1'},
             { '1', '0' , '1'}
