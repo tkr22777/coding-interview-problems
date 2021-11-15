@@ -23,21 +23,19 @@ class AddBinaryString {
     }
 
     public static String addBinary(String a, String b) {
-
-        int max_len = Math.max(a.length(), b.length());
-
-        boolean carry = false;
-
         StringBuilder sb = new StringBuilder();
-
+        boolean carry = false;
+        int max_len = Math.max(a.length(), b.length());
         for (int i = 0; i < max_len; i++) {
             short currSum = 0;
 
-            if (a.length() - 1 - i >= 0 && a.charAt(a.length() - 1 - i) == '1') {
+            int ai = a.length() - 1 - i;
+            if (ai >= 0 && a.charAt(ai) == '1') {
                 currSum++;
             }
 
-            if (b.length() - 1 - i >= 0 && b.charAt(b.length() - 1 - i) == '1') {
+            int bi = b.length() - 1 - i;
+            if (bi >= 0 && b.charAt(bi) == '1') {
                 currSum++;
             }
 
@@ -45,13 +43,16 @@ class AddBinaryString {
                 currSum++;
             }
 
-            if (currSum == 0 || currSum == 2) {
+            if (currSum % 2 == 0) {
                 sb.append("0");
-            } else {
+            } else { //currSum == 1
                 sb.append("1");
             }
 
-            carry = currSum > 1 ? true:false;
+            carry = false;
+            if (currSum > 1) {
+                carry = true;
+            }
         }
 
         if (carry) {

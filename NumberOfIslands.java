@@ -35,7 +35,6 @@ class NumberOfIslands {
         }
 
         short[][] visited = new short[grid.length][grid[0].length];
-
         int totalIslands = 0;
         for (int row = 0 ; row < grid.length ; row++) {
             for (int col = 0; col < grid[row].length ; col++) {
@@ -44,7 +43,6 @@ class NumberOfIslands {
                 }
             }
         }
-
         return totalIslands;
     }
 
