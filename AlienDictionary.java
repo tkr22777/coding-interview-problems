@@ -15,41 +15,40 @@ class AlienDictionary {
     public String alienOrder(String[] words) {
         Map<Character, Set<Character>> adjMat = convertToAdjMat(words);
         Set<Character> visited = new HashSet<>();
-        List<Character> ordered = new ArrayList<>();
+        List<Character> dfsOrdered = new LinkedList<>();
         
         for (char node: adjMat.keySet()) {
-            if (dfs(node, adjMat, visited, new HashSet<>(), ordered) == -1 ) {
+            if (dfs(node, adjMat, visited, new HashSet<>(), dfsOrdered) == -1 ) {
                 return "";  /* there is a cycle (in the order) */
             };
         }
 
-        Collections.reverse(ordered);
         StringBuilder sb = new StringBuilder();
-        ordered.forEach(v -> sb.append(v));
-        return sb.toString();
+        dfsOrdered.forEach(c -> sb.append(c));
+        return sb.reverse().toString();// reversing the dfs depth first to last for char ordering
     }
 
     private int dfs(Character cur,
                    Map<Character, Set<Character>> adjMat,
                    Set<Character> visited,
                    Set<Character> inDFSStack,
-                   List<Character> ordered) {
-        
-        if (inDFSStack.contains(cur)) return -1;
+                   List<Character> dfsOrdered) {
+
+        if (inDFSStack.contains(cur)) return -1; //there's a cycle
         inDFSStack.add(cur);
 
-        if (visited.contains(cur)) return 0;
+        if (visited.contains(cur)) return 0; //already visited
         visited.add(cur);
         
         Set<Character> children = adjMat.getOrDefault(cur, new HashSet<>());
         for (Character child: children) {
-            if (dfs(child, adjMat, visited, inDFSStack, ordered) == -1) {
+            if (dfs(child, adjMat, visited, inDFSStack, dfsOrdered) == -1) {
                 return -1;
             }
         }
         
         inDFSStack.remove(cur);
-        ordered.add(cur);
+        dfsOrdered.add(cur); //The deepest in the call-stack is pushed first
         return 0;
     }
 
@@ -61,6 +60,9 @@ class AlienDictionary {
             String currWord = words[i];
             int maxIndex = Math.min(prevWord.length(), currWord.length());
             for (int j = 0; j < maxIndex; j++) {
+                if (j >= prevWord.length() || j >= currWord.length()) {
+                    break;
+                }
                 if (prevWord.charAt(j) != currWord.charAt(j)) {
                     adjMat.computeIfAbsent(prevWord.charAt(j), v -> new HashSet<>())
                         .add(currWord.charAt(j));
