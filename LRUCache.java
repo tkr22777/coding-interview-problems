@@ -1,12 +1,12 @@
 import java.util.*;
 
-class ListNode {
+class DoublyListNode {
     int key;
     int value;
-    ListNode prev;
-    ListNode next;
+    DoublyListNode prev;
+    DoublyListNode next;
 
-    public ListNode(int key, int value) {
+    public DoublyListNode(int key, int value) {
         this.key = key;
         this.value = value;
     }
@@ -33,9 +33,9 @@ public class LRUCache {
     }
 
     int capacity = 0;
-    Map<Integer, ListNode> keyToNodeMap;
-    ListNode head = null; //keeps most recently used on head
-    ListNode tail = null; //keeps least recently used on tail
+    Map<Integer, DoublyListNode> keyToNodeMap;
+    DoublyListNode head = null; //keeps most recently used on head
+    DoublyListNode tail = null; //keeps least recently used on tail
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
@@ -44,7 +44,7 @@ public class LRUCache {
 
     public int get(int key) {
         if (keyToNodeMap.containsKey(key)) {
-            ListNode node = keyToNodeMap.get(key);
+            DoublyListNode node = keyToNodeMap.get(key);
             moveToHead(node);
             return node.value;
         }
@@ -53,7 +53,7 @@ public class LRUCache {
 
     public void put(int key, int value) {
         if (keyToNodeMap.containsKey(key)) {
-            ListNode node = keyToNodeMap.get(key);
+            DoublyListNode node = keyToNodeMap.get(key);
             node.value = value;
             moveToHead(node);
             return;
@@ -64,12 +64,12 @@ public class LRUCache {
             removeTail();
         }
 
-        ListNode node = new ListNode(key, value);
+        DoublyListNode node = new DoublyListNode(key, value);
         keyToNodeMap.put(key, node);
         addToHead(node);
     }
 
-    private void addToHead(ListNode node) {
+    private void addToHead(DoublyListNode node) {
         if (node == null) {
             return;
         }
@@ -88,7 +88,7 @@ public class LRUCache {
         node.prev = null; // null <-p node
     }
 
-    private void moveToHead(ListNode node) {
+    private void moveToHead(DoublyListNode node) {
         if (node == head) {
             return;
         }
@@ -126,7 +126,7 @@ public class LRUCache {
     }
 
     public void printList() {
-        ListNode node = head;
+        DoublyListNode node = head;
         StringBuilder sb = new StringBuilder();
         sb.append( "From Head ->");
         while (node != null) {
