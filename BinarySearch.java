@@ -9,24 +9,24 @@ class BinarySearch {
         System.out.println(String.format("Search %s Result: %s", 6, search(sortedAr, 6)));
     }
 
-    public static int search(int[] nums, int target) {
-        int start = 0;
-        int end  = nums.length - 1;
+    public static int search(int[] sortedNumbers, int target) {
+        int begin = 0;
+        int end  = sortedNumbers.length - 1;
 
-        //Target should be in range num0 <= target <= numN
-        if (target < nums[start] || nums[end] < target) {
+        // target should be in range num0 <= target <= numN
+        if (target < sortedNumbers[begin] || target > sortedNumbers[end]) {
             return -1;
         }
 
-        while (start <= end) {
-            int mid = (start + end) / 2;
+        while (begin <= end) {
+            int mid = (begin + end) / 2;
             
-            if (nums[mid] == target) {
+            if (sortedNumbers[mid] == target) {
                 return mid;
             }
 
-            if (target > nums[mid]) {
-                start = mid + 1;
+            if (target > sortedNumbers[mid]) {
+                begin = mid + 1;
             } else {
                 end = mid - 1;
             }

@@ -33,7 +33,7 @@ class Flatten2DVector {
         if (col < v[row].length) return true;
 
         //current row and col have exhausted, checking if there's any future row with values
-        for(int tempRow = row + 1; tempRow < v.length; tempRow++) {
+        for (int tempRow = row + 1; tempRow < v.length; tempRow++) {
             if (v[tempRow].length > 0) {
                 return true;
             }

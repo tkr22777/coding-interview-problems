@@ -15,7 +15,7 @@ class DecodeString {
 
         for (int i = 0; i < s.length(); i++) {
             Character current = s.charAt(i);
-            if (current == ']') { //we found the first occurrence to unroll
+            if (current == ']') { // unroll
                 String toRepeat = pullRepeatString(theStack);
                 theStack.pop(); // popping the '[' char
                 int repeatCount = pullRepeatCount(theStack);

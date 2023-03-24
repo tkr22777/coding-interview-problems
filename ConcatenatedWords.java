@@ -62,7 +62,7 @@ class ConcatenatedWords {
     /* check if the words substring from start to end - 1 is in trie */
     private boolean isSubStringAWord(Trie root, String word, int start, int end) { //start to end - 1
         Trie current = root;
-        for(int i = start; i < end; i++) {
+        for (int i = start; i < end; i++) {
             current = current.next.get(word.charAt(i));
             if (current == null) {
                 return false;

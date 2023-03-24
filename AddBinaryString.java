@@ -23,42 +23,39 @@ class AddBinaryString {
     }
 
     public static String addBinary(String a, String b) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         boolean carry = false;
-        int max_len = Math.max(a.length(), b.length());
-        for (int i = 0; i < max_len; i++) {
-            short currSum = 0;
+        int maxLen = Math.max(a.length(), b.length());
+        for (int i = 0; i < maxLen; i++) {
+            short currentSum = 0;
 
-            int ai = a.length() - 1 - i;
+            int ai = a.length() - 1 - i;  // reading from the lsb
             if (ai >= 0 && a.charAt(ai) == '1') {
-                currSum++;
+                currentSum++;
             }
 
-            int bi = b.length() - 1 - i;
+            int bi = b.length() - 1 - i; // reading from the lsb
             if (bi >= 0 && b.charAt(bi) == '1') {
-                currSum++;
+                currentSum++;
             }
 
             if (carry) {
-                currSum++;
+                currentSum++;
             }
 
-            if (currSum % 2 == 0) {
-                sb.append("0");
+            if (currentSum % 2 == 0) {
+                stringBuilder.append("0");
             } else { //currSum == 1
-                sb.append("1");
+                stringBuilder.append("1");
             }
 
-            carry = false;
-            if (currSum > 1) {
-                carry = true;
-            }
+            carry = currentSum > 1;
         }
 
         if (carry) {
-            sb.append("1");
+            stringBuilder.append("1");
         }
 
-        return sb.reverse().toString();
+        return stringBuilder.reverse().toString();
     }
 }

@@ -1,13 +1,8 @@
 class Solution(object):
     
     def groupAnagrams(self, strs):
-        """
-        :type strs: List[str]
-        :rtype: List[List[str]]
-        """
-
         outMap = {}
-        for str in strs):
+        for str in strs:
             key = ''.join(sorted(strs[i]))
             outMap.setdefault(key, []).append(strs[i])
 

@@ -20,29 +20,30 @@ class CourseSchedule {
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         //build the graph
-        Map<Integer, List<Integer>> graph = new HashMap<>();
+        Map<Integer, List<Integer>> courseDepMap = new HashMap<>();
         for (int[] edge: prerequisites) {
-            /* {a, b} <- to take course a, you need to take course b first */
-            graph.computeIfAbsent(edge[1], v -> new LinkedList<>())
+            /* {a, b} <- to take course "a", you need to take course "b" FIRST */
+            courseDepMap.computeIfAbsent(edge[1], v -> new LinkedList<>())
                 .add(edge[0]);
         }
 
         /* total courses are 0, 1, ... numCourses - 1 */
         boolean[] visited = new boolean[numCourses];
         boolean[] dfsStack = new boolean[numCourses];
-        for (Integer node: graph.keySet()) {
+        for (Integer courseID: courseDepMap.keySet()) {
             /* course schedule would be impossible if there is a cyclic dependency */
-            if (containsCycleDFS(node, graph, dfsStack, visited)) {
+            if (cycleInCourseDependency(courseID, courseDepMap, dfsStack, visited)) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean containsCycleDFS(Integer courseID,
-                                    Map<Integer, List<Integer>> graph,
-                                    boolean[] dfsStack,
-                                    boolean[] visited) {
+    /* course can be finished if there are no cyclic dependency */
+    public boolean cycleInCourseDependency(Integer courseID,
+                                           Map<Integer, List<Integer>> graph,
+                                           boolean[] dfsStack,
+                                           boolean[] visited) {
         if (dfsStack[courseID]) return true;
         dfsStack[courseID] = true;
 
@@ -51,7 +52,7 @@ class CourseSchedule {
 
         List<Integer> dependentCourses = graph.getOrDefault(courseID, new LinkedList<>());
         for (Integer dependentCID: dependentCourses) {
-            if (containsCycleDFS(dependentCID, graph, visited, dfsStack)) {
+            if (cycleInCourseDependency(dependentCID, graph, visited, dfsStack)) {
                 return true;
             }
         }

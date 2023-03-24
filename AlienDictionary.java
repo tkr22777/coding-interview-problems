@@ -1,14 +1,30 @@
 import java.util.*;
 /*
     The problem: https://leetcode.com/problems/alien-dictionary/
-    The words provided sorted lexicographically, not the characters in the words.
+    The words provided are sorted lexicographically, but the characters in the words are not sorted.
     From the sorted word order, figure out the possible characters order.
+    Assumption: the given dictionary results to a valid deterministic order of characters
 */
 
 class AlienDictionary {
 
     public static void main(String[] args) {
-        String[] words = { "wrt","wrf","er","ett","rftt" };
+        String[] words = {
+            "wrt",
+            "wrf",
+            "er",
+            "ett",
+            "rftt"
+        };
+        System.out.println("words: " + Arrays.toString(words) + " char order:" + new AlienDictionary().alienOrder(words));
+
+        words = new String[]{
+            "wrt",
+            "wrf",
+            "mt",
+            "mr"
+        };
+        System.out.println("words: " + Arrays.toString(words) + " char order:" + new AlienDictionary().alienOrder(words));
         System.out.println(new AlienDictionary().alienOrder(words));
     }
 
@@ -23,9 +39,9 @@ class AlienDictionary {
             };
         }
 
-        StringBuilder sb = new StringBuilder();
-        dfsOrdered.forEach(c -> sb.append(c));
-        return sb.reverse().toString();// reversing the dfs depth first to last for char ordering
+        StringBuilder stringBuilder = new StringBuilder();
+        dfsOrdered.forEach(c -> stringBuilder.append(c));
+        return stringBuilder.reverse().toString();// reversing the dfs depth first to last for char ordering
     }
 
     private int dfs(Character cur,
@@ -52,6 +68,8 @@ class AlienDictionary {
         return 0;
     }
 
+    /* the following function returns the adjacency map of the
+     dependencies for characters inferred from the dictionary */
     private Map<Character, Set<Character>> convertToAdjMat(String[] words) {
         Map<Character, Set<Character>> adjMat = new HashMap<>();
 
@@ -73,4 +91,3 @@ class AlienDictionary {
         return adjMat;
     }
 }
-

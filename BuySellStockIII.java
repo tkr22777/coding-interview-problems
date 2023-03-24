@@ -9,39 +9,40 @@ class BuySellStockIII {
         System.out.println(new BuySellStockIII().maxProfit(ar));
     }
 
-    // single transaction profit from day i
+    // returns maximum profit possible from single transaction going forward from day i
     private int[] maxSingleTxnProfit(int[] prices) {
-        int[] singleTxnProfit = new int[prices.length];
+        int[] maxSingleTxnProfit = new int[prices.length];
 
-        int maxProfit = 0;
+        int maxProfitI = 0;
         int maxSellPrice = prices.length > 0 ? prices[prices.length - 1]: 0;
         for (int i = prices.length - 1; i >= 0 ; --i) {
             if (prices[i] > maxSellPrice) {
                 maxSellPrice = prices[i];
             }
-            maxProfit = Math.max(maxProfit, maxSellPrice - prices[i]);
-            singleTxnProfit[i] = maxProfit;
+            int buyProfitI = maxSellPrice - prices[i];
+            maxProfitI = Math.max(maxProfitI, buyProfitI);
+            maxSingleTxnProfit[i] = maxProfitI;
         }
-        return singleTxnProfit;
+        return maxSingleTxnProfit;
     }
 
     public int maxProfit(int[] prices) {
-        int[] singleTxnProfit = maxSingleTxnProfit(prices);
+        int[] maxBuyProfitForSingleTxnDays = maxSingleTxnProfit(prices);
 
-        int maxProfit = 0;
+        int maxTwoTxnProfit = 0;
         int minBuyPrice = prices.length > 0 ? prices[0]: 0;
         for (int i = 0; i < prices.length; i++) {
-            if (minBuyPrice > prices[i]) {
+            if (prices[i] < minBuyPrice) {
                 minBuyPrice = prices[i];
             } 
-            int currentProfit = prices[i] - minBuyPrice;
-            int nextProfit = 0;
-            if (i + 1 < singleTxnProfit.length) {
-                nextProfit = singleTxnProfit[i + 1];
+            int sellProfitI = prices[i] - minBuyPrice;
+            int nextMaxBuyProfit = 0;
+            if (i + 1 < maxBuyProfitForSingleTxnDays.length) {
+                nextMaxBuyProfit = maxBuyProfitForSingleTxnDays[i + 1];
             }
-            maxProfit = Math.max(maxProfit, currentProfit + nextProfit);
+            maxTwoTxnProfit = Math.max(maxTwoTxnProfit, sellProfitI + nextMaxBuyProfit);
         }
-        return maxProfit;
+        return maxTwoTxnProfit;
     }
 }
 

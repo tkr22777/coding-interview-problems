@@ -47,7 +47,7 @@ class KClosestPoints {
 
         ArrayList<int[]> kthDistantPoints = new ArrayList<>();
         for (int i = 0; i < points.length ; i++) {
-            if (kthSquaredDistance >= (points[i][0] * points[i][0] + points[i][1] * points[i][1])) {
+            if (kthSquaredDistance == (points[i][0] * points[i][0] + points[i][1] * points[i][1])) {
                 kthDistantPoints.add(new int[] {points[i][0], points[i][1]});
             }
         }

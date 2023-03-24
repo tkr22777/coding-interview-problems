@@ -24,7 +24,7 @@ class AutoCompleteSystem {
 
     public AutoCompleteSystem(String[] sentences, int[] times) {
         IntStream.range(0, sentences.length)
-            .forEach( i -> addSentence(this.root, sentences[i], times[i]));
+            .forEach(i -> addSentence(sentences[i], times[i]));
     }
 
     public List<String> input(char c) {
@@ -35,14 +35,14 @@ class AutoCompleteSystem {
         } else if (c == '#') {
             searchString = new StringBuilder();
             current = this.root;
-            addSentence(this.root, searchString.toString(), 1);
+            addSentence(searchString.toString(), 1);
         }
         return new ArrayList<>();
     }
 
-    private void addSentence(TrieNode node, String sentence, int usage) {
+    private void addSentence(String sentence, int usage) {
         /* Update TrieNode */
-        TrieNode curr = node;
+        TrieNode curr = this.root;
         for (int i = 0; i < sentence.length(); i++) {
             curr = curr.nextNodes.computeIfAbsent(sentence.charAt(i), tn -> new TrieNode());
             curr.sentences.add(sentence);
@@ -53,16 +53,16 @@ class AutoCompleteSystem {
     }
 
     private List<String> getTopThreeSentences(HashMap<String, Integer> sUsage, HashSet<String> sentences) {
-        List<SentenceUsage> usage = sentences.stream()
+        List<SentenceUsage> sentenceUsages = sentences.stream()
             .map(s -> new SentenceUsage(s, sUsage.get(s)))
             .collect(Collectors.toList());
 
-        Collections.sort(usage, (a, b) -> {
+        Collections.sort(sentenceUsages, (a, b) -> {
             int comp = Integer.compare(b.usage, a.usage);
             return comp != 0? comp : a.sentence.compareTo(b.sentence);
         });
 
-        return usage.stream()
+        return sentenceUsages.stream()
             .map(n -> n.sentence)
             .limit(3)
             .collect(Collectors.toList());
