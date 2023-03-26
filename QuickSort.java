@@ -36,7 +36,7 @@ class QuickSort {
     public static int partition(int[] numbers, int begin, int end) {
         int rand = Math.abs(new Random().nextInt());
         int pivot = begin + (rand % (end - begin + 1));
-        swap(numbers, end, pivot); //moving the pivot value to the end
+        swap(numbers, end, pivot); // moving the pivot value to the numbers[end]
 
         int left = begin;
         int right = end - 1;
@@ -50,8 +50,9 @@ class QuickSort {
             }
         }
 
-        //left == right, and we are deciding where to place the pivot
-        if (numbers[left] > numbers[end]) { // numbers[end] is the pivot value
+        // left == right, and we are deciding where to place the pivot
+        // numbers[end] contains the pivot value
+        if (numbers[left] > numbers[end]) {
             swap(numbers, left, end);
             return left;
         } else {

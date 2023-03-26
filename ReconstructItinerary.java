@@ -3,15 +3,30 @@
  */
 import java.util.*;
 
-class ReconstructItinary {
+class ReconstructItinerary {
     public static void main(String[] args) {
-        /* {
-         *  {"EZE","TIA"},{"EZE","HBA"},{"AXA","TIA"},{"JFK","AXA"}, {"ANU","JFK"},
-         *  {"ADL","ANU"},{"TIA","AUA"},{"ANU","AUA"},{"ADL","EZE"},{"ADL","EZE"},
-         *  {"EZE","ADL"},{"AXA","EZE"},{"AUA","AXA"},{"JFK","AXA"},{"AXA","AUA"},
-         *  {"AUA","ADL"},{"ANU","EZE"},{"TIA","ADL"},{"EZE","ANU"},{"AUA","ANU"}
-         * }
-         */
+        List<List<String>> tickets = List.of(
+         List.of("EZE","TIA"),
+         List.of("EZE","HBA"),
+         List.of("AXA","TIA"),
+         List.of("JFK","AXA"),
+         List.of("ANU","JFK"),
+         List.of("ADL","ANU"),
+         List.of("TIA","AUA"),
+         List.of("ANU","AUA"),
+         List.of("ADL","EZE"),
+         List.of("EZE","ADL"),
+         List.of("AXA","EZE"),
+         List.of("AUA","AXA"),
+         List.of("JFK","AXA"),
+         List.of("AXA","AUA"),
+         List.of("AUA","ADL"),
+         List.of("ANU","EZE"),
+         List.of("TIA","ADL"),
+         List.of("EZE","ANU"),
+         List.of("AUA","ANU")
+        );
+        String depart = "JFK";
     }
 
     public List<String> findItinerary(List<List<String>> tickets) {
