@@ -1,11 +1,11 @@
 import java.util.*;
 import java.util.stream.*;
 
-class LongestCommongSubsequence {
+class LongestCommonSubsequence {
   public static void main(String[] args) {
     String text1 = "abcde";
     String text2 = "ace";
-    System.out.println(new LongestCommongSubsequence().longestCommonSubsequence(text1, text2));
+    System.out.println(new LongestCommonSubsequence().longestCommonSubsequence(text1, text2));
   }
 
   /* TODO add explanation */

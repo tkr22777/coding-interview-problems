@@ -34,7 +34,7 @@ class GenerateParenthesis {
     public static void main(String[] args) {
         System.out.println("All possible parenthesis combination:");
         new GenerateParenthesis().generateParenthesis(3)
-            .forEach(p -> System.out.println(p));
+            .forEach(System.out::println);
     }
 
     public List<String> generateParenthesis(int n) {
@@ -47,7 +47,7 @@ class GenerateParenthesis {
             char[] chars = new char[close];
             Arrays.fill(chars, ')');
             String str = new String(chars);
-            return Arrays.asList(str);
+            return List.of(str);
         }
 
         //Open > 0
@@ -59,8 +59,8 @@ class GenerateParenthesis {
         }
 
         if (close > 0) {
-            List<String> rUsedCloses =  generateParenthesis(open, close - 1);
-            for (String rUsedClose: rUsedCloses) {
+            List<String> usedCloses =  generateParenthesis(open, close - 1);
+            for (String rUsedClose: usedCloses) {
                 results.add(")" + rUsedClose);
             }
         }

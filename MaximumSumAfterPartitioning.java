@@ -14,7 +14,9 @@ class MaximumSumAfterPartitioning {
     }
 
     public int maxSumAfterPartitioningRec(int[] A, int index, int K, Map<Integer, Integer> memo) {
-        if (index >= A.length) return 0;
+        if (index >= A.length) {
+            return 0;
+        }
 
         if (memo.containsKey(index)) {
             return memo.get(index);

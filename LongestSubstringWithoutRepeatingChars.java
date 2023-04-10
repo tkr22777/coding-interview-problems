@@ -14,9 +14,13 @@ class LongestSubstringWithoutRepeatingChars {
     }
 
     public static int lengthOfLongestSubstring(String s) {
-        if (s == null) return 0;
+        if (s == null) {
+            return 0;
+        }
 
-        if (s.length() < 2) return s.length();
+        if (s.length() < 2) {
+            return s.length();
+        }
 
         int longest = 1;
 
@@ -32,8 +36,8 @@ class LongestSubstringWithoutRepeatingChars {
         int i = 0, j = 0;
         while (j < s.length()) {
             if (set.contains(s.charAt(j))) {
-                longest = Math.max(j-i, longest);
-                while(i < j) {
+                longest = Math.max(j - i, longest);
+                while (i < j) {
                     set.remove(s.charAt(i));
                     if (s.charAt(i) == s.charAt(j)) {
                         break;

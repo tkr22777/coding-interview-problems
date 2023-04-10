@@ -20,35 +20,35 @@ class KClosestPoints {
     }
 
     public int[][] kClosest(int[][] points, int k) {
-        int[] squaredDistances = new int[points.length];
+        int[] squaredDistancesFromOrigin = new int[points.length];
         for (int i = 0; i < points.length; i++) {
-            squaredDistances[i] = points[i][0] * points[i][0] + points[i][1] * points[i][1];
+            squaredDistancesFromOrigin[i] = points[i][0] * points[i][0] + points[i][1] * points[i][1];
         }
 
         k--; //the user provided kth items, are the 0 .. (k-1)th items on the array
         int left = 0;
-        int right = squaredDistances.length - 1;
+        int right = squaredDistancesFromOrigin.length - 1;
         int pivot = -1;
         int kthSquaredDistance = -1;
 
         while (left < right) {
-            pivot = QuickSort.partition(squaredDistances, left, right);
+            pivot = QuickSort.partition(squaredDistancesFromOrigin, left, right);
             if (pivot == k || right - left == 1) { //kth distance is now at kth position
-                kthSquaredDistance = squaredDistances[k];
+                kthSquaredDistance = squaredDistancesFromOrigin[k];
                 break;
             }
             
             if (k < pivot) {  //pivot is on the right of K, set right to the pivot
                 right = pivot;
-            } else if (pivot < k) {  //pivot is on the left of K, set left to the pivot
+            } else {  //pivot is on the left of K, set left to the pivot
                 left = pivot;
             }
         }
 
         ArrayList<int[]> kthDistantPoints = new ArrayList<>();
-        for (int i = 0; i < points.length ; i++) {
-            if (kthSquaredDistance == (points[i][0] * points[i][0] + points[i][1] * points[i][1])) {
-                kthDistantPoints.add(new int[] {points[i][0], points[i][1]});
+        for (int[] point : points) {
+            if (kthSquaredDistance == (point[0] * point[0] + point[1] * point[1])) {
+                kthDistantPoints.add(new int[]{point[0], point[1]});
             }
         }
 

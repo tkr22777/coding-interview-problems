@@ -15,13 +15,8 @@ public class FourSum {
         for (int i = 0; i < nums.length; i++) {
             for (int j = i + 1; j < nums.length; j++) {
                 int twoSum = nums[i] + nums[j];
-                List<int[]> indices = new LinkedList<>();
-                if (twoSumToIndices.containsKey(twoSum)) {
-                    indices = twoSumToIndices.get(twoSum);
-                } else {
-                    twoSumToIndices.put(twoSum, indices);
-                }
-                indices.add(new int[]{i, j});
+                twoSumToIndices.computeIfAbsent(twoSum, v -> new LinkedList<>())
+                    .add(new int[]{i, j});
             }
         }
         //System.out.println("Figured Two sums. Total: " + twoSumToIndices.keySet().size());
@@ -47,13 +42,10 @@ public class FourSum {
                             aIndices1[1] == aIndices2[1]) {
                             continue;
                         }
-                        List<Integer> theValues = Arrays.asList(new Integer[]
-                            {
-                                nums[aIndices1[0]],
+                        List<Integer> theValues = Arrays.asList(nums[aIndices1[0]],
                                 nums[aIndices1[1]],
                                 nums[aIndices2[0]],
-                                nums[aIndices2[1]]
-                            });
+                                nums[aIndices2[1]]);
                         Collections.sort(theValues);
                         toRet.add(theValues);
                     }

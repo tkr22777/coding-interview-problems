@@ -70,7 +70,7 @@ public class MaxPointsOnALine {
                     line.intercept = p2.y - line.slope.floatValue() * p2.x;
                 }
 
-                HashSet pointsSet = lineToPointsMap.computeIfAbsent(line, k -> new HashSet<>());
+                HashSet<Point> pointsSet = lineToPointsMap.computeIfAbsent(line, k -> new HashSet<>());
                 pointsSet.add(p1);
                 pointsSet.add(p2);
             }
