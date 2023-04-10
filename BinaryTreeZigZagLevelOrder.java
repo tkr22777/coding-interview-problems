@@ -3,7 +3,7 @@ import java.util.*;
 /*
  https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
  print nodes at the same depth/level alternating from left to right and
- then right to left..
+ then right to left.
 */
 class TreeNode {
     TreeNode left;
@@ -18,10 +18,10 @@ class TreeNode {
 }
 
 class NodeDepth {
-    TreeNode tnode;
+    TreeNode node;
     int depth = 0;
-    NodeDepth(TreeNode tnode, int depth) {
-        this.tnode = tnode;
+    NodeDepth(TreeNode node, int depth) {
+        this.node = node;
         this.depth = depth;
     }
 }
@@ -40,27 +40,27 @@ class BinaryTreeZigZagLevelOrder {
         queue.offer(new NodeDepth(root, 0));
 
         while (queue.size() > 0) {
-            NodeDepth node = queue.poll();
-            LinkedList<Integer> list = nodesByDepth.computeIfAbsent(node.depth, l -> new LinkedList<>());
+            NodeDepth nodeDepth = queue.poll();
+            LinkedList<Integer> list = nodesByDepth.computeIfAbsent(nodeDepth.depth, l -> new LinkedList<>());
 
             /* Starting from 0th node, left -> right */
-            if (node.depth % 2 == 0) {
-                list.offerLast(node.tnode.value); //left to right
+            if (nodeDepth.depth % 2 == 0) {
+                list.offerLast(nodeDepth.node.value); //left to right
             } else {
-                list.offerFirst(node.tnode.value); //right to left
+                list.offerFirst(nodeDepth.node.value); //right to left
             }
 
-            if (node.tnode.left != null) {
-                NodeDepth leftNode = new NodeDepth(node.tnode.left, node.depth + 1);
+            if (nodeDepth.node.left != null) {
+                NodeDepth leftNode = new NodeDepth(nodeDepth.node.left, nodeDepth.depth + 1);
                 queue.offer(leftNode);
             }
 
-            if (node.tnode.right != null) {
-                NodeDepth rightNode = new NodeDepth(node.tnode.right, node.depth + 1);
+            if (nodeDepth.node.right != null) {
+                NodeDepth rightNode = new NodeDepth(nodeDepth.node.right, nodeDepth.depth + 1);
                 queue.offer(rightNode);
             }
         }
-        return new LinkedList(nodesByDepth.values());
+        return new LinkedList<>(nodesByDepth.values());
     }
 }
 

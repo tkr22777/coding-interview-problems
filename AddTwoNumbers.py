@@ -31,7 +31,7 @@ class Solution(object):
 
     def addTwoNumbers(self, l1, l2):
 
-        return self.addTwoNumbersHelper(l1, l2, 0);
+        return self.addTwoNumbersHelper(l1, l2, 0)
 
     def addTwoNumbersHelper(self, l1, l2, carry):
 
@@ -64,7 +64,7 @@ class Solution(object):
             l2Next = l2.next
 
         summedNode = ListNode(currentSum)
-        summedNode.next = self.addTwoNumbersHelper(l1Next, l2Next, carry);
+        summedNode.next = self.addTwoNumbersHelper(l1Next, l2Next, carry)
 
         return summedNode
 

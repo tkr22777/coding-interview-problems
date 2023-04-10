@@ -4,9 +4,9 @@ class BinarySearch {
     public static void main(String[] args) {
         int[] sortedAr = {1, 2, 5, 7, 9, 11};
         System.out.println("Given Array: " + Arrays.toString(sortedAr));
-        System.out.println(String.format("Search %s Result: %s", 5, search(sortedAr, 5)));
-        System.out.println(String.format("Search %s Result: %s", 9, search(sortedAr, 9)));
-        System.out.println(String.format("Search %s Result: %s", 6, search(sortedAr, 6)));
+        System.out.printf("Search %s Result: %s%n", 5, search(sortedAr, 5));
+        System.out.printf("Search %s Result: %s%n", 9, search(sortedAr, 9));
+        System.out.printf("Search %s Result: %s%n", 6, search(sortedAr, 6));
     }
 
     public static int search(int[] sortedNumbers, int target) {

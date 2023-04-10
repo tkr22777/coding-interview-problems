@@ -15,29 +15,31 @@ class AncestorRet {
     public AncestorRet(String val, boolean foundBoth) { this.val = val; this.foundBoth = foundBoth;}
 }
 
-class CommonAncestorNary {
+class CommonAncestorNAryTree {
 
     public static void main(String[] args) {
-        Node root = new CommonAncestorNary().createTree();
-        System.out.println("Common Ancestor: " + new CommonAncestorNary().findAncestor(root, "B0D1E0", "B0D0E1").val);
-        System.out.println("Common Ancestor: " + new CommonAncestorNary().findAncestor(root, "B0D1E0", "B0D1E1").val);
-        System.out.println("Common Ancestor: " + new CommonAncestorNary().findAncestor(root, "B0D0", "C0").val);
+        Node root = Helper.createTestTree();
+        System.out.println("Common Ancestor: " + new CommonAncestorNAryTree().findAncestor(root, "B0D1E0", "B0D0E1").val);
+        System.out.println("Common Ancestor: " + new CommonAncestorNAryTree().findAncestor(root, "B0D1E0", "B0D1E1").val);
+        System.out.println("Common Ancestor: " + new CommonAncestorNAryTree().findAncestor(root, "B0D0", "C0").val);
     }
 
     public AncestorRet findAncestor(Node root, String val1, String val2) {
-        if (root.val.equals(val1) || root.val.equals(val2)) {
+        if (root.val.equals(val1) || root.val.equals(val2)) { // one of the values matched current node
             String match = root.val.equals(val1)? val1: val2;
-            String toFind = root.val.equals(val1)? val2: val1;
+
+            // we want to check if the non-matched value is in the subtree
+            String toFind = root.val.equals(val1)? val2: val1; // the other value to find
             for (Node next: root.next) {
                 boolean found = inSubtree(next, toFind);
                 if (found) {
-                    return new AncestorRet(root.val, true); //current node is the common ancestor
+                    return new AncestorRet(root.val, true); // current node is the common ancestor
                 }
             }
-            return new AncestorRet(match, false);  //single value match with the current node
+            return new AncestorRet(match, false);  // single value match with the current node
         }
 
-        /* no val1 or val2 match */
+        // checking for val1 or val2 match in child nodes
         List<AncestorRet> results = new ArrayList<>();
         for (Node next: root.next) {
             AncestorRet res = findAncestor(next, val1, val2);
@@ -68,9 +70,11 @@ class CommonAncestorNary {
         }
         return false;
     }
+}
 
+class Helper {
     /* Helper functions to aid in testing */
-    private Node createTree() {
+    public static Node createTestTree() {
         Node root = new Node("A");
         Set<Node> bNodes = createNodes("B", 4);
         Set<Node> cNodes = createNodes("C", 4);
@@ -78,9 +82,9 @@ class CommonAncestorNary {
         root.next.addAll(bNodes);
         root.next.addAll(cNodes);
 
-        for (Node bNode: bNodes) {
+        for (Node bNode : bNodes) {
             Set<Node> eNodes = createNodes(bNode.val + "D", 4);
-            for (Node eNode: eNodes) {
+            for (Node eNode : eNodes) {
                 eNode.next.addAll(createNodes(eNode.val + "E", 4));
             }
             bNode.next.addAll(eNodes);
@@ -88,9 +92,9 @@ class CommonAncestorNary {
         return root;
     }
 
-    private Set<Node> createNodes(String prefix, int count) {
+    private static Set<Node> createNodes(String prefix, int count) {
         Set<Node> nodeSet = new HashSet<>();
-        for(int i = 0 ; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             nodeSet.add(new Node(prefix + "" + i));
         }
         return nodeSet;

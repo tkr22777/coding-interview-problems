@@ -23,6 +23,7 @@ class ConcatenatedWords {
     }
 
     public List<String> findAllConcatenatedWordsInADict(String[] words) {
+        // creating a trie for given words
         Arrays.stream(words)
             .forEach(word -> addWord(root, word));
 
@@ -44,13 +45,13 @@ class ConcatenatedWords {
     }
 
     private int concatenationCount(Trie root, String word, int start) { // start is inclusive
-        for (int i = start + 1; i <= word.length(); ++i) { //beginning from start + 1 to discard empty string
-            if (isSubStringAWord(root, word, start, i)) { //since substring(start, i) is a word, we check the next portion
-                if (i == word.length()) { //at the end so (start, i) has count 1
+        for (int end = start + 1; end <= word.length(); ++end) {
+            if (isSubStringAWord(root, word, start, end)) {
+                if (end == word.length()) { // at the end so (start, end) has count 1
                     return 1;
                 }
 
-                int count = this.concatenationCount(root, word, i);
+                int count = this.concatenationCount(root, word, end);
                 if (count > 0) { // rest of the string has concatenation too
                     return 1 + count;
                 }

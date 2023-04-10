@@ -10,11 +10,16 @@ import java.util.*;
 */
 
 class DecodeString {
+
+    public static void main(String[] args) {
+        System.out.println("Compiling");
+    }
+
     public String decodeString(String s) {
         Stack<Character> theStack = new Stack<Character>();
 
         for (int i = 0; i < s.length(); i++) {
-            Character current = s.charAt(i);
+            char current = s.charAt(i);
             if (current == ']') { // unroll
                 String toRepeat = pullRepeatString(theStack);
                 theStack.pop(); // popping the '[' char
@@ -40,7 +45,7 @@ class DecodeString {
         while (!theStack.isEmpty() && Character.isDigit(theStack.peek())) {
             sb.append(theStack.pop());
         }
-        return Integer.parseInt(sb.reverse().toString()); //data pushed into stacked gets reversed
+        return Integer.parseInt(sb.reverse().toString()); //data pulled from the stack is in reverse order
     }
 
     private String pullRepeatString(Stack<Character> theStack) {
@@ -48,7 +53,7 @@ class DecodeString {
         while (!theStack.isEmpty() && Character.isAlphabetic(theStack.peek())) {
             sb.append(theStack.pop());
         }
-        return sb.reverse().toString(); //data pushed into stacked gets reversed
+        return sb.reverse().toString(); //data pulled from the stack is in reverse order
     }
 
     private String repeatString(String s, int num) {

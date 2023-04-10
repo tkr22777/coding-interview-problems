@@ -44,10 +44,14 @@ class CourseSchedule {
                                            Map<Integer, List<Integer>> graph,
                                            boolean[] dfsStack,
                                            boolean[] visited) {
-        if (dfsStack[courseID]) return true;
+        if (dfsStack[courseID]) {
+            return true;
+        }
         dfsStack[courseID] = true;
 
-        if (visited[courseID]) return false;
+        if (visited[courseID]) {
+            return false;
+        }
         visited[courseID] = true;
 
         List<Integer> dependentCourses = graph.getOrDefault(courseID, new LinkedList<>());

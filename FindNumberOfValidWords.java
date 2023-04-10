@@ -12,9 +12,9 @@ class FindNumberOfValidWords {
     }
 
     public List<Integer> findNumOfValidWords(String[] words, String[] puzzles) {
-        int[] wordBinRep = new int[words.length];
+        int[] binRepForWords = new int[words.length];
         for (int i = 0; i < words.length; i++) {
-            wordBinRep[i] = getBinRep(words[i]);
+            binRepForWords[i] = getBinRep(words[i]);
         }
 
         int[] results = new int[puzzles.length];
@@ -22,11 +22,11 @@ class FindNumberOfValidWords {
             int pChar1Rep = 1 << puzzles[i].charAt(0) - 'a';
             int puzzleBinRep = getBinRep(puzzles[i]);
 
-            for (int j = 0; j < wordBinRep.length; j++) {
-                if ((pChar1Rep & wordBinRep[j]) == 0) {
+            for (int wordBinRep : binRepForWords) {
+                if ((pChar1Rep & wordBinRep) == 0) {
                     continue;
                 }
-                if (wordBinRep[j] == (puzzleBinRep & wordBinRep[j])) {
+                if (wordBinRep == (puzzleBinRep & wordBinRep)) {
                     results[i] += 1;
                 }
             }
@@ -36,9 +36,10 @@ class FindNumberOfValidWords {
             .collect(Collectors.toList());
     }
 
+    // words char presence represented within an integer
     private int getBinRep(String word) {
         int binRep = 0;
-        for(int j = 0; j < word.length(); j++) {
+        for (int j = 0; j < word.length(); j++) {
             binRep |= 1 << word.charAt(j) - 'a';
         }
         System.out.print(String.format("Word:%20s -> ", word));

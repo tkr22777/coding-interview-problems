@@ -42,14 +42,14 @@ public class CycleInGraph {
 
     public static boolean containsCycleDFS(int[][] graph, int node, Set<Integer> dfsStack) {
 
-        if (dfsStack.contains(node)) {
+        if (dfsStack.contains(node)) { // base case
             return true;
         }
         dfsStack.add(node);
 
         for (int next = 0; next < graph[node].length; next++) {
             if (graph[node][next] == 1) {
-                if(containsCycleDFS(graph, next, dfsStack)) {
+                if (containsCycleDFS(graph, next, dfsStack)) {
                     return true;
                 }
             }
