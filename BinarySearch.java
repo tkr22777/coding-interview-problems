@@ -14,7 +14,7 @@ class BinarySearch {
         int end  = sortedNumbers.length - 1;
 
         // target should be in range num0 <= target <= numN
-        if (target < sortedNumbers[begin] || target > sortedNumbers[end]) {
+        if (target < sortedNumbers[begin] || sortedNumbers[end] < target) {
             return -1;
         }
 

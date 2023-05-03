@@ -16,7 +16,7 @@ class BuySellStockIII {
         int maxProfitI = 0;
         int maxSellPrice = prices.length > 0 ? prices[prices.length - 1]: 0;
         for (int i = prices.length - 1; i >= 0 ; --i) {
-            if (prices[i] > maxSellPrice) {
+            if (maxSellPrice < prices[i]) {
                 maxSellPrice = prices[i];
             }
             int buyProfitI = maxSellPrice - prices[i];
@@ -32,7 +32,7 @@ class BuySellStockIII {
         int maxTwoTxnProfit = 0;
         int minBuyPrice = prices.length > 0 ? prices[0]: 0;
         for (int i = 0; i < prices.length; i++) {
-            if (prices[i] < minBuyPrice) {
+            if (minBuyPrice > prices[i]) {
                 minBuyPrice = prices[i];
             } 
             int sellProfitI = prices[i] - minBuyPrice;

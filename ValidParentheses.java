@@ -11,10 +11,10 @@ public class ValidParentheses {
     }
 
     public boolean isValid(String string) {
-        Set<Character> open = new HashSet(Arrays.asList('(', '{', '['));
-        Set<Character> closed = new HashSet(Arrays.asList(')', '}', ']'));
+        Set<Character> open = new HashSet<>(Arrays.asList('(', '{', '['));
+        Set<Character> closed = new HashSet<>(Arrays.asList(')', '}', ']'));
 
-        Stack<Character> charStack = new Stack();
+        Stack<Character> charStack = new Stack<>();
         for (int i = 0; i < string.length(); i++) {
             Character charI = string.charAt(i);
             if (open.contains(charI)) {
@@ -36,12 +36,8 @@ public class ValidParentheses {
     }
 
     private static boolean openCloseMatch(Character open, Character close) {
-        if ((open == '[' && close == ']') ||
-            (open == '{' && close == '}') ||
-            (open == '(' && close == ')')) {
-            return true;
-        } else {
-            return false;
-        }
+        return (open == '[' && close == ']') ||
+                (open == '{' && close == '}') ||
+                (open == '(' && close == ')');
     }
 }

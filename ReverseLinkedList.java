@@ -88,10 +88,8 @@ public class ReverseLinkedList {
 
     public static void printList(ListNode node) {
         ListNode cur = node;
-        Set<Integer> nodeSet = new HashSet<>();
         while (cur != null) {
             System.out.print(cur.val + " -> ");
-            nodeSet.add(cur.val);
             cur = cur.next;
         }
         System.out.println();

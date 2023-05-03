@@ -32,10 +32,8 @@ class GameOfLife {
         int[] shifts = {-1, 0, 1};
 
         int neighbours = 0;
-        for (int i = 0; i < shifts.length; i++) {
-            for (int j = 0; j < shifts.length; j++) {
-                int x = shifts[i];
-                int y = shifts[j];
+        for (int x : shifts) {
+            for (int y : shifts) {
                 if (x == 0 && y == 0) {
                     continue;
                 }

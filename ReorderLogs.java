@@ -8,8 +8,7 @@ class ReorderLogs {
         ArrayList<String> digitLogs = new ArrayList<>();
         ArrayList<String[]> charLogs = new ArrayList<>();
 
-        for (int i = 0; i < logs.length; i++) {
-            String aLog = logs[i];
+        for (String aLog : logs) {
             String[] tokens = aLog.split(" ");
             if (Character.isDigit(tokens[1].charAt(0))) {
                 digitLogs.add(aLog);
@@ -20,13 +19,7 @@ class ReorderLogs {
             }
         }
 
-        Collections.sort(charLogs, new Comparator<String[]>() {
-            @Override
-            public int compare(String[] o1, String[] o2) {
-                int comp = o1[0].compareTo(o2[0]);
-                return comp != 0 ? comp : o1[1].compareTo(o2[1]);
-            }
-        });
+        charLogs.sort(Comparator.comparing((String[] o) -> o[0]).thenComparing(o -> o[1]));
 
         String[] reorderedLogs = new String[digitLogs.size() + charLogs.size()];
 

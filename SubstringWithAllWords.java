@@ -85,7 +85,7 @@ class SubstringWithAllWords {
 
         if (charsMap.containsKey(toRemove) && wCharsMap.containsKey(toRemove)) {
             wCharsMap.put(toRemove, wCharsMap.get(toRemove) - 1);
-            if (wCharsMap.get(toRemove).intValue() == charsMap.get(toRemove).intValue() - 1) {
+            if (wCharsMap.get(toRemove) == charsMap.get(toRemove) - 1) {
                 charCompleteCount--;
             }
         }
