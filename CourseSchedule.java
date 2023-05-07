@@ -1,38 +1,44 @@
 /*
     https://leetcode.com/problems/course-schedule/submissions/
-    You have to take, courses labeled from 0 to numCourses - 1.
+    Courses labeled from 0 to numCourses - 1 has to be completed.
     The prerequisites[i] = [ai, bi] implies bi must be taken before ai.
     Return true if you can finish all courses given the params.
 
     The idea for the solution:
-    -> there are no time limitations
-    -> we can take any course unless there is pre-req
-    -> for pre-reqs we can take them and then move and take the next ones
-    -> we will not be able to finish if there is a cyclic pre-reqs among courses
+    -> any course can be taken unless there is pre-req
+    -> courses can't be finished if there is a cycle among pre-reqs
 */
 
 import java.util.*;
 
 class CourseSchedule {
     public static void main(String[] args) {
-        System.out.println("Compiling");
+        int numCourses = 2;
+        int[][] validPreReqs = {
+            {1,0},
+        };
+        assert new CourseSchedule().canFinish(numCourses, validPreReqs);
+
+        int[][] invalidPreReqs = {
+            {1,0},
+            {0,1}
+        };
+        assert !new CourseSchedule().canFinish(numCourses, invalidPreReqs);
     }
 
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        //build the graph
-        Map<Integer, List<Integer>> courseDepMap = new HashMap<>();
+        Map<Integer, List<Integer>> courseDepGraph = new HashMap<>();
         for (int[] edge: prerequisites) {
-            /* {a, b} <- to take course "a", you need to take course "b" FIRST */
-            courseDepMap.computeIfAbsent(edge[1], v -> new LinkedList<>())
+            // {a, b} <- to take course "a", you need to take course "b" FIRST
+            courseDepGraph.computeIfAbsent(edge[1], v -> new LinkedList<>())
                 .add(edge[0]);
         }
 
-        /* total courses are 0, 1, ... numCourses - 1 */
-        boolean[] visited = new boolean[numCourses];
         boolean[] dfsStack = new boolean[numCourses];
-        for (Integer courseID: courseDepMap.keySet()) {
+        boolean[] visited = new boolean[numCourses];
+        for (Integer courseID: courseDepGraph.keySet()) {
             /* course schedule would be impossible if there is a cyclic dependency */
-            if (cycleInCourseDependency(courseID, courseDepMap, dfsStack, visited)) {
+            if (cycleInCourseDependency(courseID, courseDepGraph, visited, dfsStack)) {
                 return false;
             }
         }
@@ -42,16 +48,18 @@ class CourseSchedule {
     /* course can be finished if there are no cyclic dependency */
     public boolean cycleInCourseDependency(Integer courseID,
                                            Map<Integer, List<Integer>> graph,
-                                           boolean[] dfsStack,
-                                           boolean[] visited) {
+                                           boolean[] visited,
+                                           boolean[] dfsStack) {
         if (dfsStack[courseID]) {
             return true;
         }
-        dfsStack[courseID] = true;
 
+        //visited check is an optimization that beats TLE
         if (visited[courseID]) {
             return false;
         }
+        // the visited optimization requires setting the dfsStack after the visited check
+        dfsStack[courseID] = true;
         visited[courseID] = true;
 
         List<Integer> dependentCourses = graph.getOrDefault(courseID, new LinkedList<>());
