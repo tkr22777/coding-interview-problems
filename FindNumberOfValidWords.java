@@ -22,7 +22,7 @@ class FindNumberOfValidWords {
             int pChar1Rep = 1 << puzzles[i].charAt(0) - 'a';
             int puzzleBinRep = getBinRep(puzzles[i]);
 
-            for (int wordBinRep : binRepForWords) {
+            for (int wordBinRep: binRepForWords) {
                 if ((pChar1Rep & wordBinRep) == 0) {
                     continue;
                 }

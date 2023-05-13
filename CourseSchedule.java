@@ -29,7 +29,7 @@ class CourseSchedule {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         Map<Integer, List<Integer>> courseDepGraph = new HashMap<>();
         for (int[] edge: prerequisites) {
-            // {a, b} <- to take course "a", you need to take course "b" FIRST
+            // {a, b} <- to take course "a", course "b" needs to be taken FIRST
             courseDepGraph.computeIfAbsent(edge[1], v -> new LinkedList<>())
                 .add(edge[0]);
         }

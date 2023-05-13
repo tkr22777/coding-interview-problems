@@ -52,7 +52,7 @@ class ReconstructItinerary {
             return new ArrayList<>(Arrays.asList(depart));
         }
 
-        //unacceptable base case, no ticket with the current departure; empty itinerary
+        // unacceptable base case, no ticket with the current departure; empty itinerary
         if (!departToArrive.containsKey(depart)) {
             return null;
         }

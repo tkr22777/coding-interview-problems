@@ -54,17 +54,16 @@ class NumberOfIslands {
         if (visited[row][col] == 1) {
             return 0;
         }
+        visited[row][col] = 1; //visited
 
         if (grid[row][col] == '1') {
-            visited[row][col] = 1; //visited
-            int islandArea = 1;
+            int islandArea = 1; // the current node
             islandArea += visit(grid, visited, row + 1, col);
             islandArea += visit(grid, visited, row - 1, col);
             islandArea += visit(grid, visited, row, col + 1);
             islandArea += visit(grid, visited, row, col - 1);
             return islandArea;
         }
-
         return 0;
     }
 }

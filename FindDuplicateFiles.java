@@ -12,7 +12,7 @@ class FindDuplicateFiles {
     }
 
     public List<List<String>> findDuplicate(String[] paths) {
-        HashMap<String, Set<String>> contentToFiles = new HashMap<String, Set<String>>();
+        HashMap<String, Set<String>> contentToFiles = new HashMap<>();
 
         for (String path: paths) {
             String[] pathElems = path.split(" ");
@@ -33,7 +33,7 @@ class FindDuplicateFiles {
         List<List<String>> toReturn = new ArrayList<List<String>>();
         for (Set<String> duplicateFiles: contentToFiles.values()) {
             if (duplicateFiles.size() > 1) {
-                toReturn.add(new ArrayList<String>(duplicateFiles));
+                toReturn.add(new ArrayList<>(duplicateFiles));
             }
         }
         return toReturn;

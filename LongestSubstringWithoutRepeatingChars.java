@@ -35,8 +35,11 @@ class LongestSubstringWithoutRepeatingChars {
         HashSet<Character> set = new HashSet<>();
         int i = 0, j = 0;
         while (j < s.length()) {
-            if (set.contains(s.charAt(j))) {
+            if (set.contains(s.charAt(j))) { // found a duplicate
+                // longest is the diff or the longest found previously
                 longest = Math.max(j - i, longest);
+                // 1. we want move i to the right of duplicated char
+                // 2. we want to remove all chars prior to the duplicated char
                 while (i < j) {
                     set.remove(s.charAt(i));
                     if (s.charAt(i) == s.charAt(j)) {

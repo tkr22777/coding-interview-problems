@@ -12,7 +12,7 @@ class DoublyListNode {
     }
 }
 
-/* Could this be implemented using built in linkedList/arrayList? */
+/* Could this be implemented using built in LinkedHashMap or mix of linkedList/arrayList? */
 public class LRUCache {
 
     public static void main(String[] args) {

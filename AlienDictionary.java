@@ -47,23 +47,23 @@ class AlienDictionary {
     private int dfs(Character cur,
                    Map<Character, Set<Character>> adjMat,
                    Set<Character> visited,
-                   Set<Character> inDFSStack,
+                   Set<Character> dfsStack,
                    List<Character> dfsOrdered) {
 
-        if (inDFSStack.contains(cur)) return -1; //there's a cycle
-        inDFSStack.add(cur);
+        if (dfsStack.contains(cur)) return -1; //there's a cycle
+        dfsStack.add(cur);
 
         if (visited.contains(cur)) return 0; //already visited
         visited.add(cur);
         
         Set<Character> children = adjMat.getOrDefault(cur, new HashSet<>());
         for (Character child: children) {
-            if (dfs(child, adjMat, visited, inDFSStack, dfsOrdered) == -1) {
+            if (dfs(child, adjMat, visited, dfsStack, dfsOrdered) == -1) {
                 return -1;
             }
         }
         
-        inDFSStack.remove(cur);
+        dfsStack.remove(cur);
         dfsOrdered.add(cur); //The deepest in the call-stack is pushed first
         return 0;
     }

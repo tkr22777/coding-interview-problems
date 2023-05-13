@@ -14,6 +14,7 @@ class MaximumSumAfterPartitioning {
     }
 
     public int maxSumAfterPartitioningRec(int[] A, int index, int K, Map<Integer, Integer> memo) {
+        // base case for recursion
         if (index >= A.length) {
             return 0;
         }

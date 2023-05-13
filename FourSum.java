@@ -36,6 +36,7 @@ public class FourSum {
                 List<int[]> indices2 = twoSumToIndices.get(rest);
                 for (int[] aIndices1: indices1) {
                     for (int[] aIndices2: indices2) {
+                        // we want to make sure, same index not duplicated
                         if (aIndices1[0] == aIndices2[0] ||
                             aIndices1[0] == aIndices2[1] ||
                             aIndices1[1] == aIndices2[0] ||

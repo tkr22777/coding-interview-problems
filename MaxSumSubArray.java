@@ -4,11 +4,11 @@ import java.util.*;
  nums = { 1, -2, 3, -6, 8 }
  * on each step, we calculate the current max sum that includes the current element
  * then we check if the current max sum is the max sum
- for i = 0, (cmax, max) = (1, 1)
- for i = 1, (cmax, max) = (-1, 1)
- for i = 2, (cmax, max) = (3, 2)
- for i = 3, (cmax, max) = (-3, 2)
- for i = 4, (cmax, max) = (8, 8)
+ for i = 0, maxAtI -> 1, max ->  1
+ for i = 1, maxAtI -> max(1 + (-2), -2)    -> -1,    maxSum -> max(1, -1) -> 1
+ for i = 2, maxAtI -> max(-1 + 3  , 3)     ->  3,    maxSum -> max(1, 3)  -> 3
+ for i = 3, maxAtI -> max(3 + (-6), -6)    -> -3,    maxSum -> max(3, -3) -> 3
+ for i = 4, maxAtI -> max(-3 + 8  , 8)     ->  8,    maxSum -> max(3, 8)  -> 8
 */
 
 public class MaxSumSubArray{
@@ -23,13 +23,13 @@ public class MaxSumSubArray{
     }
 
     public int maxSubArray(int[] nums) {
+        int maxSumForI = nums[0];
         int maxSum = nums[0];
-        int currentSum = nums[0];
 
         for (int i = 1; i < nums.length; ++i) {
-            //System.out.println("Current sum:" + currentSum + " num:" + nums[i]);
-            currentSum = Math.max(currentSum + nums[i], nums[i]);
-            maxSum = Math.max(maxSum, currentSum);
+            //System.out.println("Max sum at i:" + maxSumForI + " num:" + nums[i]);
+            maxSumForI = Math.max(maxSumForI + nums[i], nums[i]);
+            maxSum = Math.max(maxSum, maxSumForI);
         }
         return maxSum;
     }

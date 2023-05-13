@@ -59,7 +59,9 @@ public class ReverseLinkedList {
         } 
 
         if (current.next == null) {
-            Reversed r = new Reversed(); r.head = current; r.end = current;
+            Reversed r = new Reversed();
+            r.head = current;
+            r.end = current;
             return r;
         }
 

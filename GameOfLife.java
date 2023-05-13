@@ -1,5 +1,6 @@
 /*
     https://leetcode.com/problems/game-of-life/
+    TODO: update logic to improve readability
  */
 import java.util.*;
 class GameOfLife {
@@ -38,13 +39,12 @@ class GameOfLife {
                     continue;
                 }
 
-                if (row + x < 0 ||
-                    row + x >= board.length ||
-                    column + y < 0 ||
-                    column + y >= board[row].length) {
+                if (row + x < 0 || board.length <= row + x ||
+                    column + y < 0 || board[row].length <= column + y) {
                     continue;
                 }
 
+                // the following logic confusing and ties to another function, doing multiple things
                 neighbours += board[row + x][column + y] % 2;
             }
         }
