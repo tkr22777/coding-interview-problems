@@ -28,6 +28,7 @@ class NodeDepth {
 
 class BinaryTreeZigZagLevelOrder {
 
+    /* possible code optimization: separate level ordering and zig-zag printing */
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         if (root == null) {
             return new ArrayList<>();

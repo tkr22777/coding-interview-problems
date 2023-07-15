@@ -78,9 +78,6 @@ class AlienDictionary {
             String currWord = words[i];
             int maxIndex = Math.min(prevWord.length(), currWord.length());
             for (int j = 0; j < maxIndex; j++) {
-                if (j >= prevWord.length() || j >= currWord.length()) {
-                    break;
-                }
                 if (prevWord.charAt(j) != currWord.charAt(j)) {
                     adjMat.computeIfAbsent(prevWord.charAt(j), v -> new HashSet<>())
                         .add(currWord.charAt(j));
