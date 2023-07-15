@@ -53,13 +53,13 @@ class CourseSchedule {
         if (dfsStack[courseID]) {
             return true;
         }
+        dfsStack[courseID] = true;
 
-        //visited check is an optimization that beats TLE
+        //visited check optimization that beats TLE
         if (visited[courseID]) {
+            dfsStack[courseID] = false;
             return false;
         }
-        // the visited optimization requires setting the dfsStack after the visited check
-        dfsStack[courseID] = true;
         visited[courseID] = true;
 
         List<Integer> dependentCourses = graph.getOrDefault(courseID, new LinkedList<>());
