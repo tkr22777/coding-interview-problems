@@ -27,9 +27,8 @@ class LongestSubstringWithoutRepeatingChars {
         /*
         Add chars to set until duplicate found. Since char at j created duplicate,
         that char must be somewhere in between i to j - 1. Move i to right until you
-        confront the char again. after the last incident of s.charAt(j)
-        remove all characters from i to inew.
-        How does that make the solution correct?
+        find that char. after the last incident of s.charAt(j) remove all characters
+        from i to iNew. How does that make the solution correct?
         */
 
         HashSet<Character> set = new HashSet<>();
@@ -48,7 +47,7 @@ class LongestSubstringWithoutRepeatingChars {
                     i++;
                 }
                 i++;
-            } 
+            }
             set.add(s.charAt(j));
             j++;
         }

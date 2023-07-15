@@ -2,28 +2,29 @@ import java.util.*;
 
 class FindDuplicateFiles {
     public static void main(String[] args) {
-        String[] paths = { 
+        String[] pathsWithFiles = {
             "root/a 1.txt(abcd) 2.txt(efgh)",
             "root/c 3.txt(abcd)",
             "root/c/d 4.txt(efgh)",
             "root 4.txt(efgh)"
         };
-        System.out.println(new FindDuplicateFiles().findDuplicate(paths));
+        System.out.println(new FindDuplicateFiles().findDuplicate(pathsWithFiles));
     }
 
-    public List<List<String>> findDuplicate(String[] paths) {
+    public List<List<String>> findDuplicate(String[] pathWithFilesArray) {
         HashMap<String, Set<String>> contentToFiles = new HashMap<>();
 
-        for (String path: paths) {
-            String[] pathElems = path.split(" ");
+        for (String pathWithFiles: pathWithFilesArray) {
+            String[] pathElems = pathWithFiles.split(" ");
             String dir = pathElems[0];
             for (int i = 1; i < pathElems.length; i++) {
-                int start = pathElems[i].lastIndexOf("(");
-                String fileName = pathElems[i].substring(0, start);
-                String filePath = String.format("%s/%s", dir, fileName);
+                String fileWithContent = pathElems[i];
+                int start = fileWithContent.lastIndexOf("(");
+                int end = fileWithContent.lastIndexOf(")");
+                String content = fileWithContent.substring(start + 1, end);
 
-                int end = pathElems[i].lastIndexOf(")");
-                String content = pathElems[i].substring(start + 1, end);
+                String fileName = fileWithContent.substring(0, start);
+                String filePath = String.format("%s/%s", dir, fileName);
 
                 contentToFiles.computeIfAbsent(content, f -> new HashSet<String>())
                     .add(filePath);

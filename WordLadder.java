@@ -24,7 +24,7 @@ public class WordLadder {
                     return depth + 1;
                 }
 
-                visited.add(word);  //visited after checks
+                visited.add(word);  //visited marked after checking
 
                 Set<String> neighbors = adjMap.computeIfAbsent(word, s -> getNeighbors(wordArList, word));
                 for(String neighbor: neighbors) {
@@ -40,9 +40,9 @@ public class WordLadder {
 
     public Set<String> getNeighbors(ArrayList<String> wordList, String word) {
         Set<String> neighbors = new HashSet<String>();
-        for (int i = 0; i < wordList.size(); i++) {
-            if (isNeighbour(word, wordList.get(i))) {
-                neighbors.add(wordList.get(i));
+        for (String wd : wordList) {
+            if (isNeighbour(word, wd)) {
+                neighbors.add(wd);
             }
         }
         return neighbors;

@@ -31,7 +31,6 @@ public class CycleInGraph {
     }
 
     public static boolean containsCycle(int[][] graph) {
-
         for (int node = 0; node < graph.length; node++) {
             if (containsCycleDFS(graph, node, new HashSet<>())){
                 return true;
@@ -41,7 +40,6 @@ public class CycleInGraph {
     }
 
     public static boolean containsCycleDFS(int[][] graph, int node, Set<Integer> dfsStack) {
-
         if (dfsStack.contains(node)) { // base case
             return true;
         }
