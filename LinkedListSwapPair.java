@@ -91,17 +91,12 @@ public class LinkedListSwapPair {
             return null;
         }
 
+        ListNodeS newHead = head.next == null ? head: head.next;
+
+        ListNodeS prev = null; // no prev node point to first
         ListNodeS first = head;
         ListNodeS second = first.next;
 
-        ListNodeS newHead;
-        if (second == null) {
-            newHead = first;
-        } else {
-            newHead = second;
-        }
-
-        ListNodeS prev = null; // no prev node point to first
         while (first != null && second != null) {
             // swap
             first.next = second.next;
