@@ -74,7 +74,7 @@ public class LRUCache {
             return;
         }
 
-        if (head == null && tail == null) {
+        if (head == null) { // also implies tail == null
             head = node;
             tail = node;
             node.next = null;
@@ -82,10 +82,10 @@ public class LRUCache {
             return;
         }
 
-        node.next = head; // node.next next-> node at head
-        head.prev = node; //  node <-prev node at head
-        head = node; // head -> node
-        node.prev = null; // null <-p node
+        node.next = head;
+        head.prev = node;
+        head = node;
+        node.prev = null;
     }
 
     private void moveToHead(DoublyListNode node) {
@@ -130,7 +130,7 @@ public class LRUCache {
         StringBuilder sb = new StringBuilder();
         sb.append( "From Head ->");
         while (node != null) {
-            sb.append(node.key + " -> ");
+            sb.append(node.key).append(" -> ");
             node = node.next;
         }
         sb.append("||");
@@ -138,7 +138,7 @@ public class LRUCache {
         node = tail;
         sb.append( ", From Tail ->");
         while (node != null){
-            sb.append(node.key + " -> ");
+            sb.append(node.key).append(" -> ");
             node = node.prev;
         }
         sb.append("||");
