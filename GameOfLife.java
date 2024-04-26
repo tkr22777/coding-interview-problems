@@ -23,6 +23,8 @@ class GameOfLife {
         for (int row = 0; row < board.length; row++) {
             for (int column = 0; column < board[row].length; column++) {
                 int neighbours = countNeighbours(board, row, column);
+                // The following implementation is memory efficient as the updates are done in-place
+                // but the implementation is a complicated
                 board[row][column] = getUpdatedValueForNeighbours(board[row][column], neighbours);
             }
         }
@@ -39,12 +41,13 @@ class GameOfLife {
                     continue;
                 }
 
+                // check the bounds
                 if (row + x < 0 || board.length <= row + x ||
                     column + y < 0 || board[row].length <= column + y) {
                     continue;
                 }
 
-                // the following logic confusing and ties to another function, doing multiple things
+                // the following logic is confusing and ties to another function, doing multiple things?
                 neighbours += board[row + x][column + y] % 2;
             }
         }

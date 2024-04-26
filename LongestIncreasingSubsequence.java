@@ -23,7 +23,7 @@ class LongestIncreasingSubsequence {
     // for i = 3, num[i] = 7
     //     j = 0, num[j] = 1, as num[j] < num[i], DP[3] -> DP[0] + 1 -> 1 + 1 -> 2
     //     j = 1, num[j] = 5, as num[j] < num[i], DP[3] -> DP[1] + 1 -> 2 + 1 -> 3
-    //     j = 2, num[j] = 4, as num[j] < num[i], DP[3] -> DP[3] -> 3
+    //     j = 2, num[j] = 4, as num[j] < num[i], DP[3] -> max(DP[3], DP[2] + 1) -> max(3, 2 + 1) -> 3
     */
 
     public int lengthOfLIS(int[] numbers) {
