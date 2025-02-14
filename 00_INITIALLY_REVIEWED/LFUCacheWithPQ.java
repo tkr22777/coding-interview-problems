@@ -39,7 +39,7 @@ class LFUCacheWithPQ {
 
     public LFUCacheWithPQ(int capacity) {
         this.capacity = capacity;
-        this.pq = new PriorityQueue<KeyFrequency>(
+        this.pq = new PriorityQueue<>(
             Comparator.comparingInt((KeyFrequency a) -> a.frequency) /* least frequent first */
                 .thenComparingInt(a -> a.time) /* least recent first */
         );

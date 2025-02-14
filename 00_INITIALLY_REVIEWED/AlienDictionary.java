@@ -41,7 +41,7 @@ class AlienDictionary {
 
         StringBuilder stringBuilder = new StringBuilder();
         dfsOrdered.forEach(c -> stringBuilder.append(c));
-        return stringBuilder.reverse().toString();// reversing the dfs depth first to last for char ordering
+        return stringBuilder.reverse().toString();// reversing the dfs depth first to, depth last for char ordering
     }
 
     /*
@@ -57,7 +57,7 @@ class AlienDictionary {
         if (dfsStack.contains(cur)) return -1; //there's a cycle
         dfsStack.add(cur);
 
-        if (visited.contains(cur)) return 0; //already visited
+        if (visited.contains(cur)) return 0; //already visited, through some other stack, no cycle found
         visited.add(cur);
         
         Set<Character> children = adjMat.getOrDefault(cur, new HashSet<>());

@@ -60,8 +60,8 @@ class GenerateParenthesis {
 
         if (close > 0) {
             List<String> usedCloses =  generateParenthesis(open, close - 1);
-            for (String rUsedClose: usedCloses) {
-                results.add(")" + rUsedClose);
+            for (String usedClose: usedCloses) {
+                results.add(")" + usedClose);
             }
         }
         return results;
