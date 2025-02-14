@@ -73,15 +73,15 @@ list1 = ListNode(2)
 list1Nxt = ListNode(4)
 list1.next = list1Nxt
 list1Nxt.next = ListNode(3)
-print list1
+print(list1)
 
-#Number 243
+#Number 564
 list2 = ListNode(5)
 list2Nxt = ListNode(6)
 list2.next = list2Nxt
 list2Nxt.next = ListNode(4)
-print list2
+print(list2)
 
 summer = Solution()
-print summer.addTwoNumbers(list1 , list2)
+print(summer.addTwoNumbers(list1 , list2))
 

@@ -32,6 +32,4 @@ class Solution(object):
         return output
 
 s = Solution()
-print s.productExceptSelf([1, 2, 3])
-
-
+print(s.productExceptSelf([1, 2, 3]))

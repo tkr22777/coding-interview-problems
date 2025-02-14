@@ -74,16 +74,16 @@ list1.append(3)
 list1.append(5)
 list1.append(9)
 
-print list1
+print(list1)
 
 list2 = ListNode(2)
 list2.append(6)
 list2.append(8)
 list2.append(10)
 
-print list2
+print(list2)
 
 sol = Solution()
 mergedList = sol.mergeTwoLists(list1, list2)
 
-print mergedList
+print(mergedList)

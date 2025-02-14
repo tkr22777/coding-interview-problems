@@ -8,7 +8,7 @@ class LongestCommonSubsequence {
     System.out.println(new LongestCommonSubsequence().longestCommonSubsequence(text1, text2));
   }
 
-  /* TODO add explanation */
+  /* TODO add explanation*/
   public int longestCommonSubsequence(String text1, String text2) {
     int[][] memo = new int[text1.length()][text2.length()];
     IntStream.range(0, text1.length())
