@@ -44,6 +44,10 @@ class AlienDictionary {
         return stringBuilder.reverse().toString();// reversing the dfs depth first to last for char ordering
     }
 
+    /*
+    * The visited set is mostly an optimization/memoization, it solves without the visited set
+    * on the inDFS stack, the deepest in the call-stack is pushed first
+    */
     private int dfs(Character cur,
                    Map<Character, Set<Character>> adjMat,
                    Set<Character> visited,

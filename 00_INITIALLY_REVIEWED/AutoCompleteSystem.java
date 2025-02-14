@@ -2,9 +2,11 @@
  https://leetcode.com/problems/design-search-autocomplete-system/
 */
 
-import java.util.*;
-import java.util.stream.*;
+import java.util.*; import java.util.stream.*;
 
+/*
+* Trie is basically an N-ary tree
+*/
 class TrieNode {
     HashMap<Character, TrieNode> nextNodes = new HashMap<Character, TrieNode>();
     HashSet<String> sentences = new HashSet<String>();
@@ -24,32 +26,31 @@ class AutoCompleteSystem {
 
     public AutoCompleteSystem(String[] sentences, int[] times) {
         IntStream.range(0, sentences.length)
-            .forEach(i -> addSentence(sentences[i], times[i]));
-    }
-
-    public List<String> input(char c) {
-        if (('a' <= c && c <= 'z') || (c == ' ')) {
-            searchString.append(c);
-            current = current.nextNodes.computeIfAbsent(c, tn -> new TrieNode());
-            return getTopThreeSentences(sentenceUsage, current.sentences);
-        } else if (c == '#') {
-            searchString = new StringBuilder();
-            current = this.root;
-            addSentence(searchString.toString(), 1);
-        }
-        return new ArrayList<>();
+            .forEach(i -> this.addSentence(sentences[i], times[i]));
     }
 
     private void addSentence(String sentence, int usage) {
-        /* Update TrieNode */
         TrieNode curr = this.root;
         for (int i = 0; i < sentence.length(); i++) {
             curr = curr.nextNodes.computeIfAbsent(sentence.charAt(i), tn -> new TrieNode());
             curr.sentences.add(sentence);
         }
 
-        /* Update usage */
-        sentenceUsage.put(sentence, sentenceUsage.getOrDefault(sentence, 0) + usage);
+        // update usage
+        this.sentenceUsage.put(sentence, this.sentenceUsage.getOrDefault(sentence, 0) + usage);
+    }
+
+    public List<String> input(char c) {
+        if (('a' <= c && c <= 'z') || (c == ' ')) {
+            searchString.append(c);
+            current = current.nextNodes.computeIfAbsent(c, tn -> new TrieNode());
+            return getTopThreeSentences(this.sentenceUsage, current.sentences);
+        } else if (c == '#') {
+            addSentence(searchString.toString(), 1);
+            searchString.setLength(0);
+            current = this.root;
+        }
+        return new ArrayList<>();
     }
 
     private List<String> getTopThreeSentences(HashMap<String, Integer> sUsage, HashSet<String> sentences) {
