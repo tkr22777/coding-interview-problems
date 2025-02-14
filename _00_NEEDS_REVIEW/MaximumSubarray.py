@@ -45,8 +45,8 @@ class Solution(object):
         return sum
 
 
-print Solution().maxSubArray([0, 1, 2, 3])
-print Solution().maxSubArray([1])
-print Solution().maxSubArray([])
-print Solution().maxSubArray([5, 6, -1, 11])
-print Solution().maxSubArray([5, 6, -12, 15])
+print(Solution().maxSubArray([0, 1, 2, 3]))
+print(Solution().maxSubArray([1]))
+print(Solution().maxSubArray([]))
+print(Solution().maxSubArray([5, 6, -1, 11]))
+print(Solution().maxSubArray([5, 6, -12, 15]))
