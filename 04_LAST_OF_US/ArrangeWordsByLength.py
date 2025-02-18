@@ -1,6 +1,8 @@
 import heapq
 
-class Solution02:
+# https://leetcode.com/problems/rearrange-words-in-a-sentence/
+
+class Solution:
     def arrangeWords(self, text: str) -> str:
         heap = []
         words = text.split()
@@ -16,6 +18,6 @@ class Solution02:
         return out
 
 
-s = Solution02()
+s = Solution()
 print(s.arrangeWords("Leetcode is cool") == "Is cool leetcode")
 print(s.arrangeWords("Keep calm and code on") == "On and keep calm code")
