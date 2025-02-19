@@ -1,6 +1,7 @@
 """
 # Definition for Employee.
 """
+# https://leetcode.com/problems/employee-importance/
 class Employee(object):
     def __init__(self, id, importance, subordinates):
         self.id = id
@@ -12,7 +13,6 @@ class Solution(object):
         emp_id_to_imp_subs_mapping = {}
         for emp in employees:
             emp_id_to_imp_subs_mapping[emp.id] = (emp.importance, emp.subordinates)
-        # print(emp_id_to_imp_subs_mapping)
 
         return self.getImportanceHelper(emp_id_to_imp_subs_mapping, id)
         
