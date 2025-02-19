@@ -1,31 +1,48 @@
 from typing import List
 import bisect
 
-class Solution5:
+# https://leetcode.com/problems/count-number-of-teams/
+
+class Solution:
     def numTeams(self, rating: List[int]) -> int:
+        n = len(rating)
+        # For each index i, store count of:
+        # smaller[i] = numbers smaller than rating[i] to its left
+        # bigger[i] = numbers bigger than rating[i] to its left
+        smaller = [0] * n
+        bigger = [0] * n
+        
+        # Use sorted_list to keep track of all elements to the left
         sorted_list = []
-        smaller = [0 for _ in range(len(rating))]
-        bigger = [0 for _ in range(len(rating))]
-        for i in range(len(rating)):
-            # print("i:" + str(rating[i]))
-            if len(sorted_list) > 0:
-                # check for smaller and bigger
-                smaller[i] += bisect.bisect_left(sorted_list, rating[i])
-                bigger[i] += len(sorted_list) - bisect.bisect_right(sorted_list, rating[i])
-
-            # print(smaller)
-            # print(bigger)
-            # print(rating)
+        
+        # First pass: Calculate smaller and bigger counts for each position
+        for i in range(n):
+            if sorted_list:
+                # Count elements smaller than current element
+                smaller[i] = bisect.bisect_left(sorted_list, rating[i])
+                # Count elements bigger than current element
+                bigger[i] = len(sorted_list) - bisect.bisect_right(sorted_list, rating[i])
+            
+            # Add current element to sorted list for next iterations
             bisect.insort(sorted_list, rating[i])
-            # print(sorted_list)
-
+        
         total = 0
-        for j in range(1, len(rating) - 1):
-            val_j = rating[j]
-            for k in range(j + 1, len(rating)):
-                val_k = rating[k]
-                if val_k > val_j:
+        # Second pass: Count valid triplets
+        # For each middle element (j), look at elements to its right (k)
+        for j in range(1, n - 1):
+            for k in range(j + 1, n):
+                if rating[k] > rating[j]:
+                    # For increasing sequence (i < j < k):
+                    # Add count of elements smaller than rating[j] to its left
                     total += smaller[j]
-                elif val_k < val_j:
+                elif rating[k] < rating[j]:
+                    # For decreasing sequence (i > j > k):
+                    # Add count of elements bigger than rating[j] to its left
                     total += bigger[j]
-        return total 
+        
+        return total
+
+s = Solution()
+print(s.numTeams([2,5,3,4,1]) == 3)
+print(s.numTeams([2,1,3]) == 0)
+print(s.numTeams([1,2,3,4]) == 4)
