@@ -1,6 +1,8 @@
 from typing import List
 from collections import defaultdict
 
+# https://leetcode.com/problems/detect-squares/
+
 class DetectSquares:
 
     def __init__(self):
@@ -11,65 +13,57 @@ class DetectSquares:
         self.grid[x][y] += 1
 
     def count(self, point: List[int]) -> int:
-        # for x in self.grid.keys():
-        #     for y in self.grid[x].keys():
-        #         print("i: " + str(x) + "\t y:" + str(y) + "\t v:" + str(self.grid[x][y]))
-        # print("point: " + str(point))
-
-        x0, y0 = point[0], point[1]
-        s_count = 0
-        for y1, p_count in self.grid[x0].items():
-            # print("y1: " + str(y1))
-
-            d = y1 - y0
-            # print("dist: " + str(d))
-            if d == 0:
+        # Coordinate system explanation:
+        #
+        # y ^
+        #   |
+        # y_at_x  +-------------+  (x_ahead, y_at_x)
+        #   |     |             |
+        #   |     |             |
+        #   |     |             |
+        #   |     |             |
+        # y +     +-------------+  (x_ahead, y)
+        #   |     ↑
+        #   |     (x,y) = point
+        #   |
+        #   +-----+-------------+-------------> x
+        #         x        x_ahead
+        #         |
+        #     x_behind
+        #
+        # - (x,y) is the query point we're checking
+        # - y_at_x is another y-coordinate found at the same x as query point
+        # - width = y_at_x - y is the height of the potential square
+        # - x_ahead = x + width is the x-coordinate to the right
+        # - x_behind = x - width is the x-coordinate to the left
+        
+        square_count = 0
+        x, y = point[0], point[1]
+        for y_at_x, point_count in self.grid[x].items():
+            if y == y_at_x: # the same x and y is not a square
                 continue
 
-            x2p = x0 + d
-            p2ps = self.grid[x2p][y0]
-            p3ps = self.grid[x2p][y1]
-            s_count += p_count * p2ps * p3ps
+            width = y_at_x - y
 
-            x2n = x0 - d
-            p2ns = self.grid[x2n][y0]
-            p3ns = self.grid[x2n][y1]
-            s_count += p_count * p2ns * p3ns
-            # self.grid[x1][]
+            # squares above
+            x_ahead = x + width
+            p2ps = self.grid[x_ahead][y] # points at x_ahead, y
+            p3ps = self.grid[x_ahead][y_at_x] # points at x_ahead, y_at_x
+            square_count += point_count * p2ps * p3ps
 
-        return s_count
+            x_behind = x - width
+            p2ns = self.grid[x_behind][y]
+            p3ns = self.grid[x_behind][y_at_x]
+            square_count += point_count * p2ns * p3ns
 
-# x
-# 3 -> (3, 10), (3, 2)
-# 11 -> (11, 2)
-
-# y
-# 10 -> (3, 10)
-# 2 -> (11, 2), (3, 2)
-
-
-# for: point p1 -> (11, 10)
-# 1. I want to find out the points p1x, in p1[0]
-# 2. For each p1xi in p1x, find out if point
-# p1xi[1] p1[1] on either side of the query point exist?
-# two equi distance points?
-#
+        return square_count
 
 detectSquares = DetectSquares()
 detectSquares.add([3, 10])
 detectSquares.add([11, 2])
 detectSquares.add([3, 2])
-
-# return 1. You can choose  - The first, second, and third
 print(1 == detectSquares.count([11, 10]))
-
-# return 0. The query point cannot form a square with any points in the data structure.
 print(0 == detectSquares.count([14, 8]))
-
-# Adding duplicate points is allowed.
 detectSquares.add([11, 2])
-
-#   - The first, second, and third
-#   - The first, third, and fourth points
-# return 2. You can choose:
+print(2 == detectSquares.count([11, 10]))
 print(2 == detectSquares.count([11, 10]))
