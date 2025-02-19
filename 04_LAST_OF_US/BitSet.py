@@ -1,3 +1,5 @@
+# https://leetcode.com/problems/design-bitset/
+
 class Bitset:
     def __init__(self, size: int):
         self.size = size
@@ -37,17 +39,15 @@ class Bitset:
                 out.append("0")
         return "".join(out)
 
-
 # Your Bitset object will be instantiated and called as such:
 obj = Bitset(3)
+print(f"00 {obj.toString() == '000'}")
 obj.fix(0)
+print(f"01 {obj.toString() == '100'}")
 obj.unfix(1)
+print(f"02 {obj.toString() == '100'}")
 obj.flip()
-param_4 = obj.all()
-param_5 = obj.one()
-param_6 = obj.count()
-param_7 = obj.toString()
-print(param_4)
-print(param_5)
-print(str(param_6))
-print(param_7)
+print(f"03 {obj.all() == False}")
+print(f"04 {obj.one() == True}")
+print(f"05 {obj.count() == 2}")
+print(f"06 {obj.toString() == '011'}")
