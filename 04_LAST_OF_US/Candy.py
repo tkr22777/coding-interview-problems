@@ -1,5 +1,7 @@
 from typing import List
 
+# https://leetcode.com/problems/candy/
+
 class Solution:
     def candy(self, ratings: List[int]) -> int:
         candy = []
@@ -22,20 +24,9 @@ class Solution:
 
 
 s = Solution()
-print(s.candy(ratings=[1,0,2]))
-# c: [2,1,2] 
-
-print(s.candy(ratings=[0,1,2]))
-# c: [1,2,3]
-
-print(s.candy(ratings=[1, 2, 2]))
-# 
-
-# print(s.candy(ratings=[0,1,2,1]))
-# # c: [1,2,3,1]
-
-# print(s.candy(ratings=[1,2,1,3,2,1,0]))
-# # c: [1,2,1,4,3,2,1]
-
-# print(s.candy(ratings=[1,2,5,3,2,1,0]))
-# # c: [1,2,5,4,3,2,1] 
+print(s.candy(ratings=[1,0,2]) == 5 ) # c: [2,1,2] 
+print(s.candy(ratings=[0,1,2]) == 6) # c: [1,2,3]
+print(s.candy(ratings=[1, 2, 2]) == 4) # c: [1,2,1]
+print(s.candy(ratings=[0,1,2,1]) == 7) # c: [1,2,3,1]
+print(s.candy(ratings=[1,2,1,3,2,1,0]) == 14) # c: [1,2,1,4,3,2,1]
+print(s.candy(ratings=[1,2,5,3,2,1,0]) == 18) # c: [1,2,5,4,3,2,1] 
