@@ -24,8 +24,9 @@ class ConcatenatedWords {
 
     public List<String> findAllConcatenatedWordsInADict(String[] words) {
         // creating a trie for given words
-        Arrays.stream(words)
-            .forEach(word -> addWord(root, word));
+        for (String word : words) {
+            addWord(root, word);
+        }
 
         List<String> list = new ArrayList<String>();
         for (String word: words) {
@@ -39,7 +40,8 @@ class ConcatenatedWords {
     private void addWord(Trie root, String word) {
         Trie curr = root;
         for (int i = 0; i < word.length(); i++) {
-            curr = curr.next.computeIfAbsent(word.charAt(i), t -> new Trie());
+            char c = word.charAt(i);
+            curr = curr.next.computeIfAbsent(c, t -> new Trie());
         }
         curr.complete = true;
     }

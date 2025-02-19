@@ -36,7 +36,7 @@ class Solution(object):
     def addTwoNumbersHelper(self, l1, l2, carry):
 
         if l1 is None and l2 is None:
-            if carry is 1:
+            if carry == 1:
                 return ListNode(1)
             else:
                 return None
@@ -84,4 +84,3 @@ print(list2)
 
 summer = Solution()
 print(summer.addTwoNumbers(list1 , list2))
-

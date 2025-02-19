@@ -46,10 +46,12 @@ class CourseSchedule {
     }
 
     /* course can be finished if there are no cyclic dependency */
-    public boolean cycleInCourseDependency(Integer courseID,
-                                           Map<Integer, List<Integer>> graph,
-                                           boolean[] visited,
-                                           boolean[] dfsStack) {
+    public boolean cycleInCourseDependency(
+        Integer courseID,
+        Map<Integer, List<Integer>> graph,
+        boolean[] visited,
+        boolean[] dfsStack
+    ) {
         if (dfsStack[courseID]) {
             return true;
         }

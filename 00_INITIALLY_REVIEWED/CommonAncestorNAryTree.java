@@ -62,9 +62,8 @@ class CommonAncestorNAryTree {
             return true;
         }
 
-        for (Node next: node.next) {
-            boolean found = inSubtree(next, val);
-            if (found) {
+        for (Node next : node.next) {
+            if (inSubtree(next, val)) {
                 return true;
             }
         }
