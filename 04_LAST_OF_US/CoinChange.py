@@ -2,62 +2,43 @@ from typing import List
 
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
+        # Cache to store already computed results
         memo = {}
-        def recurse(coins: List[int], amount: int):
-            if amount == 0:
+        
+        def min_coins_needed(remaining_amount: int) -> int:
+            """
+            Returns the minimum number of coins needed to make up the remaining amount.
+            Returns -1 if it's impossible to make up the amount with given coins.
+            """
+            # Base cases
+            if remaining_amount == 0:  # Successfully used coins to reach target
                 return 0
-            
-            if amount < 0:
+            if remaining_amount < 0:   # Over-shot the target amount
                 return -1
+            if remaining_amount in memo:  # Return cached result if available
+                return memo[remaining_amount]
             
-            if amount in memo:
-                return memo[amount]
+            # Try each coin and find the minimum number of coins needed
+            best_result = float('inf')  # Initialize with infinity instead of amount + 1
             
-            min_coins = amount + 1
             for coin in coins:
-                coin_count = recurse(coins, amount - coin)
-                if coin_count >= 0:
-                    min_coins = min(min_coins, coin_count + 1)
+                # Recursively try using this coin
+                result = min_coins_needed(remaining_amount - coin)
+                
+                # If we found a valid combination using this coin
+                if result >= 0:
+                    best_result = min(best_result, result + 1)
             
-            if min_coins == amount + 1:
-                memo[amount] = -1
-                return -1
-            else:
-                memo[amount] = min_coins
-                return min_coins
-
-        return recurse(coins, amount)
-
-    # bottom up, more efficient
-    def coinChange(self, coins: List[int], amount: int) -> int:
-        best_coin_combo = [amount + 1] * (amount + 1)
-        best_coin_combo[0] = 0
-
-        for cent in range(amount + 1):
-            for coin in coins:
-                if coin <= cent:
-                    best_coin_combo[cent] = min(best_coin_combo[cent - coin] + 1, best_coin_combo[cent])
-
-        return best_coin_combo[amount] if best_coin_combo[amount] != amount + 1 else -1
+            # Cache and return the final result
+            memo[remaining_amount] = -1 if best_result == float('inf') else best_result
+            return memo[remaining_amount]
+        
+        return min_coins_needed(amount)
 
 # Test cases
 s = Solution()
-print(s.coinChange([1, 2, 5], amount = 11))
 print(s.coinChange([1, 2, 5], amount = 11) == 3)
+print(s.coinChange([1, 2, 5], amount = 13) == 4)
 print(s.coinChange([1], amount = 0) == 0)
 print(s.coinChange([2], amount = 3) == -1)
-print(s.coinChange([187,419,83,408], 6249) == 19) 
-
-# print(s.coinChange([1], amount = 10000))
-# print(s.coinChange([1], amount = 10000) == 10000)
-
-# 1, 2, 3
-# 1 -> 1
-# 2 -> 1
-# 3 -> 1
-# 4 -> 2
-# 5 -> 2
-# 6 -> 2
-# 7 -> 2
-# 8 -> 3
-
+print(s.coinChange([187,419,83,408], 6249) == 19)
