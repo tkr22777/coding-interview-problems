@@ -1,6 +1,8 @@
 from collections import defaultdict
 from sortedcontainers import SortedDict, SortedSet
 
+# https://leetcode.com/problems/maximum-frequency-stack/
+
 class Val:
     def __init__(self, val: int, freq: int) -> None:
         self.val = val

@@ -1,31 +1,15 @@
-from sortedcontainers import SortedDict
-from collections import defaultdict
+from collections import defaultdict, Counter
+
+# https://leetcode.com/problems/sort-characters-by-frequency/
 
 class Solution:
-    def frequencySort(self, s: str) -> str:
-        char_freq = defaultdict(int)
-        sorted_dict = SortedDict()
-        sorted_dict[1] = set()
-        for ch in s:
-            char_freq[ch] += 1
-            freq_val = char_freq[ch]
-            if char_freq[ch] > 1:
-                if freq_val not in sorted_dict:
-                    sorted_dict[freq_val] = set()
-                sorted_dict[freq_val].add(ch)
-                sorted_dict[freq_val - 1].remove(ch)
-            else:
-                sorted_dict[1].add(ch)
-        # print(char_freq)
-        # print(sorted_dict)
-        out_chars = []
-        for k, v in sorted_dict.items():
-            for a_char in v:
-                out_chars += k * [a_char]
-
-        return "".join(reversed(out_chars))
-        # return out_str
-
+    def frequencySort(self, input: str) -> str:
+        # Alternative solution using Counter
+        char_freq = Counter(input)
+        sorted_chars = sorted(char_freq.items(), key=lambda x: (-x[1], x[0]))
+        return ''.join(char * freq for char, freq in sorted_chars)
 
 s = Solution()
-print(s.frequencySort("tree")) 
+print(s.frequencySort("tree") == "eert")
+print(s.frequencySort("cccaaa") == "aaaccc")
+print(s.frequencySort("Aabb") == "bbAa")
