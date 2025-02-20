@@ -1,6 +1,8 @@
 from typing import List
 import bisect
 
+# https://leetcode.com/problems/find-the-distance-value-between-two-arrays/description/
+
 class Solution:
     def findTheDistanceValue(self, arr1: List[int], arr2: List[int], d: int) -> int:
 
@@ -12,11 +14,14 @@ class Solution:
 
             # the value at i should be either bigger, equal 
             # or i is at len(arr2) (all values are smaller than v1)
-            if i < len(arr2) and int(abs(v1 - arr2[i])) <= d:
+            if (i < len(arr2) and 
+                int(abs(v1 - arr2[i])) <= d):
                 continue
             # print("v1: " + str(v1) + " i:"+ str(i))
 
-            if i - 1 >= 0 and i - 1 < len(arr2) and int(abs(v1 - arr2[i - 1])) <= d:
+            if (i - 1 >= 0 and 
+                i - 1 < len(arr2) and 
+                int(abs(v1 - arr2[i - 1])) <= d):
                 continue
             # print("v1: " + str(v1) + " i:"+ str(i))
 
