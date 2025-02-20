@@ -1,30 +1,35 @@
 # https://leetcode.com/problems/find-and-replace-in-string/description/
-import heapq
 from typing import List
 
 class Solution:
-    def findReplaceString(self, input: str, indices: List[int], sources: List[str], targets: List[str]) -> str:
-        candidates = []
-        for i in range(len(indices)):
-            index = indices[i]
-            source = sources[i]
-            # print("index: " + str(index) + ", cs: " + current_str)
-            if input[index: index + len(source)] == source:
-                heapq.heappush(candidates, (index, i))
+    def findReplaceString(
+        self,
+        input: str,
+        indices: List[int],
+        sources: List[str],
+        targets: List[str]
+    ) -> str:
+        # Sort replacements by index to process them from left to right
+        replacements = sorted(zip(indices, sources, targets))
+        
+        parts = []
+        last_pos = 0
+        
+        # Process each replacement in order
+        for index, source, target in replacements:
+            parts.append(input[last_pos:index])
+            
+            if input[index:index + len(source)] == source:
+                parts.append(target)
+            else:
+                parts.append(input[index:index + len(source)])
 
-        current_str = input
-        offset = 0
-        while len(candidates) > 0:
-            index, i = heapq.heappop(candidates)
-            index = index + offset
-            source = sources[i]
-            source_len = len(source)
-            if current_str[index: index + source_len] == source:
-                current_str = current_str[:index] + targets[i] + current_str[index + source_len:]
-                offset += (len(targets[i]) - source_len)
-
-        # print(current_str)
-        return current_str
+            last_pos = index + len(source)
+        
+        # Add any remaining characters after the last replacement
+        parts.append(input[last_pos:])
+        
+        return ''.join(parts)
 
 
 s = Solution()
