@@ -1,27 +1,34 @@
 from typing import List
 
+# https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/
+
 class Solution:
     def findMin(self, nums: List[int]) -> int:
-        left = 0
-        right = len(nums) - 1
-
-        while left < right:
-            mid = (left + right) // 2
-            # print(f"left: {left} right: {right} mid: {mid}")
-            if mid == left:
-                if nums[mid] > nums[right]:
-                    left = right
-                break
+        # Initialize pointers
+        start = 0
+        end = len(nums) - 1
+        
+        while start < end:
+            mid = (start + end) // 2
+            
+            # If we're down to two elements
+            if mid == start:
+                # If the left element is greater than right, minimum is on the right
+                return nums[end] if nums[start] > nums[end] else nums[start]
+            
+            # If left portion is sorted (increasing)
+            if nums[start] < nums[mid]:
+                # If right portion is also increasing and lower than left portion
+                # minimum must be at start
+                if nums[mid] < nums[end]:
+                    return nums[start]
+                # Otherwise, minimum is in right portion
+                start = mid + 1
+            # If left portion is not sorted, minimum must be in left portion
             else:
-                if nums[left] < nums[mid]:
-                    if nums[mid] < nums[right]:
-                        break
-                    else:
-                        left = mid + 1
-                else:
-                    right = mid
-
-        return nums[left]
+                end = mid
+        
+        return nums[start]
 
 
 s = Solution()
