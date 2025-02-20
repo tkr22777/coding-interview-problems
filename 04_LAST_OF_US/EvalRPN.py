@@ -1,41 +1,29 @@
 from typing import List
 
+# https://leetcode.com/problems/evaluate-reverse-polish-notation/
+
 class Solution:
     def evalRPN(self, tokens: List[str]) -> int:
-        res = 0
-        ops = {"*", "/", "+", "-"}
-
-        def operate(oper1: str, oper2: str, op: str) -> int:
-            if op == "*":
-                return int(oper1) * int(oper2)
-            elif op == "/":
-                return int(int(oper1) / int(oper2))
-            elif op == "+":
-                return int(oper1) + int(oper2)
+        stack = []
+        ops = {
+            '+': lambda x, y: x + y,
+            '-': lambda x, y: x - y,
+            '*': lambda x, y: x * y,
+            '/': lambda x, y: int(x / y)  # Using int division for negative numbers
+        }
+        
+        for token in tokens:
+            if token in ops:
+                b = stack.pop()  # Second operand
+                a = stack.pop()  # First operand
+                stack.append(ops[token](int(a), int(b)))
             else:
-                return int(oper1) - int(oper2)
-
-        stk = [tokens[0]]
-
-        i = 1
-        while stk:
-            if i < len(tokens):
-                token = tokens[i]
-                if token in ops:
-                    oper1 = stk.pop()
-                    oper2 = stk.pop()
-                    res = operate(oper2, oper1, token)
-                    # print(f"o1: {oper1} o2: {oper2}, tok: {token} ,res: {res}")
-                    stk.append(str(res))
-                else:
-                    stk.append(token)
-                i += 1
-            else:
-                stk.pop()
-        return res
+                stack.append(token)
+                
+        return int(stack[0])
 
 
 s = Solution()
-print(s.evalRPN(["2", "1", "+", "3", "*"]))
-print(s.evalRPN(["4", "13", "5", "/", "+"]))
-print(s.evalRPN(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"])) 
+print(s.evalRPN(["2", "1", "+", "3", "*"]) == 9)
+print(s.evalRPN(["4", "13", "5", "/", "+"]) == 6)
+print(s.evalRPN(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]) == 22) 
