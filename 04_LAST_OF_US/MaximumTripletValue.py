@@ -1,6 +1,5 @@
 # https://leetcode.com/problems/maximum-value-of-an-ordered-triplet-ii/submissions/1261454295/
 from typing import List
-import math
 
 class Solution:
     def maximumTripletValue(self, nums: List[int]) -> int:
