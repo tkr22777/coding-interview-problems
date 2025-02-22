@@ -1,9 +1,9 @@
-class Solution6:
+# https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/description/
+class Solution:
     def maxVowels(self, s: str, k: int) -> int:
-        current_vowel_count = 0
 
-        def is_vowel(ci):
-            if ci in {'a', 'e', 'i', 'o', 'u'}:
+        def is_vowel(char):
+            if char in {'a', 'e', 'i', 'o', 'u'}:
                 return True
             return False
 
@@ -16,18 +16,17 @@ class Solution6:
         # now want to go from i = 2
         # for an i (2), then first char is (i - (k - 1))
 
-        max_vs = 0
+        max_vowels = 0
         for i in range(k - 1, len(s)):
             if is_vowel(s[i]):
                 current_count += 1
 
-            max_vs = max(max_vs, current_count)
+            max_vowels = max(max_vowels, current_count)
 
             if is_vowel(s[i - (k - 1)]):
                 current_count -= 1
-        return max_vs
+        return max_vowels
 
-
-s = Solution6()
+s = Solution()
 print(3 == s.maxVowels("abciiidef", 3))
-print(2 == s.maxVowels("aeiou", 2)) 
+print(2 == s.maxVowels("aeiou", 2))
