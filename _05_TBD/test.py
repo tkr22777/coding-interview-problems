@@ -1,7 +1,6 @@
 import heapq
 import random
 
-
 print('test')
 
 heap = []
