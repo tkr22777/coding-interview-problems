@@ -17,51 +17,47 @@ class TreeNode {
     }
 }
 
-class NodeDepth {
-    TreeNode node;
-    int depth = 0;
-    NodeDepth(TreeNode node, int depth) {
-        this.node = node;
-        this.depth = depth;
-    }
-}
-
 class BinaryTreeZigZagLevelOrder {
 
-    /* possible code optimization: separate level ordering and zig-zag printing */
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
         if (root == null) {
-            return new ArrayList<>();
+            return result;
         }
-
-        /* to keeps the order of lists by depth */
-        TreeMap<Integer, LinkedList<Integer>> nodesByDepth = new TreeMap<>();
-
-        Queue<NodeDepth> queue = new LinkedList<>();
-        queue.offer(new NodeDepth(root, 0));
-
-        while (queue.size() > 0) {
-            NodeDepth nodeDepth = queue.poll();
-            LinkedList<Integer> list = nodesByDepth.computeIfAbsent(nodeDepth.depth, l -> new LinkedList<>());
-
-            /* Starting from 0th node, left -> right */
-            if (nodeDepth.depth % 2 == 0) {
-                list.offerLast(nodeDepth.node.value); //left to right
-            } else {
-                list.offerFirst(nodeDepth.node.value); //right to left
+        
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        boolean leftToRight = true;
+        
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            List<Integer> currentLevel = new ArrayList<>(levelSize);
+            
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode node = queue.poll();
+                
+                // Add to current level (we'll reverse later if needed)
+                currentLevel.add(node.value);
+                
+                // Add children to queue for next level
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
             }
-
-            if (nodeDepth.node.left != null) {
-                NodeDepth leftNode = new NodeDepth(nodeDepth.node.left, nodeDepth.depth + 1);
-                queue.offer(leftNode);
+            
+            // Reverse alternate levels to create zigzag pattern
+            if (!leftToRight) {
+                Collections.reverse(currentLevel);
             }
-
-            if (nodeDepth.node.right != null) {
-                NodeDepth rightNode = new NodeDepth(nodeDepth.node.right, nodeDepth.depth + 1);
-                queue.offer(rightNode);
-            }
+            
+            result.add(currentLevel);
+            leftToRight = !leftToRight; // Toggle direction for next level
         }
-        return new LinkedList<>(nodesByDepth.values());
+        
+        return result;
     }
 }
 

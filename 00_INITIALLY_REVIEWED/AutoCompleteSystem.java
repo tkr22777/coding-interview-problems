@@ -46,6 +46,8 @@ class AutoCompleteSystem {
     HashMap<String, Integer> sentenceUsage = new HashMap<String, Integer>(); ;
     StringBuilder searchString = new StringBuilder();;
 
+    private static final int MAX_SUGGESTIONS = 3;
+
     public AutoCompleteSystem(String[] sentences, int[] times) {
         for (int i = 0; i < sentences.length; i++) {
             this.addSentence(sentences[i], times[i]);
@@ -60,13 +62,8 @@ class AutoCompleteSystem {
             curr.sentences.add(sentence);
         }
 
-        // update usage
-        if (this.sentenceUsage.containsKey(sentence)) {
-            int currUsage = this.sentenceUsage.get(sentence);
-            this.sentenceUsage.put(sentence, currUsage + usage);
-        } else {
-            this.sentenceUsage.put(sentence, usage);
-        }
+        // Simplified usage update with merge
+        this.sentenceUsage.merge(sentence, usage, Integer::sum);
     }
 
     public List<String> input(char c) {
@@ -86,20 +83,14 @@ class AutoCompleteSystem {
         HashMap<String, Integer> sUsage,
         HashSet<String> sentences
     ) {
-        List<SentenceUsage> sentenceUsages = sentences.stream()
-            .map(s -> new SentenceUsage(s, sUsage.get(s)))
-            .collect(Collectors.toList());
-
-        Collections.sort(sentenceUsages, (a, b) -> {
-            // descending order by usage
-            int comp = Integer.compare(b.usage, a.usage); 
-            // ascending lexicographical order when usage is same
-            return comp != 0? comp : a.sentence.compareTo(b.sentence);
-        });
-
-        return sentenceUsages.stream()
+        return sentences.stream()
+            .map(s -> new SentenceUsage(s, sUsage.getOrDefault(s, 0)))
+            .sorted((a, b) -> {
+                int comp = Integer.compare(b.usage, a.usage);
+                return comp != 0 ? comp : a.sentence.compareTo(b.sentence);
+            })
+            .limit(MAX_SUGGESTIONS)
             .map(n -> n.sentence)
-            .limit(3)
             .collect(Collectors.toList());
     }
 }

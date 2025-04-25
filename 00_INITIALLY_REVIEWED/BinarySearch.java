@@ -19,7 +19,7 @@ class BinarySearch {
         }
 
         while (begin <= end) {
-            int mid = (begin + end) / 2;
+            int mid = begin + (end - begin) / 2;
             
             if (sortedNumbers[mid] == target) {
                 return mid;

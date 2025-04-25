@@ -85,7 +85,7 @@ class AlienDictionary {
                 if (prevWord.charAt(j) != currWord.charAt(j)) {
                     adjMat.computeIfAbsent(prevWord.charAt(j), v -> new HashSet<>())
                         .add(currWord.charAt(j));
-                    break; //as the first diff is found, we cannot infer anything else going forward
+                    break; //when the first diff is found, we cannot infer anything else going forward
                 }
             }
         }
