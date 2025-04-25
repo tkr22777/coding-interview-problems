@@ -11,89 +11,52 @@ public class FourSum {
     }
 
     public List<List<Integer>> fourSum(int[] nums, int target) {
-        Map<Integer, List<int[]>> twoSumToIndices = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = i + 1; j < nums.length; j++) {
-                int twoSum = nums[i] + nums[j];
-                twoSumToIndices.computeIfAbsent(twoSum, v -> new LinkedList<>())
-                    .add(new int[]{i, j});
-            }
-        }
-        //System.out.println("Figured Two sums. Total: " + twoSumToIndices.keySet().size());
-
-        Set<List<Integer>> toRet = new HashSet<>();
-        Set<Integer> completed = new HashSet<>();
-        for (Integer sum: twoSumToIndices.keySet()) {
-            int rest = target - sum;
-            //System.out.println("Sum:" + sum + " Rest:" + rest);
-
-            if (twoSumToIndices.containsKey(rest)) {
-                if (completed.contains(sum)) {
-                    continue;
-                }
-                completed.add(rest);
-                List<int[]> indices1 = twoSumToIndices.get(sum);
-                List<int[]> indices2 = twoSumToIndices.get(rest);
-                for (int[] aIndices1: indices1) {
-                    for (int[] aIndices2: indices2) {
-                        // we want to make sure, same index not duplicated
-                        if (aIndices1[0] == aIndices2[0] ||
-                            aIndices1[0] == aIndices2[1] ||
-                            aIndices1[1] == aIndices2[0] ||
-                            aIndices1[1] == aIndices2[1]) {
-                            continue;
-                        }
-                        List<Integer> theValues = Arrays.asList(nums[aIndices1[0]],
-                                nums[aIndices1[1]],
-                                nums[aIndices2[0]],
-                                nums[aIndices2[1]]);
-                        Collections.sort(theValues);
-                        toRet.add(theValues);
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums == null || nums.length < 4) return result;
+        
+        Arrays.sort(nums);
+        int n = nums.length;
+        
+        for (int i = 0; i < n - 3; i++) {
+            // Skip duplicates for first position
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            
+            // Early termination optimizations
+            if ((long) nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) break;
+            if ((long) nums[i] + nums[n - 3] + nums[n - 2] + nums[n - 1] < target) continue;
+            
+            for (int j = i + 1; j < n - 2; j++) {
+                // Skip duplicates for second position
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+                
+                // Early termination optimizations
+                if ((long) nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target) break;
+                if ((long) nums[i] + nums[j] + nums[n - 2] + nums[n - 1] < target) continue;
+                
+                // Two-pointer technique for the remaining two numbers
+                int left = j + 1, right = n - 1;
+                while (left < right) {
+                    long sum = (long) nums[i] + nums[j] + nums[left] + nums[right];
+                    
+                    if (sum < target) {
+                        left++;
+                    } else if (sum > target) {
+                        right--;
+                    } else {
+                        // Found valid quadruplet
+                        result.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+                        
+                        // Skip duplicates for third and fourth positions
+                        while (left < right && nums[left] == nums[left + 1]) left++;
+                        while (left < right && nums[right] == nums[right - 1]) right--;
+                        
+                        left++;
+                        right--;
                     }
                 }
             }
         }
-        //System.out.println("Sets:" + toRet.toString());
-        return new LinkedList<>(toRet);
-    }
-
-    /* copied from the comments section of this solution: https://leetcode.com/problems/4sum/discuss/8609/My-solution-generalized-for-kSums-in-JAVA */
-    public List<List<Integer>> fourSumOptimized(int[] nums, int target) {
-        Arrays.sort(nums);
-        return kSum(nums, 0, 4, target);
-    }
-    private List<List<Integer>> kSum (int[] nums, int start, int k, int target) {
-        int len = nums.length;
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        if(k == 2) { //two pointers from left and right
-            int left = start, right = len - 1;
-            while(left < right) {
-                int sum = nums[left] + nums[right];
-                if(sum == target) {
-                    List<Integer> path = new ArrayList<Integer>();
-                    path.add(nums[left]);
-                    path.add(nums[right]);
-                    res.add(path);
-                    while(left < right && nums[left] == nums[left + 1]) left++;
-                    while(left < right && nums[right] == nums[right - 1]) right--;
-                    left++;
-                    right--;
-                } else if (sum < target) { //move left
-                    left++;
-                } else { //move right
-                    right--;
-                }
-            }
-        } else {
-            for(int i = start; i < len - (k - 1); i++) {
-                if(i > start && nums[i] == nums[i - 1]) continue;
-                List<List<Integer>> temp = kSum(nums, i + 1, k - 1, target - nums[i]);
-                for(List<Integer> t : temp) {
-                    t.add(0, nums[i]);
-                }
-                res.addAll(temp);
-            }
-        }
-        return res;
+        
+        return result;
     }
 }

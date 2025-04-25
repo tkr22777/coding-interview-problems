@@ -28,7 +28,7 @@ class Flatten2DVector {
     }
     
     public boolean hasNext() {
-        //first check if we are in row's bound before able to check col in the current row
+        // first check if we are in row's bound before able to check col in the current row
         if (row >= v.length) {
             return false;
         }

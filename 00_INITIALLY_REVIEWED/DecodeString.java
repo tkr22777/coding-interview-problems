@@ -12,56 +12,45 @@ import java.util.*;
 class DecodeString {
 
     public static void main(String[] args) {
-        System.out.println("Compiling");
+        DecodeString solution = new DecodeString();
+        System.out.println(solution.decodeString("3[a2[c]]")); // accaccacc
+        System.out.println(solution.decodeString("2[abc]3[cd]ef")); // abcabccdcdcdef
+        System.out.println(solution.decodeString("abc3[cd]xyz")); // abccdcdcdxyz
     }
 
     public String decodeString(String s) {
-        Stack<Character> theStack = new Stack<Character>();
-
-        for (int i = 0; i < s.length(); i++) {
-            char current = s.charAt(i);
-            if (current == ']') { // unroll
-                String toRepeat = pullRepeatString(theStack);
-                theStack.pop(); // popping the '[' char
-                int repeatCount = pullRepeatCount(theStack);
-                String repeatedString = repeatString(toRepeat, repeatCount);
-                for (int j = 0; j < repeatedString.length(); j++) {
-                    theStack.push(repeatedString.charAt(j));
+        Stack<Integer> countStack = new Stack<>();
+        Stack<StringBuilder> stringStack = new Stack<>();
+        StringBuilder currentString = new StringBuilder();
+        int count = 0;
+        
+        for (char ch : s.toCharArray()) {
+            if (Character.isDigit(ch)) {
+                // Parse multi-digit number
+                count = count * 10 + (ch - '0');
+            } else if (ch == '[') {
+                // Save the current count and start a new string
+                countStack.push(count);
+                stringStack.push(currentString);
+                currentString = new StringBuilder();
+                count = 0;
+            } else if (ch == ']') {
+                // Pop and decode
+                StringBuilder temp = currentString;
+                currentString = stringStack.pop();
+                int repeatCount = countStack.pop();
+                
+                // Append the decoded string repeatCount times
+                for (int i = 0; i < repeatCount; i++) {
+                    currentString.append(temp);
                 }
             } else {
-                theStack.push(current);
+                // Regular character
+                currentString.append(ch);
             }
         }
-
-        StringBuilder toReturn = new StringBuilder();
-        while (!theStack.isEmpty()) {
-            toReturn.append(theStack.pop());
-        }
-        return toReturn.reverse().toString();
-    }
-
-    private int pullRepeatCount(Stack<Character> theStack) {
-        StringBuilder sb = new StringBuilder();
-        while (!theStack.isEmpty() && Character.isDigit(theStack.peek())) {
-            sb.append(theStack.pop());
-        }
-        return Integer.parseInt(sb.reverse().toString()); //data pulled from the stack is in reverse order
-    }
-
-    private String pullRepeatString(Stack<Character> theStack) {
-        StringBuilder sb = new StringBuilder();
-        while (!theStack.isEmpty() && Character.isAlphabetic(theStack.peek())) {
-            sb.append(theStack.pop());
-        }
-        return sb.reverse().toString(); //data pulled from the stack is in reverse order
-    }
-
-    private String repeatString(String s, int num) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < num; i++) {
-            sb.append(s);
-        }
-        return sb.toString();
+        
+        return currentString.toString();
     }
 }
 

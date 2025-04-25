@@ -27,6 +27,8 @@ public class ExclusiveTimeOfFunctions {
         }
     }
 
+    // it is expected that the provided task state logs are valid
+    // i.e. the logs are consistent with the task state transitions
     public static int[] exclusiveTime(int n, List<String> logs) {
 
         Stack<TaskState> taskStateStack = new Stack<>();
@@ -40,11 +42,14 @@ public class ExclusiveTimeOfFunctions {
                 taskStateStack.push(ts);
             } else if (ts.state.equals("end")) {
                 TaskState poppedTs = taskStateStack.pop();
+                
+                // calculate the duration of the current task
                 int duration = ts.timestamp - poppedTs.timestamp + 1;
+
                 task_duration[ts.id] += duration;
-                // the following is the most tricky part of the problem
+
                 // here the current tasks duration is subtracted from the
-                // calling functions duration
+                // calling functions duration to set the exclusive time
                 if (!taskStateStack.isEmpty()) {
                     task_duration[taskStateStack.peek().id] -= duration;
                 }
