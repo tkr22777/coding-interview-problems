@@ -1,3 +1,24 @@
+"""
+Coin Change Problem
+
+Problem Summary:
+Given an array of coin denominations (coins) and a target amount, 
+find the minimum number of coins needed to make up the amount.
+If the amount cannot be made up by any combination of the coins, return -1.
+
+Example:
+- Input: coins = [1, 2, 5], amount = 11
+- Output: 3 (5 + 5 + 1 = 11, using 3 coins)
+
+Algorithm:
+This implementation uses a top-down dynamic programming approach (memoization)
+to efficiently calculate the minimum number of coins needed for each amount
+from 1 to the target amount, avoiding redundant calculations.
+
+Time Complexity: O(amount * number of coins)
+Space Complexity: O(amount) for the memoization cache
+"""
+
 from typing import List
 
 class Solution:

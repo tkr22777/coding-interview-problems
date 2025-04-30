@@ -1,54 +1,63 @@
+"""
+Given an n x n matrix, count pairs (r, c) where row r and column c are identical.
+"""
 from collections import defaultdict
 
 # https://leetcode.com/problems/equal-row-and-column-pairs/
 
 class Solution(object):
-
     def equalPairs(self, grid):
-        """
-        :type grid: List[List[int]]
-        :rtype: int
-        """
-
+        n = len(grid)
+        # Count occurrences of rows and columns with same values
         value_count = defaultdict(lambda: defaultdict(int))
 
+        # Count rows
         for row in grid:
             value_count[tuple(row)]["rows"] += 1
         
-        for i in range(len(grid)):
-            the_col = [grid[j][i] for j in range(len(grid))]
-            value_count[tuple(the_col)]["cols"] += 1
+        # Count columns
+        for i in range(n):
+            col = [grid[j][i] for j in range(n)]
+            value_count[tuple(col)]["cols"] += 1
 
+        # Calculate pairs
         total = 0
-        for value_tuple, counts in value_count.items():
-            if len(counts) > 1:
+        for _, counts in value_count.items():
+            if "rows" in counts and "cols" in counts:
                 total += counts["rows"] * counts["cols"]
 
         return total
 
-print(Solution().equalPairs(
-    [
-        [3, 2, 1],
-        [1, 7, 6],
-        [2, 7, 7]
+
+# Test cases
+if __name__ == "__main__":
+    solution = Solution()
+    
+    test_cases = [
+        [
+            [3, 2, 1],
+            [1, 7, 6],
+            [2, 7, 7]
+        ],
+        [
+            [3, 1, 2, 2],
+            [1, 4, 4, 5],
+            [2, 4, 2, 2],
+            [2, 4, 2, 2]
+        ],
+        [
+            [11, 1],
+            [1, 11]
+        ],
+        [
+            [1, 1, 1],
+            [1, 1, 1],
+            [1, 1, 1]
+        ]
     ]
-) == 1)
-
-
-print(Solution().equalPairs([
-    [3, 1, 2, 2],
-    [1, 4, 4, 5],
-    [2, 4, 2, 2],
-    [2, 4, 2, 2]
-]) == 3)
-
-print(Solution().equalPairs([
-    [11, 1],
-    [1, 11]
-]) == 2)
-
-print(Solution().equalPairs([
-    [1, 1, 1],
-    [1, 1, 1],
-    [1, 1, 1]
-]) == 9)
+    
+    expected = [1, 3, 2, 9]
+    
+    for i, case in enumerate(test_cases):
+        result = solution.equalPairs(case)
+        print(f"Test {i+1}: {result == expected[i]}")

@@ -1,43 +1,44 @@
 from typing import List
 import bisect
 
+# Problem Summary:
+# Count the number of 3-soldier teams where:
+# - Either ratings are strictly increasing (rating[i] < rating[j] < rating[k])
+# - Or ratings are strictly decreasing (rating[i] > rating[j] > rating[k])
+# Where i < j < k, maintaining original positions in the array.
+
 # https://leetcode.com/problems/count-number-of-teams/
 
 class Solution:
     def numTeams(self, rating: List[int]) -> int:
         n = len(rating)
-        # For each index i, store count of:
-        # smaller[i] = numbers smaller than rating[i] to its left
-        # bigger[i] = numbers bigger than rating[i] to its left
+        # Track counts of smaller/bigger elements to the left of each position
         smaller = [0] * n
         bigger = [0] * n
         
-        # Use sorted_list to keep track of all elements to the left
+        # Maintain sorted list of elements seen so far
         sorted_list = []
         
-        # First pass: Calculate smaller and bigger counts for each position
+        # First pass: Calculate smaller and bigger counts
         for i in range(n):
             if sorted_list:
-                # Count elements smaller than current element
                 smaller[i] = bisect.bisect_left(sorted_list, rating[i])
-                # Count elements bigger than current element
+                
+                # We use bisect_right here because when subtracting from length,
+                # it correctly counts elements strictly greater than rating[i]
                 bigger[i] = len(sorted_list) - bisect.bisect_right(sorted_list, rating[i])
             
-            # Add current element to sorted list for next iterations
             bisect.insort(sorted_list, rating[i])
         
         total = 0
         # Second pass: Count valid triplets
-        # For each middle element (j), look at elements to its right (k)
         for j in range(1, n - 1):
             for k in range(j + 1, n):
                 if rating[k] > rating[j]:
-                    # For increasing sequence (i < j < k):
-                    # Add count of elements smaller than rating[j] to its left
+                    # Increasing sequence: add smaller elements to left of j
                     total += smaller[j]
                 elif rating[k] < rating[j]:
-                    # For decreasing sequence (i > j > k):
-                    # Add count of elements bigger than rating[j] to its left
+                    # Decreasing sequence: add bigger elements to left of j
                     total += bigger[j]
         
         return total

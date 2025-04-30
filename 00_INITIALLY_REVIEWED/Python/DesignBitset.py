@@ -1,3 +1,20 @@
+"""
+Problem Summary:
+Design a Bitset data structure that manages a fixed-size sequence of bits (0s and 1s).
+The Bitset class should support the following operations:
+- Initialize with a specific size, setting all bits to 0
+- Fix a bit at a specific index (set to 1)
+- Unfix a bit at a specific index (set to 0)
+- Flip all bits (0s become 1s, and 1s become 0s)
+- Check if all bits are set to 1
+- Check if at least one bit is set to 1
+- Count the number of bits set to 1
+- Convert the bitset to a string representation
+
+This implementation uses two sets to track the indices of 0s and 1s,
+providing efficient operations for all required functionalities.
+"""
+
 class Bitset:
     def __init__(self, size: int):
         self.size = size
