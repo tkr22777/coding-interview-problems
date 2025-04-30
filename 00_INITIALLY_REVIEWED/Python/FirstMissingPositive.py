@@ -2,7 +2,7 @@ class Solution(object):
     def firstMissingPositive(self, nums):
         numMap = {}
 
-        if len(nums) is 0:
+        if len(nums) == 0:
             return 1
 
         for num in nums:
