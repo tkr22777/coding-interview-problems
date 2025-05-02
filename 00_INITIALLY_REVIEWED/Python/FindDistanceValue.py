@@ -1,6 +1,9 @@
 from typing import List
 import bisect
 
+# Problem: Find the Distance Value Between Two Arrays
+# Count elements in arr1 where for every element in arr2, 
+# the absolute difference is strictly greater than d.
 # https://leetcode.com/problems/find-the-distance-value-between-two-arrays/description/
 
 class Solution:
@@ -8,26 +11,21 @@ class Solution:
 
         count = 0
         arr2.sort()
-        # print(arr2)
+        
         for v1 in arr1:
+            # Find index where v1 would be inserted in arr2
             i = bisect.bisect_left(arr2, v1)
-
-            # the value at i should be either bigger, equal 
-            # or i is at len(arr2) (all values are smaller than v1)
-            if (i < len(arr2) and 
-                int(abs(v1 - arr2[i])) <= d):
+            
+            # Check if elements at positions i and i-1 are within distance d
+            if i < len(arr2) and abs(v1 - arr2[i]) <= d:
                 continue
-            # print("v1: " + str(v1) + " i:"+ str(i))
-
-            if (i - 1 >= 0 and 
-                i - 1 < len(arr2) and 
-                int(abs(v1 - arr2[i - 1])) <= d):
+                
+            if i > 0 and abs(v1 - arr2[i-1]) <= d:
                 continue
-            # print("v1: " + str(v1) + " i:"+ str(i))
-
+                
+            # If we get here, v1 is at least d units away from all elements in arr2
             count += 1
-
-        # print("count:" + str(count))
+            
         return count
 
 s = Solution()

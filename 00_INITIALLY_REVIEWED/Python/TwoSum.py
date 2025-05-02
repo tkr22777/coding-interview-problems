@@ -11,27 +11,28 @@ Because nums[0] + nums[1] = 2 + 7 = 9,
 return [0, 1].
 """
 
+from collections import defaultdict
+
 def twoSum(nums, target):
-
-    differences = {}
-    index = 0
-    for number in nums:
+    differences = defaultdict(set)
+    
+    # First pass: Store indices for each potential complement
+    for index, number in enumerate(nums):
         diff = target - number
-        indices = differences.get(diff, set())
-        indices.add(index)
-        differences[diff] = indices
-        index = index + 1
+        differences[diff].add(index)
+    
+    # Second pass: Check if any number's complement exists
+    result = []
+    for index, number in enumerate(nums):
+        # Get all indices where this number appears as a complement
+        other_indices = differences[number]
+        for other_index in other_indices:
+            # Avoid using the same element twice and prevent duplicates
+            if index < other_index:
+                result.append([index, other_index])
+    
+    return result
 
-    index = 0
-    toReturn = []
-    for number in nums:
-        if number in differences:
-            otherIndices = differences[number]
-            for otherIndex in otherIndices:
-                if index < otherIndex: #using less than to only return 3, 4 instead of 3, 4 and 4, 3
-                    toReturn.append([index, otherIndex])
-        index = index + 1
-    return toReturn
-
-print twoSum([16, 2, 3], 20)
-print twoSum([16, 2, 3, 4], 20)
+# Python 3 compatible print statements
+print(twoSum([16, 2, 3], 20))
+print(twoSum([16, 2, 3, 4], 20))

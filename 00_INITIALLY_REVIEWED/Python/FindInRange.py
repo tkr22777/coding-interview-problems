@@ -1,45 +1,23 @@
-# given a list of (data, ts), ordered by ts
-# find data within a given start, end range if any
-# if data's range don't intersect with start return empty
-# find the start of intersecting point using binary search
+"""
+Problem: Find all (data, timestamp) pairs that fall within a given timestamp range.
+Input: Sorted list of (data, timestamp) pairs + start/end timestamps
+Output: Subset of pairs with timestamps in the range [start_ts, end_ts]
+"""
+
+import bisect
 
 TS_INDEX = 1
 
 def find_in_range(test_data, start_ts, end_ts):
-    start = find_start_index(test_data, start_ts)
-    end = start + 1
-    while (end < len(test_data) and 
-           start_ts <= test_data[end][TS_INDEX] and 
-           test_data[end][TS_INDEX] <= end_ts):
-        end += 1
-
+    # Find the starting position where timestamps >= start_ts
+    start = bisect.bisect_left([item[TS_INDEX] for item in test_data], start_ts)
+    
+    # Find the ending position where timestamps > end_ts
+    end = bisect.bisect_right([item[TS_INDEX] for item in test_data], end_ts)
+    
     return test_data[start:end]
 
-# find the start index after which the ts is greater than start_ts
-def find_start_index(test_data, start_ts):
-    start = 0
-    end = len(test_data) - 1
-
-    while start <= end:
-        mid = start + (end - start) // 2  # Better way to calculate mid to avoid overflow
-        
-        if test_data[mid][TS_INDEX] == start_ts:
-            # Found exact match, but we need to find the first occurrence
-            while mid > 0 and test_data[mid-1][TS_INDEX] == start_ts:
-                mid -= 1
-            return mid
-        elif test_data[mid][TS_INDEX] < start_ts:
-            start = mid + 1
-        else:
-            # end is mid - 1 since we are only looking to figure out
-            # the start index not the entire range with end index
-            end = mid - 1
-    
-    return start if start < len(test_data) else -1
-
-# given a list of (data, ts), ordered by ts
-# find data within a given start, end range if any
-# if data's range don't intersect with start return empty
+# Test data: list of (data, timestamp) pairs sorted by timestamp
 test_data = [
     ( "1", 1),
     ( "5", 5),
