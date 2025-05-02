@@ -1,57 +1,48 @@
+from functools import lru_cache
+
 class Solution(object):
-
-    def isMatch(self, s, p):
+    def isMatch(self, text, pattern):
         """
-        :type s: str
-        :type p: str
-        :rtype: bool
+        Determines if the input text matches the given pattern with wildcards.
         """
-
-        return self.match(s, p, 0, 0, {})
-
-    def match(self, s, p, si, pi, memo):
-
-        if si in memo and pi in memo[si]:
-            return memo[si][pi]
-
-        #print "s:" + str(s[si:]) + " p:" + str(p[pi:]) + " si: " + str(si) + " pi:" + str(pi)
-
-        if si == len(s) and pi == len(p):
-            #print "Here is a match"
-            return True
-
-        if pi >= len(p):
-            return False
-
-        if si >= len(s):
-            if self.checkStar(p[pi:]):
+        # Use functools.lru_cache for automatic memoization
+        @lru_cache(maxsize=None)
+        def match(text_idx, pattern_idx):
+            """
+            Recursively checks if the text matches the pattern starting from the given indices.
+            """
+            # Base case: both text and pattern are exhausted
+            if text_idx == len(text) and pattern_idx == len(pattern):
                 return True
-            else:
+                
+            # If pattern is exhausted but text hasn't, no match
+            if pattern_idx >= len(pattern):
                 return False
-
-        if p[pi] == '*':
-            if self.match(s, p, si, pi + 1, memo): #did not use *
-                return self.setAnReturn(memo, si, pi, True)
-            if self.match(s, p, si + 1, pi + 1, memo): #used * for a char
-                return self.setAnReturn(memo, si, pi, True)
-            match = self.match(s, p, si + 1, pi, memo)) #used * for one or more chars
-            return self.setAnReturn(memo, si, pi, match)
-
-        if p[pi] == '?' or p[pi] == s[si]:
-            match = self.match(s, p, si + 1, pi + 1, memo) 
-            return self.setAnReturn(memo, si, pi, match)
-
-        return False
-
-    def checkStar(self, aStr):
-        for char in aStr:
-            if char != '*':
-                return False
-        return True
-
-    def setAnReturn(self, memo, si, pi, val):
-        if si not in memo:
-            memo[si] = {}
-        memo[si][pi] = val
-        return val
+                
+            # If text is exhausted, the only way to match is if all remaining pattern chars are *
+            if text_idx >= len(text):
+                return all(char == '*' for char in pattern[pattern_idx:])
+                
+            # Current characters to compare
+            current_pattern = pattern[pattern_idx]
+            
+            # Handle wildcard character *
+            if current_pattern == '*':
+                # Try three cases:
+                # 1. Skip the * (don't use it)
+                # 2. Use * to match exactly one character
+                # 3. Use * to match one or more characters
+                return (match(text_idx, pattern_idx + 1) or 
+                        match(text_idx + 1, pattern_idx + 1) or 
+                        match(text_idx + 1, pattern_idx))
+                        
+            # Handle ? wildcard or exact character match
+            if current_pattern == '?' or current_pattern == text[text_idx]:
+                return match(text_idx + 1, pattern_idx + 1)
+                
+            # No match found
+            return False
+            
+        # Start the matching from the beginning of both strings
+        return match(0, 0)
 
