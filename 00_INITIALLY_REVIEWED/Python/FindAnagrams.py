@@ -10,33 +10,42 @@ Space: O(1) - fixed size array for character frequencies
 """
 
 class Solution:
-    def findAnagrams(self, s: str, p: str) -> List[int]:
-        if len(p) > len(s):
+    LOWERCASE_LETTERS_COUNT = 26
+
+    def findAnagrams(self, text: str, pattern: str) -> List[int]:
+        if len(pattern) > len(text):
             return []
 
-        indices = []
-        # Count frequencies of characters in pattern p
-        p_freq = [0] * 26
-        s_freq = [0] * 26
+        anagram_indices = []
+        pattern_freq = [0] * self.LOWERCASE_LETTERS_COUNT
+        window_freq = [0] * self.LOWERCASE_LETTERS_COUNT
         
-        # Initialize both frequency arrays for first window
-        for i in range(len(p)):
-            s_freq[ord(s[i]) - ord('a')] += 1
-            p_freq[ord(p[i]) - ord('a')] += 1
+        # Initialize frequency arrays for first window
+        for i in range(len(pattern)):
+            pattern_freq[ord(pattern[i]) - ord('a')] += 1
+            window_freq[ord(text[i]) - ord('a')] += 1
 
         # Check if first window is an anagram
-        if p_freq == s_freq:
-            indices.append(0)
+        if pattern_freq == window_freq:
+            anagram_indices.append(0)
             
         # Slide window: remove leftmost character, add rightmost character
-        for i in range(len(s) - len(p)):
-            s_freq[ord(s[i]) - ord('a')] -= 1
-            s_freq[ord(s[i + len(p)]) - ord('a')] += 1
-            if p_freq == s_freq:
-                indices.append(i + 1)
+        for i in range(len(text) - len(pattern)):
+            window_freq[ord(text[i]) - ord('a')] -= 1
+            window_freq[ord(text[i + len(pattern)]) - ord('a')] += 1
+            
+            if pattern_freq == window_freq:
+                anagram_indices.append(i + 1)
 
-        return indices 
+        return anagram_indices
 
-s = Solution()
-print(s.findAnagrams("cbaebabacd", "abc") == [0, 6])
-print(s.findAnagrams("abab", "ab") == [0, 1, 2])
+
+def test_find_anagrams():
+    solution = Solution()
+    assert solution.findAnagrams("cbaebabacd", "abc") == [0, 6], "Test case 1 failed"
+    assert solution.findAnagrams("abab", "ab") == [0, 1, 2], "Test case 2 failed"
+    print("All test cases passed!")
+
+
+if __name__ == "__main__":
+    test_find_anagrams()
