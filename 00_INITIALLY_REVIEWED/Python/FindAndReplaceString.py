@@ -9,55 +9,58 @@ Each operation consists of:
 Only replace if the source exactly matches at the given index.
 Operations are independent and don't affect each other.
 """
-from typing import List
+from typing import List, Tuple, Dict
 
 class Solution:
     def findReplaceString(
         self,
-        input: str,
+        text: str,
         indices: List[int],
         sources: List[str],
         targets: List[str]
     ) -> str:
-        # Create a mapping of index to (source, target) 
-        # This helps when indices are not in order
-        operations = {}
-        for i, s, t in zip(indices, sources, targets):
-            operations[i] = (s, t)
+        # Map each index to its corresponding (source, target) pair
+        replacements: Dict[int, Tuple[str, str]] = {
+            idx: (src, tgt) 
+            for idx, src, tgt in zip(indices, sources, targets)
+        }
         
-        # Build result by processing the string from left to right
+        # Process string left to right, applying replacements when matches found
         result = []
-        i = 0
-        while i < len(input):
-            if i in operations and input[i:i+len(operations[i][0])] == operations[i][0]:
-                # Match found - add replacement and skip source length
-                result.append(operations[i][1])
-                i += len(operations[i][0])
-            else:
-                # No match - keep original character
-                result.append(input[i])
-                i += 1
+        pos = 0
+        while pos < len(text):
+            if pos in replacements:
+                source, target = replacements[pos]
+                if text[pos:pos + len(source)] == source:
+                    result.append(target)
+                    pos += len(source)
+                    continue
+            result.append(text[pos])
+            pos += 1
                 
         return ''.join(result)
 
 
-# Test cases
-s = Solution()
+def test_find_replace_string():
+    solution = Solution()
+    
+    # Test case 1: Multiple successful replacements
+    assert solution.findReplaceString(
+        "abcd", [0, 2], ["a", "cd"], ["eee", "ffff"]
+    ) == "eeebffff", "Test case 1 failed"
+    
+    # Test case 2: One failed replacement
+    assert solution.findReplaceString(
+        "abcd", [0, 2], ["ab", "ec"], ["eee", "ffff"]
+    ) == "eeecd", "Test case 2 failed"
+    
+    # Test case 3: Out of order indices
+    assert solution.findReplaceString(
+        "vmokgggqzp", [3, 5, 1], ["kg", "ggq", "mo"], ["s", "so", "bfr"]
+    ) == "vbfrssozp", "Test case 3 failed"
+    
+    print("All test cases passed!")
 
-input = "abcd"
-indices = [0, 2]
-sources = ["a", "cd"]
-targets = ["eee", "ffff"]
-print("1st case:", "eeebffff" == s.findReplaceString(input, indices, sources, targets))
 
-input = "abcd"
-indices = [0, 2]
-sources = ["ab", "ec"]
-targets = ["eee", "ffff"]
-print("2nd case:", "eeecd" == s.findReplaceString(input, indices, sources, targets))
-
-input = "vmokgggqzp"
-indices = [3, 5, 1]
-sources = ["kg", "ggq", "mo"]
-targets = ["s", "so", "bfr"]
-print("3rd case:", "vbfrssozp" == s.findReplaceString(input, indices, sources, targets))
+if __name__ == "__main__":
+    test_find_replace_string()
