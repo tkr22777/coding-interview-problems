@@ -3,13 +3,14 @@ Group Anagrams
 Group strings by their anagram status (same letters, different order).
 Example: ["eat","tea","tan","ate","nat","bat"] -> [["eat","tea","ate"],["tan","nat"],["bat"]]
 """
+from collections import defaultdict
 
 class Solution(object):
     def groupAnagrams(self, strs):
-        anagram_map = {}
+        anagram_map = defaultdict(list)
         for s in strs:
             key = ''.join(sorted(s))
-            anagram_map.setdefault(key, []).append(s)
+            anagram_map[key].append(s)
         return list(anagram_map.values())
 
 
