@@ -1,15 +1,27 @@
-from collections import defaultdict, Counter
+from collections import Counter
 
 # https://leetcode.com/problems/sort-characters-by-frequency/
 
 class Solution:
-    def frequencySort(self, input: str) -> str:
-        # Alternative solution using Counter
-        char_freq = Counter(input)
-        sorted_chars = sorted(char_freq.items(), key=lambda x: (-x[1], x[0]))
-        return ''.join(char * freq for char, freq in sorted_chars)
+    def frequencySort(self, input_str: str) -> str:
+        # Count frequency of each character
+        char_frequency = Counter(input_str)
+        
+        # Sort characters by frequency (descending) then by character (ascending)
+        sorted_items = sorted(
+            char_frequency.items(), 
+            key=lambda item: (-item[1], item[0])
+        )
+        
+        # Build result string by repeating each character by its frequency
+        result = []
+        for char, freq in sorted_items:
+            result.append(char * freq)
+            
+        return ''.join(result)
 
-s = Solution()
+
+    s = Solution()
 print(s.frequencySort("tree") == "eert")
 print(s.frequencySort("cccaaa") == "aaaccc")
 print(s.frequencySort("Aabb") == "bbAa")
