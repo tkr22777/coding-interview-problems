@@ -1,8 +1,18 @@
+"""
+LFU Cache (Least Frequently Used Cache)
+Design a data structure that implements an LFU cache with:
+- set(key, value): Set key-value pair in cache
+- get(key): Get value for key or None if not found
+
+When cache reaches capacity, remove least frequently used item.
+If multiple items have same frequency, remove the least recently used one.
+"""
+
 from typing import Optional
 import heapq
 from datetime import datetime
 
-
+# https://leetcode.com/problems/lfu-cache/
 # we need to store: key, value, frequency, last_used
 # store key -> value, frequency and last_used data mapping in a dict
 # store frequency and timestamp on an heap
@@ -64,22 +74,34 @@ class LFUCache:
         else: 
             return None
 
-cache = LFUCache(2)
-cache.set("a", "a1")
-cache.set("a", "a2")
-print(cache.get('a') == "a2")
-cache.set("b", "b1")
-print(cache.get('a') == "a2")
-print(cache.get('b') == "b1")
-# b should be removed,
-# key 'a' has been accessed 4 times,
-# key 'b' has been accessed 3 times
-cache.set("c", "c1") 
-print(cache.get('c') == "c1")
-print(cache.get('b') is None)
-cache.get("c")
-cache.get("c")
-cache.set("d", "d1")
-print(cache.get("a") is None)
-print(cache.get('d') == "d1")
-print(cache.get('c') == "c1")
+def test_lfu_cache():
+    # Test 1: Basic operations
+    cache = LFUCache(2)
+    cache.set("a", "a1")
+    cache.set("a", "a2")  # Update existing key
+    assert cache.get("a") == "a2", "Failed to update existing key"
+    
+    # Test 2: LFU eviction
+    cache.set("b", "b1")
+    assert cache.get("a") == "a2", "Failed to retrieve key 'a'"
+    assert cache.get("b") == "b1", "Failed to retrieve key 'b'"
+    
+    # Test 3: Eviction with frequency tie
+    # At this point: 'a' accessed 3 times, 'b' accessed 2 times
+    cache.set("c", "c1")  # 'b' should be evicted (lower frequency than 'a')
+    assert cache.get("c") == "c1", "Failed to add new key 'c'"
+    assert cache.get("b") is None, "Key 'b' should have been evicted"
+    
+    # Test 4: Eviction with recency
+    cache.get("c")  # Increase 'c' frequency
+    cache.get("c")  # Now 'c' has higher frequency than 'a'
+    cache.set("d", "d1")  # 'a' should be evicted (lower frequency than 'c')
+    assert cache.get("a") is None, "Key 'a' should have been evicted"
+    assert cache.get("d") == "d1", "Failed to add new key 'd'"
+    assert cache.get("c") == "c1", "Failed to retain key 'c' with highest frequency"
+    
+    print("All LFU Cache tests passed!")
+
+
+if __name__ == "__main__":
+    test_lfu_cache()
