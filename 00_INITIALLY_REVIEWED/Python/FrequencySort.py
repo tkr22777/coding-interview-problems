@@ -1,3 +1,8 @@
+"""
+Frequency Sort
+Sort a string by decreasing character frequency (most frequent first).
+Example: "tree" -> "eert", "cccaaa" -> "aaaccc" or "cccaaa"
+"""
 from collections import Counter
 
 # https://leetcode.com/problems/sort-characters-by-frequency/
@@ -21,7 +26,25 @@ class Solution:
         return ''.join(result)
 
 
+def test_frequency_sort():
     s = Solution()
-print(s.frequencySort("tree") == "eert")
-print(s.frequencySort("cccaaa") == "aaaccc")
-print(s.frequencySort("Aabb") == "bbAa")
+    
+    test_cases = [
+        ("tree", "eert"),              # Basic case
+        ("cccaaa", "aaaccc"),          # Same frequencies, alphabetically
+        ("Aabb", "bbAa"),              # Case sensitivity
+        ("", ""),                      # Empty string
+        ("a", "a"),                    # Single character
+        ("aaa", "aaa"),                # All same character
+        ("loveleetcode", "eeeelloocdtv") # Mixed characters
+    ]
+    
+    for input_str, expected in test_cases:
+        result = s.frequencySort(input_str)
+        assert result == expected, f"For '{input_str}': got '{result}', expected '{expected}'"
+    
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_frequency_sort()
