@@ -9,47 +9,48 @@ Space Complexity: O(1) - using only constant extra space
 """
 
 class Solution:
-    def maxVowels(self, s: str, k: int) -> int:
+    def maxVowels(self, input_string: str, window_size: int) -> int:
         """
         Calculate the maximum number of vowels in any substring of length k.
         
         Args:
-            s: Input string
-            k: Length of the substring to consider
+            input_string: Input string to analyze
+            window_size: Length of the substring to consider
             
         Returns:
-            Maximum number of vowels in any substring of length k
+            Maximum number of vowels in any substring of the given length
         """
         # Edge cases
-        if not s or k <= 0 or k > len(s):
+        if not input_string or window_size <= 0 or window_size > len(input_string):
             return 0
             
         # Set of vowels for O(1) lookup
         vowels = {'a', 'e', 'i', 'o', 'u'}
         
-        # Initialize: count vowels in the first window [0, k-1]
-        current_count = 0
-        for i in range(k):
-            if s[i] in vowels:
-                current_count += 1
+        # Initialize: count vowels in the first window [0, window_size-1]
+        vowel_count = 0
+        for char_index in range(window_size):
+            if input_string[char_index] in vowels:
+                vowel_count += 1
                 
         # The maximum starts with the count from first window
-        max_vowels = current_count
+        max_vowel_count = vowel_count
         
         # Slide the window through the string
-        for i in range(k, len(s)):
-            # Add the new character
-            if s[i] in vowels:
-                current_count += 1
+        for window_end in range(window_size, len(input_string)):
+            # Add the new character at the end of the window
+            if input_string[window_end] in vowels:
+                vowel_count += 1
                 
-            # Remove the character that's no longer in the window
-            if s[i - k] in vowels:
-                current_count -= 1
+            # Remove the character that's sliding out of the window
+            window_start = window_end - window_size
+            if input_string[window_start] in vowels:
+                vowel_count -= 1
                 
-            # Update maximum
-            max_vowels = max(max_vowels, current_count)
+            # Update maximum count seen so far
+            max_vowel_count = max(max_vowel_count, vowel_count)
             
-        return max_vowels
+        return max_vowel_count
 
 
 def test_max_vowels():
