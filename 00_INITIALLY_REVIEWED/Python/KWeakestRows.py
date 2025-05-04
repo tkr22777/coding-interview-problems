@@ -41,26 +41,58 @@ class Solution:
         ret.reverse()
         return ret
 
-s = Solution()
-mat = [
-    [1, 1, 0, 0, 0],
-    [1, 1, 1, 1, 0],
-    [1, 0, 0, 0, 0],
-    [1, 1, 0, 0, 0],
-    [1, 1, 1, 1, 1]
-]
-k = 3
-expected = [2, 0, 3]
-print("1st case:" + str(expected == s.kWeakestRows(mat, k)))
-print("1st case:" + str(s.kWeakestRows(mat, k)))
 
-mat = [
-    [1, 0, 0, 0],
-    [1, 1, 1, 1],
-    [1, 0, 0, 0],
-    [1, 0, 0, 0]
-]
-k = 2
-expected = [0, 2]
-print("2nd case:" + str(expected == s.kWeakestRows(mat, k)))
-print("2nd case:" + str(s.kWeakestRows(mat, k)))
+def test_k_weakest_rows():
+    s = Solution()
+    
+    test_cases = [
+        # Matrix, k, Expected result
+        (
+            [
+                [1, 1, 0, 0, 0],
+                [1, 1, 1, 1, 0],
+                [1, 0, 0, 0, 0],
+                [1, 1, 0, 0, 0],
+                [1, 1, 1, 1, 1]
+            ],
+            3,
+            [2, 0, 3]  # Rows with fewest soldiers
+        ),
+        (
+            [
+                [1, 0, 0, 0],
+                [1, 1, 1, 1],
+                [1, 0, 0, 0],
+                [1, 0, 0, 0]
+            ],
+            2,
+            [0, 2]  # Two weakest rows
+        ),
+        (
+            [
+                [1, 1, 1],
+                [1, 1, 1],
+                [1, 1, 1]
+            ],
+            3,
+            [0, 1, 2]  # All equal, return by index
+        ),
+        (
+            [
+                [1, 0],
+                [0, 0]
+            ],
+            1,
+            [1]  # Row with no soldiers
+        )
+    ]
+    
+    for mat, k, expected in test_cases:
+        result = s.kWeakestRows(mat, k)
+        assert result == expected, f"For matrix {mat} and k={k}: expected {expected}, got {result}"
+    
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_k_weakest_rows()

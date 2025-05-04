@@ -1,4 +1,9 @@
-# https://leetcode.com/problems/largest-palindromic-number/description/
+"""
+Largest Palindromic Number
+Create the largest palindromic number from the digits in a given string.
+Leading zeros are not allowed unless the entire number is 0.
+Example: "444947137" -> "7449447", "00009" -> "9"
+"""
 
 from collections import defaultdict
 import heapq
@@ -45,7 +50,25 @@ class Solution:
         return "".join(prefix)
 
 
-s = Solution()
-print(s.largestPalindromic("444947137") == "7449447")
-print(s.largestPalindromic("00009") == "9")
-print(s.largestPalindromic("0000997") == "9007009")
+def test_largest_palindromic():
+    s = Solution()
+    
+    test_cases = [
+        ("444947137", "7449447"),     # Regular case with mixed digits
+        ("00009", "9"),               # Leading zeros removed
+        ("0000997", "9007009"),       # Leading zeros in middle digits
+        ("00000", "0"),               # All zeros
+        ("1", "1"),                   # Single digit
+        ("12345", "5"),               # All unique digits
+        ("99999", "99999")            # All same digit
+    ]
+    
+    for num, expected in test_cases:
+        result = s.largestPalindromic(num)
+        assert result == expected, f"For input '{num}': expected '{expected}', got '{result}'"
+    
+    print("All tests passed!")
+
+
+if __name__ == "__main__":
+    test_largest_palindromic()
