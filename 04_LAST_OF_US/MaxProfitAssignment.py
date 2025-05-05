@@ -47,18 +47,40 @@ class Solution:
             difficulty_max_profit_pairs.append([diff, max_profit_so_far])
         
         def find_max_profit_index(jobs_array, max_difficulty):
-            """Find rightmost index where job difficulty <= worker ability"""
+            """
+            Find the insertion point (one past the rightmost index) where job difficulty <= worker ability.
+            
+            This binary search implementation uses 'right = mid - 1' when the condition is false because:
+            1. We're looking for the rightmost index where difficulty <= worker ability
+            2. When jobs_array[mid][0] > max_difficulty, mid is definitely not valid, so we move left (right = mid - 1)
+            3. When jobs_array[mid][0] <= max_difficulty, mid might not be the rightmost valid index, so we move right
+            4. After the loop, 'left' points to the insertion point (one past the rightmost valid index)
+            5. Therefore, to access the last valid job, we use jobs_array[idx-1]
+            
+            If we used 'right = mid' instead, we'd risk an infinite loop when the condition is false.
+            
+            Args:
+                jobs_array: Sorted array of [difficulty, max_profit] pairs
+                max_difficulty: Maximum difficulty a worker can handle
+                
+            Returns:
+                Insertion point (one past the rightmost valid index)
+            """
             left = 0
             right = len(jobs_array) - 1
             
             while left <= right:
                 mid = (left + right) // 2
                 if jobs_array[mid][0] <= max_difficulty:
+                    # This job is doable, but might not be the rightmost valid job.
+                    # Continue searching to the right.
                     left = mid + 1
                 else:
+                    # This job is too difficult. Must search to the left.
+                    # Using 'right = mid - 1' to avoid infinite loops.
                     right = mid - 1
                     
-            return left  # Return insertion point
+            return left  # Return insertion point (one past the rightmost valid index)
         
         # Calculate total profit
         total_profit = 0
@@ -67,6 +89,7 @@ class Solution:
             idx = find_max_profit_index(difficulty_max_profit_pairs, worker_ability)
             
             # Only add profit if worker can do at least one job
+            # We use idx-1 because idx points to the insertion point (one past the rightmost valid job)
             if idx - 1 >= 0:
                 worker_profit = difficulty_max_profit_pairs[idx - 1][1]
                 total_profit += worker_profit
