@@ -11,9 +11,10 @@ Because nums[0] + nums[1] = 2 + 7 = 9,
 return [0, 1].
 """
 
+from typing import List
 from collections import defaultdict
 
-def twoSum(nums, target):
+def twoSum(nums: List[int], target: int) -> List[int]:
     differences = defaultdict(set)
     
     # First pass: Store indices for each potential complement
@@ -22,7 +23,7 @@ def twoSum(nums, target):
         differences[diff].add(index)
     
     # Second pass: Check if any number's complement exists
-    result = []
+    result: List[List[int]] = []
     for index, number in enumerate(nums):
         # Get all indices where this number appears as a complement
         other_indices = differences[number]

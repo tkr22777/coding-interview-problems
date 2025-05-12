@@ -1,13 +1,13 @@
 from functools import lru_cache
 
 class Solution(object):
-    def isMatch(self, text, pattern):
+    def isMatch(self, text: str, pattern: str) -> bool:
         """
         Determines if the input text matches the given pattern with wildcards.
         """
         # Use functools.lru_cache for automatic memoization
         @lru_cache(maxsize=None)
-        def match(text_idx, pattern_idx):
+        def match(text_idx: int, pattern_idx: int) -> bool:
             """
             Recursively checks if the text matches the pattern starting from the given indices.
             """
