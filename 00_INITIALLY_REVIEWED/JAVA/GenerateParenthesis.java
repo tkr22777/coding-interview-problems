@@ -47,7 +47,9 @@ class GenerateParenthesis {
             char[] chars = new char[close];
             Arrays.fill(chars, ')');
             String str = new String(chars);
-            return List.of(str);
+            List<String> result = new ArrayList<>();
+            result.add(str);
+            return result;
         }
 
         //Open > 0

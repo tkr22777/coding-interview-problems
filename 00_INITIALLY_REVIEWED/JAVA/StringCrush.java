@@ -1,4 +1,3 @@
-package JAVA;
 /*
  * given a string with alphabets, crush more than 2 contiguous (3 chars or more)
  * chars and merge the strings from the sides, return the final string when it

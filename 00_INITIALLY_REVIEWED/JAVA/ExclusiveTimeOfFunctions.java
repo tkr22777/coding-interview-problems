@@ -10,7 +10,10 @@ public class ExclusiveTimeOfFunctions {
     public static void main(String[] args) {
         int n = 2;
         String[] logs_array = {"0:start:0","0:start:2","0:end:5","1:start:6","1:end:6","0:end:7"};
-        List<String> logs = new ArrayList<>(List.of(logs_array));
+        List<String> logs = new ArrayList<>();
+        for (String log : logs_array) {
+            logs.add(log);
+        }
         int[] output = exclusiveTime(n, logs);
         System.out.println("ExTime:" + Arrays.toString(output));
     }

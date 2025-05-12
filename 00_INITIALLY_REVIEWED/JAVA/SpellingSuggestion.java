@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 
 /*
     Given a list of words in a dictionary, implement a check spelling
@@ -18,16 +19,16 @@ public class SpellingSuggestion {
     TrieNodeS root;
 
     public static void main(String[] args) {
-        if (!"amend".equals(new SpellingSuggestion(List.of("amend", "abacus", "bottle", "bentley")).checkSpelling("amand"))){
+        if (!"amend".equals(new SpellingSuggestion(Arrays.asList("amend", "abacus", "bottle", "bentley")).checkSpelling("amand"))){
             throw new RuntimeException("");
         }
-        if (!"bottle".equals(new SpellingSuggestion(List.of("amend", "abacus", "bottle", "bentley")).checkSpelling("battle"))){
+        if (!"bottle".equals(new SpellingSuggestion(Arrays.asList("amend", "abacus", "bottle", "bentley")).checkSpelling("battle"))){
             throw new RuntimeException("");
         }
-        if (!"bottle".equals(new SpellingSuggestion(List.of("amend", "abacus", "bottle", "bentley")).checkSpelling("bittle"))){
+        if (!"bottle".equals(new SpellingSuggestion(Arrays.asList("amend", "abacus", "bottle", "bentley")).checkSpelling("bittle"))){
             throw new RuntimeException("");
         }
-        if (!( null == new SpellingSuggestion(List.of("amend", "abacus", "bottle", "bentley")).checkSpelling("bitlle"))){
+        if (!( null == new SpellingSuggestion(Arrays.asList("amend", "abacus", "bottle", "bentley")).checkSpelling("bitlle"))){
             throw new RuntimeException("");
         }
     }
