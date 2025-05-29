@@ -15,13 +15,13 @@
 # https://leetcode.com/problems/employee-importance/
 from collections import deque
 
-class Employee(object):
-    def __init__(self, id, importance, subordinates):
+class Employee:
+    def __init__(self, id: int, importance: int, subordinates):
         self.id = id
         self.importance = importance
         self.subordinates = subordinates
 
-class Solution(object):
+class Solution:
     def getImportance(self, employees : list[Employee], id : int) -> int:
         # Map each employee ID to (importance, subordinates)
         emp_id_to_imp_subs_mapping = {}

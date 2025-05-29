@@ -5,7 +5,7 @@ from collections import defaultdict
 
 # https://leetcode.com/problems/equal-row-and-column-pairs/
 
-class Solution(object):
+class Solution:
     def equalPairs(self, grid):
         n = len(grid)
         # Count occurrences of rows and columns with same values

@@ -4,7 +4,7 @@ Find the smallest positive integer that does not exist in the array.
 Example: [1,2,0] -> 3, [3,4,-1,1] -> 2, [7,8,9,11,12] -> 1
 """
 
-class Solution(object):
+class Solution:
     def firstMissingPositive(self, nums):
         numMap = {}
 

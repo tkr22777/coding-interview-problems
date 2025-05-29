@@ -5,7 +5,7 @@ Example: ["eat","tea","tan","ate","nat","bat"] -> [["eat","tea","ate"],["tan","n
 """
 from collections import defaultdict
 
-class Solution(object):
+class Solution:
     def groupAnagrams(self, strs):
         anagram_map = defaultdict(list)
         for s in strs:
