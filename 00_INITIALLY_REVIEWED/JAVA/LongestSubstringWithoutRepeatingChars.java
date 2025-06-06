@@ -39,6 +39,7 @@ class LongestSubstringWithoutRepeatingChars {
                 longest = Math.max(j - i, longest);
                 // 1. we want move i to the right of duplicated char
                 // 2. we want to remove all chars prior to the duplicated char
+                // can be simplified to while s.charAt(i) != s.charAt(j)
                 while (i < j) {
                     set.remove(s.charAt(i));
                     if (s.charAt(i) == s.charAt(j)) {
