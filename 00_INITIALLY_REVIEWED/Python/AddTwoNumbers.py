@@ -14,12 +14,11 @@ Example:
     Explanation: 342 + 465 = 807.
 """
 
-# Definition for singly-linked list.
 class ListNode:
-
-    def __init__(self, x):
-        self.val = x
-        self.next = None
+    """Represents a node in a linked list."""
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
     def __str__(self):
         if self.next is None:

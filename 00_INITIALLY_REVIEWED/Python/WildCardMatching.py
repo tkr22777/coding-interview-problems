@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-class Solution(object):
+class Solution:
     def isMatch(self, text: str, pattern: str) -> bool:
         """
         Determines if the input text matches the given pattern with wildcards.

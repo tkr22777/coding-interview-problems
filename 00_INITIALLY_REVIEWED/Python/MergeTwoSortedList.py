@@ -1,26 +1,26 @@
 #!/usr/bin/python
 
 # Definition for singly-linked list.
-class ListNode(object):
-     def __init__(self, val):
-         self.val = val
-         self.next = None
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
-     def __str__(self):
-         node = self
-         values = ["Head"]
-         while node is not None:
-             values.append(str(node.val))
-             node = node.next
-         return " -> ".join(values)
+    def __str__(self):
+        node = self
+        values = ["Head"]
+        while node is not None:
+            values.append(str(node.val))
+            node = node.next
+        return " -> ".join(values)
 
-     def append(self, val):
-         node = self
-         while node.next is not None:
-             node = node.next
-         node.next = ListNode(val)
+    def append(self, val):
+        node = self
+        while node.next is not None:
+            node = node.next
+        node.next = ListNode(val)
 
-class Solution(object):
+class Solution:
     def mergeTwoLists(self, list1, list2):
         """
         Merge two sorted linked lists and return the head of the merged linked list.

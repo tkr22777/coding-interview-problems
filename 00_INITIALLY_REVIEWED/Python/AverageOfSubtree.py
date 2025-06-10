@@ -1,7 +1,7 @@
 # https://leetcode.com/problems/count-nodes-equal-to-average-of-subtree/
 
 # Definition for a binary tree node.
-class TreeNode(object):
+class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
@@ -9,7 +9,7 @@ class TreeNode(object):
 
 # Given the root of a binary tree, return the number of nodes where the value
 # of the node is equal to the average of the values in its subtree.
-class Solution(object):
+class Solution:
     def averageOfSubtree(self, root) -> int:
        return self.averageOfSubtreeHelper(root)[2]
         
