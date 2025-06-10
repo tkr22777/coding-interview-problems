@@ -44,6 +44,25 @@ arr[1::2]                                       # [1, 3, 5, 7, 9] (every 2nd, st
 arr[::-2]                                       # [9, 7, 5, 3, 1] (every 2nd in reverse)
 arr[8:2:-1]                                     # [8, 7, 6, 5, 4, 3] (reverse from index 8 to 2)
 arr[5::-1]                                      # [5, 4, 3, 2, 1, 0] (reverse from index 5 to start)
+
+# *** STRING ↔ LIST CONVERSIONS & REVERSAL ***
+text = "hello world"
+char_list = list(text)                          # ['h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd']
+back_to_string = ''.join(char_list)             # "hello world"
+
+# String reversal (multiple approaches)
+reversed_str = text[::-1]                       # "dlrow olleh" (slice notation)
+reversed_join = ''.join(reversed(text))         # "dlrow olleh" (using reversed())
+reversed_list = ''.join(list(text)[::-1])       # "dlrow olleh" (convert to list first)
+
+# Word-level operations
+words = text.split()                            # ['hello', 'world']
+reversed_words = words[::-1]                    # ['world', 'hello']
+reversed_sentence = ' '.join(reversed_words)    # "world hello"
+
+# Character manipulation
+char_list[0] = 'H'                              # ['H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd']
+modified_string = ''.join(char_list)            # "Hello world"
 ```
 
 </details>
