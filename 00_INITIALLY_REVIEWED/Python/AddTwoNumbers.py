@@ -15,7 +15,7 @@ Example:
 """
 
 # Definition for singly-linked list.
-class ListNode(object):
+class ListNode:
 
     def __init__(self, x):
         self.val = x
@@ -27,7 +27,7 @@ class ListNode(object):
         else:
             return str(self.val) + " -> " + str(self.next)
 
-class Solution(object):
+class Solution:
 
     def addTwoNumbers(self, l1, l2):
 
