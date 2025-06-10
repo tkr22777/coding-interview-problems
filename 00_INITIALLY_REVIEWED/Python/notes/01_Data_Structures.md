@@ -122,32 +122,34 @@ d1.clear()                                      # Remove all elements
 from collections import OrderedDict
 
 od = OrderedDict()
-od['a'] = 1
+od['a'] = 1                                     # OrderedDict([('a', 1)])
 od['b'] = 2                                     # OrderedDict([('a', 1), ('b', 2)])
+od['c'] = 3                                     # OrderedDict([('a', 1), ('b', 2), ('c', 3)])
 
 # Access and modify
 value = od['a']                                 # value is 1
-od['a'] = 4                                     # Update value
-size = len(od)                                  # size = 2
+od['a'] = 4                                     # OrderedDict([('a', 4), ('b', 2), ('c', 3)])
+size = len(od)                                  # size = 3
 
 # Check membership
 if 'a' in od:
-    od['a'] = 6
+    od['a'] = 6                                 # OrderedDict([('a', 6), ('b', 2), ('c', 3)])
 
 # Move elements
-od.move_to_end('a')                             # Move 'a' to end
-od.move_to_end('b', last=False)                 # Move 'b' to beginning
+od.move_to_end('a')                             # OrderedDict([('b', 2), ('c', 3), ('a', 6)])
+od.move_to_end('b', last=False)                 # OrderedDict([('b', 2), ('c', 3), ('a', 6)])
 
 # Pop operations
-key, value = od.popitem()                       # Pop from end (mutates)
-key, value = od.popitem(last=False)             # Pop from beginning
+key, value = od.popitem()                       # ('a', 6), od becomes [('b', 2), ('c', 3)]
+key, value = od.popitem(last=False)             # ('b', 2), od becomes [('c', 3)]
 
-# Peek operations
-key, value = next(iter(od.items()))             # Peek first (doesn't mutate)
-key, value = next(reversed(od.items()))         # Peek last (doesn't mutate)
+# Peek operations (rebuild for demo)
+od = OrderedDict([('x', 10), ('y', 20), ('z', 30)])
+key, value = next(iter(od.items()))             # ('x', 10) - peek first
+key, value = next(reversed(od.items()))         # ('z', 30) - peek last
 
 # Clear
-od.clear()                                      # Remove all items
+od.clear()                                      # OrderedDict([])
 ```
 
 </details>
