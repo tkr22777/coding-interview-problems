@@ -45,7 +45,7 @@ def is_palindrome(s):
 <summary><strong>Sliding Window</strong></summary>
 
 ```python
-# Maximum sum subarray of size k
+# Maximum sum subarray of size k (fixed window)
 def max_sum_subarray(arr, k):
     if len(arr) < k:
         return -1
@@ -61,7 +61,7 @@ def max_sum_subarray(arr, k):
     
     return max_sum
 
-# Longest substring without repeating characters
+# Longest substring without repeating characters (variable window)
 def longest_unique_substring(s):
     char_set = set()
     left = 0
@@ -75,17 +75,6 @@ def longest_unique_substring(s):
         max_length = max(max_length, right - left + 1)
     
     return max_length
-
-# Fixed window pattern
-def fixed_window_template(arr, k):
-    window_sum = sum(arr[:k])
-    result = [window_sum]
-    
-    for i in range(k, len(arr)):
-        window_sum += arr[i] - arr[i - k]
-        result.append(window_sum)
-    
-    return result
 ```
 
 </details>
@@ -100,28 +89,24 @@ class TreeNode:
         self.left = left
         self.right = right
 
-# Recursive traversals
-def inorder_recursive(root):
+# Iterative inorder (most efficient)
+def inorder_iterative(root):
     result = []
-    def dfs(node):
-        if node:
-            dfs(node.left)
-            result.append(node.val)
-            dfs(node.right)
-    dfs(root)
+    stack = []
+    current = root
+    
+    while stack or current:
+        while current:
+            stack.append(current)
+            current = current.left
+        
+        current = stack.pop()
+        result.append(current.val)
+        current = current.right
+    
     return result
 
-def preorder_recursive(root):
-    result = []
-    def dfs(node):
-        if node:
-            result.append(node.val)
-            dfs(node.left)
-            dfs(node.right)
-    dfs(root)
-    return result
-
-# Iterative level order (BFS)
+# Level order traversal (BFS)
 from collections import deque
 def level_order(root):
     if not root:
@@ -144,23 +129,6 @@ def level_order(root):
                 queue.append(node.right)
         
         result.append(level)
-    
-    return result
-
-# Iterative inorder
-def inorder_iterative(root):
-    result = []
-    stack = []
-    current = root
-    
-    while stack or current:
-        while current:
-            stack.append(current)
-            current = current.left
-        
-        current = stack.pop()
-        result.append(current.val)
-        current = current.right
     
     return result
 ```

@@ -1,12 +1,12 @@
 # Map, Filter & Reduce
 
 ## Core Concepts
-- **map()**: Transform each element in a sequence
-- **filter()**: Select elements that meet a condition  
-- **reduce()**: Aggregate sequence into a single value
+- **map()**: Transform each element in a sequence (built-in)
+- **filter()**: Select elements that meet a condition (built-in)
+- **reduce()**: Aggregate sequence into a single value (requires import)
 
 ```python
-from functools import reduce
+from functools import reduce  # Only reduce() needs import
 
 # Shared data for examples
 numbers = [1, 2, 3, 4, 5, 6]
