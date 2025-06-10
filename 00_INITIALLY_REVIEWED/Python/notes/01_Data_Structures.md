@@ -25,7 +25,6 @@ reversed_arr = arr[::-1]                        # [0, 2, 4, 5] (new list)
 first_two = arr[:2]                             # [5, 4]
 last_two = arr[-2:]                             # [2, 0]
 copy_arr = arr.copy()                           # Shallow copy
-copy_slice = arr[:]                             # Also creates copy
 
 # Find and count
 index = arr.index(4)                            # 1 (first occurrence)
@@ -43,17 +42,14 @@ arr[::2]                                        # [0, 2, 4, 6, 8] (every 2nd ele
 arr[1::2]                                       # [1, 3, 5, 7, 9] (every 2nd, starting at index 1)
 arr[::-2]                                       # [9, 7, 5, 3, 1] (every 2nd in reverse)
 arr[8:2:-1]                                     # [8, 7, 6, 5, 4, 3] (reverse from index 8 to 2)
-arr[5::-1]                                      # [5, 4, 3, 2, 1, 0] (reverse from index 5 to start)
 
 # *** STRING ↔ LIST CONVERSIONS & REVERSAL ***
 text = "hello world"
 char_list = list(text)                          # ['h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd']
 back_to_string = ''.join(char_list)             # "hello world"
 
-# String reversal (multiple approaches)
+# String reversal (most efficient)
 reversed_str = text[::-1]                       # "dlrow olleh" (slice notation)
-reversed_join = ''.join(reversed(text))         # "dlrow olleh" (using reversed())
-reversed_list = ''.join(list(text)[::-1])       # "dlrow olleh" (convert to list first)
 
 # Word-level operations
 words = text.split()                            # ['hello', 'world']
@@ -130,7 +126,7 @@ od['a'] = 1
 od['b'] = 2                                     # OrderedDict([('a', 1), ('b', 2)])
 
 # Access and modify
-a = od['a']                                     # a is 1
+value = od['a']                                 # value is 1
 od['a'] = 4                                     # Update value
 size = len(od)                                  # size = 2
 
@@ -164,7 +160,6 @@ s = {1, 2, 3}
 s.add(4)                                        # s becomes {1, 2, 3, 4}
 len(s)                                          # Returns 4
 s.discard(2)                                    # Remove element (no error if missing)
-s.remove(3)                                     # Remove element (error if missing)
 
 # Set operations
 s1 = {1, 2, 3, 4}
@@ -184,9 +179,8 @@ s1.isdisjoint({7, 8})                           # True
 s1.update({5, 6})                               # s1 becomes {1, 2, 3, 4, 5, 6}
 s1.intersection_update(s2)                      # s1 becomes {3, 4, 5, 6}
 
-# Pop and copy
+# Pop and clear
 popped = s1.pop()                               # Remove and return arbitrary element
-s_copy = s1.copy()                              # Shallow copy
 s1.clear()                                      # Remove all elements
 ```
 
