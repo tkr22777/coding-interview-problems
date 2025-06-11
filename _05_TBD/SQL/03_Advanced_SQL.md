@@ -1,6 +1,146 @@
 # Advanced SQL
 
 <details>
+<summary><strong>Advanced Performance Optimization</strong></summary>
+
+```sql
+-- Query plan analysis
+EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) 
+SELECT e.first_name, e.last_name, d.name
+FROM employees e
+JOIN departments d ON e.department_id = d.id
+WHERE e.salary > 50000;
+
+-- Advanced indexing strategies
+-- Partial index for active records only
+CREATE INDEX idx_active_employees_salary ON employees(salary) 
+WHERE status = 'active';
+
+-- Composite index with included columns
+CREATE INDEX idx_employees_dept_salary_inc ON employees(department_id, salary) 
+INCLUDE (first_name, last_name, hire_date);
+
+-- Functional index
+CREATE INDEX idx_employees_email_lower ON employees(LOWER(email));
+
+-- Hash index for equality comparisons
+CREATE INDEX CONCURRENTLY idx_employees_id_hash ON employees USING HASH(id);
+
+-- Query optimization techniques
+-- Use materialized CTEs for expensive operations
+WITH expensive_calculation AS MATERIALIZED (
+    SELECT department_id, 
+           percentile_cont(0.5) WITHIN GROUP (ORDER BY salary) as median_salary
+    FROM employees
+    GROUP BY department_id
+)
+SELECT e.*, ec.median_salary
+FROM employees e
+JOIN expensive_calculation ec ON e.department_id = ec.department_id;
+
+-- Efficient pagination with cursor-based approach
+SELECT * FROM employees
+WHERE (salary, id) > (50000, 123)  -- cursor from previous page
+ORDER BY salary, id
+LIMIT 20;
+
+-- Batch processing for large updates
+DO $$
+DECLARE
+    batch_size INTEGER := 1000;
+    processed INTEGER := 0;
+BEGIN
+    LOOP
+        UPDATE employees 
+        SET updated_at = CURRENT_TIMESTAMP
+        WHERE id IN (
+            SELECT id FROM employees 
+            WHERE updated_at IS NULL
+            LIMIT batch_size
+        );
+        
+        GET DIAGNOSTICS processed = ROW_COUNT;
+        EXIT WHEN processed = 0;
+        
+        COMMIT;  -- Commit each batch
+        RAISE NOTICE 'Processed % rows', processed;
+    END LOOP;
+END $$;
+```
+
+</details>
+
+<details>
+<summary><strong>Advanced Data Types & Operations</strong></summary>
+
+```sql
+-- Advanced JSON operations (PostgreSQL)
+CREATE TABLE event_logs (
+    id SERIAL PRIMARY KEY,
+    event_data JSONB,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Complex JSON queries
+SELECT 
+    event_data->>'user_id' as user_id,
+    event_data->>'event_type' as event_type,
+    event_data->'metadata'->>'source' as source,
+    jsonb_array_length(event_data->'tags') as tag_count
+FROM event_logs
+WHERE event_data->>'event_type' = 'login'
+  AND event_data->'metadata'->>'source' = 'mobile'
+  AND event_data->'user_data'->>'premium' = 'true';
+
+-- JSON aggregation
+SELECT event_data->>'event_type',
+       jsonb_agg(event_data->'metadata') as all_metadata,
+       jsonb_object_agg(
+           event_data->>'user_id', 
+           event_data->'user_data'
+       ) as user_data_map
+FROM event_logs
+GROUP BY event_data->>'event_type';
+
+-- Array operations (PostgreSQL)
+CREATE TABLE survey_responses (
+    user_id INTEGER,
+    selected_options INTEGER[],
+    tags TEXT[]
+);
+
+-- Array queries
+SELECT user_id, selected_options
+FROM survey_responses
+WHERE 1 = ANY(selected_options)  -- Contains option 1
+  AND NOT (2 = ANY(selected_options))  -- Doesn't contain option 2
+  AND array_length(selected_options, 1) >= 3;  -- At least 3 selections
+
+-- Array aggregation and manipulation
+SELECT 
+    array_agg(DISTINCT user_id) as all_users,
+    array_agg(selected_options) as all_selections,
+    unnest(array_agg(tags)) as individual_tags
+FROM survey_responses;
+
+-- Range types (PostgreSQL)
+CREATE TABLE event_schedules (
+    event_id INTEGER,
+    time_range TSRANGE,
+    price_range NUMRANGE
+);
+
+INSERT INTO event_schedules VALUES 
+(1, '[2024-01-01 09:00, 2024-01-01 17:00)', '[100, 500)');
+
+SELECT * FROM event_schedules
+WHERE time_range @> '2024-01-01 14:00'::timestamp  -- Contains time
+  AND price_range && '[200, 300)'::numrange;       -- Overlaps price range
+```
+
+</details>
+
+<details>
 <summary><strong>Pivot & Unpivot Operations</strong></summary>
 
 ```sql
@@ -235,76 +375,6 @@ ORDER BY cr.cohort_month, cr.months_since_hire;
 </details>
 
 <details>
-<summary><strong>Advanced Performance Optimization</strong></summary>
-
-```sql
--- Query plan analysis
-EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) 
-SELECT e.first_name, e.last_name, d.name
-FROM employees e
-JOIN departments d ON e.department_id = d.id
-WHERE e.salary > 50000;
-
--- Advanced indexing strategies
--- Partial index for active records only
-CREATE INDEX idx_active_employees_salary ON employees(salary) 
-WHERE status = 'active';
-
--- Composite index with included columns
-CREATE INDEX idx_employees_dept_salary_inc ON employees(department_id, salary) 
-INCLUDE (first_name, last_name, hire_date);
-
--- Functional index
-CREATE INDEX idx_employees_email_lower ON employees(LOWER(email));
-
--- Hash index for equality comparisons
-CREATE INDEX CONCURRENTLY idx_employees_id_hash ON employees USING HASH(id);
-
--- Query optimization techniques
--- Use materialized CTEs for expensive operations
-WITH expensive_calculation AS MATERIALIZED (
-    SELECT department_id, 
-           percentile_cont(0.5) WITHIN GROUP (ORDER BY salary) as median_salary
-    FROM employees
-    GROUP BY department_id
-)
-SELECT e.*, ec.median_salary
-FROM employees e
-JOIN expensive_calculation ec ON e.department_id = ec.department_id;
-
--- Efficient pagination with cursor-based approach
-SELECT * FROM employees
-WHERE (salary, id) > (50000, 123)  -- cursor from previous page
-ORDER BY salary, id
-LIMIT 20;
-
--- Batch processing for large updates
-DO $$
-DECLARE
-    batch_size INTEGER := 1000;
-    processed INTEGER := 0;
-BEGIN
-    LOOP
-        UPDATE employees 
-        SET updated_at = CURRENT_TIMESTAMP
-        WHERE id IN (
-            SELECT id FROM employees 
-            WHERE updated_at IS NULL
-            LIMIT batch_size
-        );
-        
-        GET DIAGNOSTICS processed = ROW_COUNT;
-        EXIT WHEN processed = 0;
-        
-        COMMIT;  -- Commit each batch
-        RAISE NOTICE 'Processed % rows', processed;
-    END LOOP;
-END $$;
-```
-
-</details>
-
-<details>
 <summary><strong>Database Design & Normalization</strong></summary>
 
 ```sql
@@ -383,76 +453,6 @@ CREATE TABLE employee_summary (
     last_promotion_date DATE,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-```
-
-</details>
-
-<details>
-<summary><strong>Advanced Data Types & Operations</strong></summary>
-
-```sql
--- Advanced JSON operations (PostgreSQL)
-CREATE TABLE event_logs (
-    id SERIAL PRIMARY KEY,
-    event_data JSONB,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Complex JSON queries
-SELECT 
-    event_data->>'user_id' as user_id,
-    event_data->>'event_type' as event_type,
-    event_data->'metadata'->>'source' as source,
-    jsonb_array_length(event_data->'tags') as tag_count
-FROM event_logs
-WHERE event_data->>'event_type' = 'login'
-  AND event_data->'metadata'->>'source' = 'mobile'
-  AND event_data->'user_data'->>'premium' = 'true';
-
--- JSON aggregation
-SELECT event_data->>'event_type',
-       jsonb_agg(event_data->'metadata') as all_metadata,
-       jsonb_object_agg(
-           event_data->>'user_id', 
-           event_data->'user_data'
-       ) as user_data_map
-FROM event_logs
-GROUP BY event_data->>'event_type';
-
--- Array operations (PostgreSQL)
-CREATE TABLE survey_responses (
-    user_id INTEGER,
-    selected_options INTEGER[],
-    tags TEXT[]
-);
-
--- Array queries
-SELECT user_id, selected_options
-FROM survey_responses
-WHERE 1 = ANY(selected_options)  -- Contains option 1
-  AND NOT (2 = ANY(selected_options))  -- Doesn't contain option 2
-  AND array_length(selected_options, 1) >= 3;  -- At least 3 selections
-
--- Array aggregation and manipulation
-SELECT 
-    array_agg(DISTINCT user_id) as all_users,
-    array_agg(selected_options) as all_selections,
-    unnest(array_agg(tags)) as individual_tags
-FROM survey_responses;
-
--- Range types (PostgreSQL)
-CREATE TABLE event_schedules (
-    event_id INTEGER,
-    time_range TSRANGE,
-    price_range NUMRANGE
-);
-
-INSERT INTO event_schedules VALUES 
-(1, '[2024-01-01 09:00, 2024-01-01 17:00)', '[100, 500)');
-
-SELECT * FROM event_schedules
-WHERE time_range @> '2024-01-01 14:00'::timestamp  -- Contains time
-  AND price_range && '[200, 300)'::numrange;       -- Overlaps price range
 ```
 
 </details>
