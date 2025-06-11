@@ -1,0 +1,13 @@
+
+# User Rules
+
+## Response Style
+- Keep responses concise, minimal summaries
+- Interpret voice transcription errors using context
+- Focus on execution over explanation
+
+## Technical Preferences  
+- README files: concise, engineer-focused
+- Testing: use bash commands over separate Python scripts
+- Direct DB/API verification preferred
+- Use collapsible sections (`<details>/<summary>`) for drill-down content 
