@@ -44,8 +44,20 @@ SELECT * FROM employees ORDER BY hire_date DESC, last_name ASC;
 SELECT * FROM employees ORDER BY salary DESC LIMIT 10;     -- Top 10 highest paid
 SELECT * FROM employees ORDER BY hire_date LIMIT 5;        -- 5 earliest hires
 
--- OFFSET (skip rows)
+-- OFFSET (skip rows) - PERFORMANCE WARNING: See note below
 SELECT * FROM employees ORDER BY salary DESC LIMIT 10 OFFSET 10;  -- Rows 11-20
+
+-- *** PAGINATION PERFORMANCE TIP ***
+-- OFFSET becomes slow with large datasets because the database must count and skip rows.
+-- Better approach: Use cursor-based pagination with indexed columns (like employee_id)
+-- 
+-- Instead of OFFSET, use the last seen value:
+-- Page 1: SELECT * FROM employees ORDER BY id LIMIT 10;
+-- Page 2: SELECT * FROM employees WHERE id > 10 ORDER BY id LIMIT 10;  -- Much faster!
+-- Page 3: SELECT * FROM employees WHERE id > 20 ORDER BY id LIMIT 10;
+-- 
+-- For complex sorting, use composite cursor:
+-- SELECT * FROM employees WHERE (salary, id) > (50000, 123) ORDER BY salary DESC, id LIMIT 10;
 ```
 
 </details>
