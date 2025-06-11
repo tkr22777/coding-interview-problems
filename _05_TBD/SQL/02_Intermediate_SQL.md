@@ -352,6 +352,104 @@ SELECT user_id, preferences->>'theme' as theme
 FROM user_preferences 
 WHERE preferences->>'language' = 'en';
 
+-- JSONB Advanced Operations & Indexing
+-- JSONB operators: -> returns JSON, ->> returns text
+SELECT user_id, 
+       preferences->'settings' as settings_json,        -- Returns JSONB
+       preferences->>'theme' as theme_text              -- Returns TEXT
+FROM user_preferences;
+
+-- Nested JSON access
+CREATE TABLE user_profiles (
+    user_id INTEGER,
+    profile JSONB
+);
+
+INSERT INTO user_profiles VALUES 
+(1, '{"personal": {"name": "John", "age": 30}, "work": {"company": "Tech Corp", "salary": 75000}}'),
+(2, '{"personal": {"name": "Jane", "age": 28}, "preferences": {"theme": "light", "notifications": {"email": true, "sms": false}}}');
+
+-- Deep nested access
+SELECT user_id,
+       profile->'personal'->>'name' as name,
+       profile->'work'->>'company' as company,
+       profile->'preferences'->'notifications'->>'email' as email_notifications
+FROM user_profiles;
+
+-- JSONB indexing for performance
+-- 1. GIN index for general JSONB queries (most common)
+CREATE INDEX idx_user_preferences_gin ON user_preferences USING GIN (preferences);
+
+-- 2. Functional index for specific JSON paths
+CREATE INDEX idx_user_theme ON user_preferences ((preferences->>'theme'));
+CREATE INDEX idx_user_language ON user_preferences ((preferences->>'language'));
+
+-- 3. GIN index with specific operators
+CREATE INDEX idx_user_profiles_path ON user_profiles USING GIN (profile jsonb_path_ops);
+
+-- Efficient JSONB queries
+-- These queries will use the GIN index:
+SELECT * FROM user_preferences WHERE preferences ? 'theme';                    -- Key exists
+SELECT * FROM user_preferences WHERE preferences ?& ARRAY['theme', 'language']; -- All keys exist
+SELECT * FROM user_preferences WHERE preferences ?| ARRAY['theme', 'color'];    -- Any key exists
+SELECT * FROM user_preferences WHERE preferences @> '{"theme": "dark"}';        -- Contains JSON
+SELECT * FROM user_preferences WHERE preferences <@ '{"theme": "dark", "language": "en", "extra": "value"}'; -- Contained by
+
+-- These queries will use functional indexes:
+SELECT * FROM user_preferences WHERE preferences->>'theme' = 'dark';
+SELECT * FROM user_preferences WHERE preferences->>'language' = 'en';
+
+-- JSONB aggregation and manipulation
+-- Merge JSONB objects
+UPDATE user_preferences 
+SET preferences = preferences || '{"new_setting": "value"}'::jsonb 
+WHERE user_id = 1;
+
+-- Remove keys
+UPDATE user_preferences 
+SET preferences = preferences - 'old_setting' 
+WHERE user_id = 1;
+
+-- JSONB aggregation functions
+SELECT jsonb_agg(preferences) as all_preferences
+FROM user_preferences;
+
+SELECT jsonb_object_agg(user_id::text, preferences->>'theme') as user_themes
+FROM user_preferences;
+
+-- Complex JSONB queries
+-- Find users with specific nested values
+SELECT user_id FROM user_profiles 
+WHERE profile @> '{"personal": {"age": 30}}';
+
+-- Find users with salary in range (type casting)
+SELECT user_id, (profile->'work'->>'salary')::integer as salary
+FROM user_profiles 
+WHERE (profile->'work'->>'salary')::integer BETWEEN 50000 AND 100000;
+
+-- JSONB array operations
+CREATE TABLE user_tags (
+    user_id INTEGER,
+    tags JSONB  -- Array of tags
+);
+
+INSERT INTO user_tags VALUES 
+(1, '["developer", "python", "sql"]'),
+(2, '["designer", "ui", "ux", "figma"]');
+
+-- Query JSONB arrays
+SELECT * FROM user_tags WHERE tags ? 'python';                    -- Contains element
+SELECT * FROM user_tags WHERE tags @> '["python"]';               -- Contains array element
+SELECT user_id, jsonb_array_length(tags) as tag_count FROM user_tags;
+
+-- *** PERFORMANCE TIPS FOR JSONB ***
+-- 1. Use GIN indexes for complex queries involving @>, ?, ?&, ?|
+-- 2. Use functional indexes for frequent equality checks on specific paths
+-- 3. Avoid deep nesting - consider flattening frequently queried data
+-- 4. Use JSONB over JSON for better performance (binary format)
+-- 5. Consider partial indexes for common query patterns:
+--    CREATE INDEX idx_active_users ON user_preferences USING GIN (preferences) WHERE preferences->>'status' = 'active';
+
 -- Array data type (PostgreSQL)
 CREATE TABLE employee_skills (
     employee_id INTEGER,
