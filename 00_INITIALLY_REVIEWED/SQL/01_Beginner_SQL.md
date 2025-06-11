@@ -28,7 +28,7 @@ SELECT * FROM employees WHERE NOT (salary < 40000);
 </details>
 
 <details>
-<summary><strong>Sorting & Limiting</strong></summary>
+<summary><strong>Sorting, Limiting, and Pagination</strong></summary>
 
 ```sql
 -- ORDER BY (ascending by default)
