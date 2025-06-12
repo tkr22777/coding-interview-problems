@@ -173,6 +173,50 @@ heapq.heapify(heap)
 new_item = Item("item4", 2)
 heapq.heappush(heap, (new_item.priority, new_item))
 popped_item = heapq.heappop(heap)[1]            # Get the item, not the priority
+
+# Max heap of size k (for k largest elements)
+def maintain_k_largest(arr, k):
+    heap = []
+    for num in arr:
+        heapq.heappush(heap, num)
+        if len(heap) > k:
+            heapq.heappop(heap)                 # Remove smallest
+    return heap                                 # heap[0] is kth largest
+
+# Nth largest element O(N log k)
+def nth_largest(arr, n):
+    heap = arr[:n]
+    heapq.heapify(heap)                         # Min heap of size n
+    for num in arr[n:]:
+        if num > heap[0]:
+            heapq.heapreplace(heap, num)
+    return heap[0]                              # nth largest
+
+# Nth smallest element O(N log k) 
+def nth_smallest(arr, n):
+    heap = [-x for x in arr[:n]]                # Max heap (negate values)
+    heapq.heapify(heap)
+    for num in arr[n:]:
+        if num < -heap[0]:
+            heapq.heapreplace(heap, -num)
+    return -heap[0]                             # nth smallest
+
+# Examples
+arr = [3, 1, 4, 1, 5, 9, 2, 6]
+maintain_k_largest(arr, 3)                      # [4, 5, 9] (3 largest)
+nth_largest(arr, 3)                             # 5 (3rd largest)
+nth_smallest(arr, 3)                            # 2 (3rd smallest)
+
+# Heap indexing (array-based tree)
+# Parent of i: (i-1)//2, Left child: 2*i+1, Right child: 2*i+2
+arr = [5, 1, 3, 2]
+heapq.heapify(arr)                              # [1, 2, 3, 5] - rearranges to satisfy heap property
+# Index:  0  1  2  3  (parent of 3 is (3-1)//2 = 1)
+# Tree:      1
+#           / \
+#          2   3
+#         /
+#        5
 ```
 
 </details> 
