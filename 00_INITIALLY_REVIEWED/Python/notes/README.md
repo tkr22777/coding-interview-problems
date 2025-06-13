@@ -21,13 +21,12 @@ vals1 = [5, 6, 7, 8, 9]
 3. **[Map, Filter & Reduce](03_Map_Filter_Reduce.md)** - Functional programming with shared examples
 4. **[String Operations](04_String_Operations.md)** - Substring slicing and zip operations
 5. **[Basic Algorithms & Techniques](05_Algorithms_Techniques.md)** - Two pointers, sliding window, tree/graph traversals
-6. **[Utilities](07_Utilities.md)** - Functions, random, regex, datetime
-7. **[Beautiful Soup](08_BeautifulSoup.md)** - HTML parsing and web scraping
+6. **[Utilities](06_Utilities.md)** - Functions, random, regex, datetime
 
 ### Algorithm Patterns
-8. **[Dynamic Programming](09_Dynamic_Programming.md)** - 1D/2D DP, knapsack patterns
-9. **[Backtracking](10_Backtracking.md)** - Permutations, combinations, subsets, grid problems
-10. **[Advanced Patterns](11_Advanced_Patterns.md)** - Union Find, monotonic stack/queue, intervals, fast/slow pointers
+7. **[Dynamic Programming](07_Dynamic_Programming.md)** - 1D/2D DP, knapsack patterns
+8. **[Backtracking](08_Backtracking.md)** - Permutations, combinations, subsets, grid problems
+9. **[Advanced Patterns](09_Advanced_Patterns.md)** - Union Find, monotonic stack/queue, intervals, fast/slow pointers
 
 ## Usage
 Each file contains practical examples and common patterns for the respective data structure or algorithm. Perfect for quick reference before coding interviews or problem-solving practice.
