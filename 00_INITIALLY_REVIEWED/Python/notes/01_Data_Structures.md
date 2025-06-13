@@ -371,4 +371,69 @@ def transpose_zip(matrix):
     return list(map(list, zip(*matrix)))
 ```
 
+</details>
+
+<details>
+<summary><strong>LinkedList</strong></summary>
+
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+# Basic operations
+def append(head, val):
+    if not head:
+        return ListNode(val)
+    curr = head
+    while curr.next:
+        curr = curr.next
+    curr.next = ListNode(val)
+    return head
+
+def prepend(head, val):
+    return ListNode(val, head)
+
+def delete(head, val):
+    if not head:
+        return None
+    if head.val == val:
+        return head.next
+    curr = head
+    while curr.next:
+        if curr.next.val == val:
+            curr.next = curr.next.next
+            break
+        curr = curr.next
+    return head
+
+# Common patterns
+def reverse(head):
+    prev = None
+    curr = head
+    while curr:
+        next_temp = curr.next
+        curr.next = prev
+        prev = curr
+        curr = next_temp
+    return prev
+
+def find_middle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    return slow
+
+def has_cycle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+    return False
+```
+
 </details> 
