@@ -301,4 +301,37 @@ def flood_fill(image, sr, sc, new_color):
     return image
 ```
 
+</details>
+
+<details>
+<summary><strong>Time Complexity Notes</strong></summary>
+
+- **Two Pointers**:
+  - Traversal: O(n)
+  - Sliding Window: O(n)
+
+- **Sliding Window**:
+  - Fixed window: O(n)
+  - Variable window: O(n)
+
+- **Tree Traversals**:
+  - DFS/BFS: O(n) where n is the number of nodes
+  - Inorder/Preorder/Postorder: O(n)
+
+- **Graph Traversals**:
+  - DFS/BFS: O(V + E) where V is vertices and E is edges
+  - Dijkstra's Algorithm: O((V + E) log V) with binary heap
+
+- **Dynamic Programming**:
+  - 1D DP: O(n)
+  - 2D DP: O(rows × cols)
+
+- **Backtracking**:
+  - Time complexity varies, often exponential O(2^n) or O(n!)
+
+- **Advanced Patterns**:
+  - Union Find: O(log n) with path compression
+  - Monotonic Stack/Queue: O(n)
+  - Fast/Slow Pointers: O(n)
+
 </details> 
