@@ -262,6 +262,87 @@ class LRUCache:
         self.cache[key] = value
         if len(self.cache) > self.capacity:
             self.cache.popitem(last=False)
+
+# Iteration from specific key position
+od = OrderedDict([('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)])
+
+# Find key and iterate from that position to end
+def iterate_from_key(ordered_dict, start_key):
+    """Iterate from start_key to end - O(n) to find start, O(1) per iteration"""
+    found = False
+    for key, value in ordered_dict.items():
+        if key == start_key:
+            found = True
+        if found:
+            yield key, value
+
+# Find key and iterate from that position to beginning (reverse)
+def iterate_from_key_reverse(ordered_dict, start_key):
+    """Iterate from start_key to beginning - O(n) to find start, O(1) per iteration"""
+    found = False
+    for key, value in reversed(ordered_dict.items()):
+        if key == start_key:
+            found = True
+        if found:
+            yield key, value
+
+# Examples with od = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5}
+list(iterate_from_key(od, 'c'))                 # [('c', 3), ('d', 4), ('e', 5)]
+list(iterate_from_key_reverse(od, 'c'))         # [('c', 3), ('b', 2), ('a', 1)]
+
+# Resume iteration after finding specific item
+def resume_after_key(ordered_dict, start_key):
+    """Start iteration AFTER the specified key - O(n) to find start"""
+    found = False
+    for key, value in ordered_dict.items():
+        if found:
+            yield key, value
+        if key == start_key:
+            found = True
+
+# Get slice of OrderedDict from key to key
+def get_slice(ordered_dict, start_key, end_key):
+    """Get items from start_key to end_key (inclusive) - O(n)"""
+    result = OrderedDict()
+    started = False
+    for key, value in ordered_dict.items():
+        if key == start_key:
+            started = True
+        if started:
+            result[key] = value
+        if key == end_key:
+            break
+    return result
+
+# Examples
+list(resume_after_key(od, 'b'))                 # [('c', 3), ('d', 4), ('e', 5)]
+get_slice(od, 'b', 'd')                         # OrderedDict([('b', 2), ('c', 3), ('d', 4)])
+
+# Practical use case: Process items after checkpoint
+def process_after_checkpoint(ordered_dict, checkpoint_key):
+    """Process all items added after a specific checkpoint"""
+    for key, value in resume_after_key(ordered_dict, checkpoint_key):
+        print(f"Processing {key}: {value}")
+
+# Use case: Find user and show all users added after them
+users = OrderedDict([
+    ('user1', 'Alice'), ('user2', 'Bob'), ('user3', 'Charlie'), 
+    ('user4', 'Dave'), ('user5', 'Eve')
+])
+
+# Show all users added after 'user2'
+for user_id, name in resume_after_key(users, 'user2'):
+    print(f"{user_id}: {name}")                 # Prints user3: Charlie, user4: Dave, user5: Eve
+
+# Efficient position-based access (if you know the position)
+def get_from_position(ordered_dict, start_pos):
+    """Get items starting from position - O(start_pos + k) where k is result size"""
+    for i, (key, value) in enumerate(ordered_dict.items()):
+        if i >= start_pos:
+            yield key, value
+
+# Example: Get items from position 2 onwards
+list(get_from_position(od, 2))                  # [('c', 3), ('d', 4), ('e', 5)]
 ```
 
 </details>
