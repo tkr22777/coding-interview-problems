@@ -1,6 +1,42 @@
 # Data Structures
 
 <details>
+<summary><strong>Collections Module</strong></summary>
+
+```python
+from collections import Counter, defaultdict, deque, OrderedDict
+
+# Counter - frequency counting
+nums = [1, 2, 2, 3, 3, 3]
+cnt = Counter(nums)                            # {1: 1, 2: 2, 3: 3}
+cnt.most_common(2)                             # [(3, 3), (2, 2)] (top 2 frequencies)
+cnt[4] += 1                                    # Auto-initializes to 0, then increments
+cnt.subtract([2, 2])                           # Decrements counts: {1: 1, 2: 0, 3: 3, 4: 1}
+
+# Counter arithmetic
+c1, c2 = Counter(a=3, b=1), Counter(a=1, b=2)
+c1 + c2                                        # Counter({'a': 4, 'b': 3})
+c1 - c2                                        # Counter({'a': 2}) (negative counts removed)
+
+# defaultdict - auto-initializing dict
+dd = defaultdict(list)                         # Auto-initializes to empty list
+dd['key'].append(1)                            # No KeyError if 'key' doesn't exist
+
+# OrderedDict - maintains insertion order
+od = OrderedDict()
+od['a'] = 1; od['b'] = 2; od['c'] = 3         # Preserves order: a -> b -> c
+od.move_to_end('a')                            # Moves 'a' to end: b -> c -> a
+
+# deque - double-ended queue
+d = deque([1, 2, 3])
+d.appendleft(0)                                # [0, 1, 2, 3]
+d.extendleft([-1, -2])                         # [-2, -1, 0, 1, 2, 3]
+d.rotate(2)                                    # [2, 3, -2, -1, 0, 1]
+```
+
+</details>
+
+<details>
 <summary><strong>List/Array</strong></summary>
 
 ```python
@@ -111,6 +147,19 @@ d1.rotate(-1)                                   # Rotate left by 1 position
 
 # Clear
 d1.clear()                                      # Remove all elements
+
+# Additional queue patterns:
+
+# Queue using list (not recommended for large data)
+queue = []
+queue.append(1)                                # Enqueue
+queue.pop(0)                                   # Dequeue (O(n) operation)
+
+# Queue using deque (recommended)
+from collections import deque
+queue = deque()
+queue.append(1)                                # Enqueue
+queue.popleft()                                # Dequeue (O(1) operation)
 ```
 
 </details>
@@ -150,6 +199,25 @@ key, value = next(reversed(od.items()))         # ('z', 30) - peek last
 
 # Clear
 od.clear()                                      # OrderedDict([])
+
+# LRU Cache implementation
+class LRUCache:
+    def __init__(self, capacity):
+        self.cache = OrderedDict()
+        self.capacity = capacity
+    
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        self.cache.move_to_end(key)
+        return self.cache[key]
+    
+    def put(self, key, value):
+        if key in self.cache:
+            self.cache.move_to_end(key)
+        self.cache[key] = value
+        if len(self.cache) > self.capacity:
+            self.cache.popitem(last=False)
 ```
 
 </details>
@@ -220,6 +288,87 @@ dd_set['group1'].add('item2')
 # Nested defaultdict
 nested_dd = defaultdict(lambda: defaultdict(set))
 nested_dd['level1']['level2'].add('value')
+
+# 2D defaultdict with boolean default (for visited tracking)
+visited_2d = defaultdict(lambda: defaultdict(bool))
+visited_2d[row][col] = True                     # Creates nested dict automatically
+
+# Alternative: lambda with specific default
+grid_counts = defaultdict(lambda: defaultdict(lambda: 0))
+grid_counts[i][j] += 1                          # Auto-initializes to 0
+
+# Graph adjacency with defaultdict
+graph = defaultdict(list)
+graph[node].append(neighbor)                    # Creates empty list if key missing
+```
+
+</details>
+
+<details>
+<summary><strong>2D Arrays/Grids</strong></summary>
+
+```python
+# Initialize 2D array with specific value
+rows, cols = 3, 4
+grid = [[0] * cols for _ in range(rows)]        # [[0,0,0,0], [0,0,0,0], [0,0,0,0]]
+
+# Common mistake (creates shared references)
+# grid = [[0] * cols] * rows                   # DON'T USE - all rows share same list
+
+# Initialize with different values
+grid = [[i * cols + j for j in range(cols)] for i in range(rows)]
+
+# Boolean grid for visited tracking
+visited = [[False] * cols for _ in range(rows)]
+
+# Initialize from existing data
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+# Grid dimensions
+rows = len(matrix)
+cols = len(matrix[0]) if matrix else 0
+
+# 4-directional movement (up, right, down, left)
+directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+
+# 8-directional movement (includes diagonals)
+directions_8 = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+
+# Check if position is valid
+def is_valid(row, col, rows, cols):
+    return 0 <= row < rows and 0 <= col < cols
+
+# Grid traversal with bounds checking
+for dr, dc in directions:
+    new_row, new_col = row + dr, col + dc
+    if is_valid(new_row, new_col, rows, cols):
+        # Process neighbor
+        pass
+
+# Alternative matrix initialization patterns
+rows, cols = 3, 3
+
+# Using list comprehension with function calls
+import random
+random_grid = [[random.randint(1, 10) for _ in range(cols)] for _ in range(rows)]
+
+# Using numpy (if available)  
+# import numpy as np
+# np_grid = np.zeros((rows, cols))           # All zeros
+# np_grid = np.ones((rows, cols))            # All ones  
+# np_grid = np.full((rows, cols), 5)         # All fives
+
+# Transpose a matrix
+def transpose(matrix):
+    return [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
+
+# Alternative using zip
+def transpose_zip(matrix):
+    return list(map(list, zip(*matrix)))
 ```
 
 </details> 
