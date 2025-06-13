@@ -208,4 +208,97 @@ def build_graph(edges):
     return graph
 ```
 
+</details>
+
+<details>
+<summary><strong>Grid Traversal</strong></summary>
+
+```python
+from collections import deque
+
+# DFS on grid (find connected components)
+def dfs_grid(grid, row, col, visited):
+    if (row < 0 or row >= len(grid) or 
+        col < 0 or col >= len(grid[0]) or 
+        visited[row][col] or grid[row][col] == 0):
+        return 0
+    
+    visited[row][col] = True
+    size = 1
+    
+    # Explore 4 directions
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    for dr, dc in directions:
+        size += dfs_grid(grid, row + dr, col + dc, visited)
+    
+    return size
+
+# BFS on grid (shortest path)
+def bfs_grid_shortest_path(grid, start, end):
+    if not grid or grid[start[0]][start[1]] == 0:
+        return -1
+    
+    rows, cols = len(grid), len(grid[0])
+    queue = deque([(start[0], start[1], 0)])  # (row, col, distance)
+    visited = set([start])
+    
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    
+    while queue:
+        row, col, dist = queue.popleft()
+        
+        if (row, col) == end:
+            return dist
+        
+        for dr, dc in directions:
+            nr, nc = row + dr, col + dc
+            
+            if (0 <= nr < rows and 0 <= nc < cols and 
+                (nr, nc) not in visited and grid[nr][nc] == 1):
+                visited.add((nr, nc))
+                queue.append((nr, nc, dist + 1))
+    
+    return -1
+
+# Count islands (connected components)
+def count_islands(grid):
+    if not grid:
+        return 0
+    
+    rows, cols = len(grid), len(grid[0])
+    visited = [[False] * cols for _ in range(rows)]
+    count = 0
+    
+    for i in range(rows):
+        for j in range(cols):
+            if grid[i][j] == 1 and not visited[i][j]:
+                dfs_grid(grid, i, j, visited)
+                count += 1
+    
+    return count
+
+# Flood fill
+def flood_fill(image, sr, sc, new_color):
+    original_color = image[sr][sc]
+    if original_color == new_color:
+        return image
+    
+    def dfs(row, col):
+        if (row < 0 or row >= len(image) or 
+            col < 0 or col >= len(image[0]) or 
+            image[row][col] != original_color):
+            return
+        
+        image[row][col] = new_color
+        
+        # Fill 4 directions
+        dfs(row - 1, col)
+        dfs(row + 1, col)
+        dfs(row, col - 1)
+        dfs(row, col + 1)
+    
+    dfs(sr, sc)
+    return image
+```
+
 </details> 
