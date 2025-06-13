@@ -275,6 +275,162 @@ largest = sd.popitem(-1)                       # (50, 'E') - O(log n)
 </details>
 
 <details>
+<summary><strong>SortedList</strong></summary>
+
+```python
+# Time Complexity:
+# - Insert/Delete: O(log n)
+# - Search: O(log n)
+# - Index access: O(log n)
+# - Iteration: O(n)
+# Space Complexity: O(n)
+
+# Required: pip install sortedcontainers
+from sortedcontainers import SortedList
+
+# Basic usage - maintains sorted order automatically
+sl = SortedList([3, 1, 4, 1, 5])              # SortedList([1, 1, 3, 4, 5]) - O(n log n)
+sl.add(2)                                      # SortedList([1, 1, 2, 3, 4, 5]) - O(log n)
+sl.remove(1)                                   # SortedList([1, 2, 3, 4, 5]) - removes first occurrence - O(log n)
+
+# Index-based access (unlike SortedSet)
+sl[0]                                          # 1 (first element) - O(log n)
+sl[-1]                                         # 5 (last element) - O(log n)
+sl[2]                                          # 3 (element at index 2) - O(log n)
+
+# Allows duplicates (unlike SortedSet)
+sl = SortedList([1, 2, 2, 3, 3, 3])
+sl.count(2)                                    # 2 - O(log n)
+sl.count(3)                                    # 3 - O(log n)
+
+# Range operations using irange() for efficiency
+# IMPORTANT: Use irange() for efficient range queries - O(log n + k)
+sl = SortedList([10, 20, 30, 40, 50, 60])
+
+# Get elements in range
+def get_range_list(sorted_list, min_val, max_val):
+    """Get elements in [min_val, max_val] - O(log n + k) where k is result size"""
+    return list(sorted_list.irange(min_val, max_val))
+
+# Get elements >= threshold
+def get_elements_gte_list(sorted_list, threshold):
+    """Get elements >= threshold - O(log n + k) where k is result size"""
+    return list(sorted_list.irange(threshold))
+
+# Get elements <= threshold
+def get_elements_lte_list(sorted_list, threshold):
+    """Get elements <= threshold - O(log n + k) where k is result size"""
+    return list(sorted_list.irange(None, threshold, (True, True)))
+
+# Examples
+get_range_list(sl, 25, 45)                     # [30, 40] - O(log n + k)
+get_elements_gte_list(sl, 35)                  # [40, 50, 60] - O(log n + k)
+get_elements_lte_list(sl, 35)                  # [10, 20, 30] - O(log n + k)
+
+# Binary search operations
+sl = SortedList([10, 20, 30, 40, 50])
+sl.bisect_left(25)                             # 2 (insertion point for 25) - O(log n)
+sl.bisect_right(30)                            # 3 (insertion point after 30) - O(log n)
+
+# Find closest elements
+def find_floor_list(sorted_list, query):
+    """Find largest element <= query - O(log n)"""
+    idx = sorted_list.bisect_right(query) - 1
+    return sorted_list[idx] if idx >= 0 else None
+
+def find_ceiling_list(sorted_list, query):
+    """Find smallest element >= query - O(log n)"""
+    idx = sorted_list.bisect_left(query)
+    return sorted_list[idx] if idx < len(sorted_list) else None
+
+# Examples with sl = [10, 20, 30, 40, 50]
+find_floor_list(sl, 25)                        # 20 (largest <= 25) - O(log n)
+find_ceiling_list(sl, 25)                      # 30 (smallest >= 25) - O(log n)
+
+# Count operations
+def count_less_than_list(sorted_list, query):
+    """Count elements < query - O(log n)"""
+    return sorted_list.bisect_left(query)
+
+def count_in_range_list(sorted_list, min_val, max_val):
+    """Count elements in [min_val, max_val] - O(log n)"""
+    return sorted_list.bisect_right(max_val) - sorted_list.bisect_left(min_val)
+
+# Examples
+count_less_than_list(sl, 35)                   # 3 (elements < 35: 10,20,30) - O(log n)
+count_in_range_list(sl, 20, 40)                # 3 (elements in [20,40]: 20,30,40) - O(log n)
+
+# Pop operations
+smallest = sl.pop(0)                           # 10 - O(log n)
+largest = sl.pop(-1)                           # 50 - O(log n)
+middle = sl.pop(len(sl)//2)                    # Remove middle element - O(log n)
+
+# Practical use cases
+# 1. Sliding window median
+class MedianFinder:
+    def __init__(self):
+        self.nums = SortedList()
+    
+    def add_num(self, num):
+        self.nums.add(num)                     # O(log n)
+    
+    def find_median(self):
+        n = len(self.nums)
+        if n % 2 == 1:
+            return self.nums[n // 2]           # O(log n)
+        else:
+            return (self.nums[n // 2 - 1] + self.nums[n // 2]) / 2  # O(log n)
+
+# 2. Range sum queries with updates
+class RangeSumSortedList:
+    def __init__(self, nums):
+        self.nums = SortedList(nums)           # O(n log n)
+    
+    def update(self, old_val, new_val):
+        self.nums.remove(old_val)              # O(log n)
+        self.nums.add(new_val)                 # O(log n)
+    
+    def range_sum(self, min_val, max_val):
+        return sum(self.nums.irange(min_val, max_val))  # O(log n + k)
+
+# 3. Kth smallest/largest element queries
+def kth_smallest(sorted_list, k):
+    """Get kth smallest element (1-indexed) - O(log n)"""
+    return sorted_list[k - 1] if 1 <= k <= len(sorted_list) else None
+
+def kth_largest(sorted_list, k):
+    """Get kth largest element (1-indexed) - O(log n)"""
+    return sorted_list[-k] if 1 <= k <= len(sorted_list) else None
+
+# Examples
+sl = SortedList([3, 1, 4, 1, 5, 9, 2, 6])
+kth_smallest(sl, 3)                            # 2 (3rd smallest) - O(log n)
+kth_largest(sl, 2)                             # 6 (2nd largest) - O(log n)
+
+# Custom sorting with key function
+from operator import attrgetter
+
+class Student:
+    def __init__(self, name, grade):
+        self.name, self.grade = name, grade
+    
+    def __repr__(self):
+        return f"Student({self.name}, {self.grade})"
+
+# Sort by grade
+students = SortedList([
+    Student("Alice", 85),
+    Student("Bob", 90),
+    Student("Charlie", 78)
+], key=attrgetter('grade'))
+
+students.add(Student("Dave", 88))              # Maintains sorted order by grade - O(log n)
+# Result: [Student(Charlie, 78), Student(Alice, 85), Student(Dave, 88), Student(Bob, 90)]
+```
+
+</details>
+
+<details>
 <summary><strong>Heap/Priority Queue</strong></summary>
 
 ```python
