@@ -112,6 +112,86 @@ people = SortedSet([Person("Alice", 30), Person("Bob", 25), Person("Charlie", 35
 # Output: [Bob (25), Alice (30), Charlie (35)] - O(n log n)
 people.add(Person("Dave", 20))
 # Output: [Dave (20), Bob (25), Alice (30), Charlie (35)] - O(log n)
+
+# Range operations and element finding
+ss = SortedSet([10, 20, 30, 40, 50])
+
+# Find closest elements to a query value
+def find_floor(sorted_set, query):
+    """Find largest element <= query - O(log n)"""
+    idx = sorted_set.bisect_right(query) - 1
+    return sorted_set[idx] if idx >= 0 else None
+
+def find_ceiling(sorted_set, query):
+    """Find smallest element >= query - O(log n)"""
+    idx = sorted_set.bisect_left(query)
+    return sorted_set[idx] if idx < len(sorted_set) else None
+
+def find_predecessor(sorted_set, query):
+    """Find largest element < query - O(log n)"""
+    idx = sorted_set.bisect_left(query) - 1
+    return sorted_set[idx] if idx >= 0 else None
+
+def find_successor(sorted_set, query):
+    """Find smallest element > query - O(log n)"""
+    idx = sorted_set.bisect_right(query)
+    return sorted_set[idx] if idx < len(sorted_set) else None
+
+# Examples with ss = [10, 20, 30, 40, 50]
+find_floor(ss, 25)                             # 20 (largest <= 25) - O(log n)
+find_ceiling(ss, 25)                           # 30 (smallest >= 25) - O(log n)
+find_predecessor(ss, 30)                       # 20 (largest < 30) - O(log n)
+find_successor(ss, 30)                         # 40 (smallest > 30) - O(log n)
+
+# Get elements in range
+def get_range_set(sorted_set, min_val, max_val):
+    """Get elements in [min_val, max_val] - O(log n + k) where k is result size"""
+    start_idx = sorted_set.bisect_left(min_val)
+    end_idx = sorted_set.bisect_right(max_val)
+    return list(sorted_set)[start_idx:end_idx]
+
+# Get elements >= threshold
+def get_elements_gte(sorted_set, threshold):
+    """Get elements >= threshold - O(log n + k) where k is result size"""
+    start_idx = sorted_set.bisect_left(threshold)
+    return list(sorted_set)[start_idx:]
+
+# Get elements <= threshold
+def get_elements_lte(sorted_set, threshold):
+    """Get elements <= threshold - O(log n + k) where k is result size"""
+    end_idx = sorted_set.bisect_right(threshold)
+    return list(sorted_set)[:end_idx]
+
+# Examples
+get_range_set(ss, 25, 45)                      # [30, 40] - O(log n + k)
+get_elements_gte(ss, 35)                       # [40, 50] - O(log n + k)
+get_elements_lte(ss, 35)                       # [10, 20, 30] - O(log n + k)
+
+# Count operations
+def count_less_than(sorted_set, query):
+    """Count elements < query - O(log n)"""
+    return sorted_set.bisect_left(query)
+
+def count_less_equal(sorted_set, query):
+    """Count elements <= query - O(log n)"""
+    return sorted_set.bisect_right(query)
+
+def count_in_range(sorted_set, min_val, max_val):
+    """Count elements in [min_val, max_val] - O(log n)"""
+    return sorted_set.bisect_right(max_val) - sorted_set.bisect_left(min_val)
+
+# Examples
+count_less_than(ss, 35)                        # 3 (elements < 35: 10,20,30) - O(log n)
+count_less_equal(ss, 30)                       # 3 (elements <= 30: 10,20,30) - O(log n)
+count_in_range(ss, 20, 40)                     # 3 (elements in [20,40]: 20,30,40) - O(log n)
+
+# Peek operations
+first_element = ss[0]                           # 10 (smallest) - O(1)
+last_element = ss[-1]                          # 50 (largest) - O(1)
+
+# Pop operations
+smallest = ss.pop(0)                           # 10 - O(log n)
+largest = ss.pop(-1)                           # 50 - O(log n)
 ```
 
 </details>
