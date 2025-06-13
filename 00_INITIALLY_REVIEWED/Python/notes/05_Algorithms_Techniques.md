@@ -4,10 +4,16 @@
 <summary><strong>Two Pointers</strong></summary>
 
 ```python
+# Time Complexity:
+# - Two Sum: O(n) where n is array length
+# - Remove Duplicates: O(n) where n is array length
+# - Palindrome Check: O(n) where n is string length
+# Space Complexity: O(1) for all operations
+
 # Two Sum in sorted array
 def two_sum_sorted(arr, target):
     left, right = 0, len(arr) - 1
-    while left < right:
+    while left < right:                         # O(n)
         current_sum = arr[left] + arr[right]
         if current_sum == target:
             return [left, right]
@@ -22,7 +28,7 @@ def remove_duplicates(nums):
     if not nums:
         return 0
     write_idx = 1
-    for read_idx in range(1, len(nums)):
+    for read_idx in range(1, len(nums)):       # O(n)
         if nums[read_idx] != nums[read_idx - 1]:
             nums[write_idx] = nums[read_idx]
             write_idx += 1
@@ -31,7 +37,7 @@ def remove_duplicates(nums):
 # Palindrome check
 def is_palindrome(s):
     left, right = 0, len(s) - 1
-    while left < right:
+    while left < right:                         # O(n)
         if s[left] != s[right]:
             return False
         left += 1
@@ -45,17 +51,22 @@ def is_palindrome(s):
 <summary><strong>Sliding Window</strong></summary>
 
 ```python
+# Time Complexity:
+# - Max Sum Subarray: O(n) where n is array length
+# - Longest Unique Substring: O(n) where n is string length
+# Space Complexity: O(1) for max sum, O(min(m,n)) for unique substring where m is charset size
+
 # Maximum sum subarray of size k (fixed window)
 def max_sum_subarray(arr, k):
     if len(arr) < k:
         return -1
     
     # Calculate sum of first window
-    window_sum = sum(arr[:k])
+    window_sum = sum(arr[:k])                   # O(k)
     max_sum = window_sum
     
     # Slide the window
-    for i in range(k, len(arr)):
+    for i in range(k, len(arr)):               # O(n-k)
         window_sum += arr[i] - arr[i - k]
         max_sum = max(max_sum, window_sum)
     
@@ -67,8 +78,8 @@ def longest_unique_substring(s):
     left = 0
     max_length = 0
     
-    for right in range(len(s)):
-        while s[right] in char_set:
+    for right in range(len(s)):                # O(n)
+        while s[right] in char_set:            # O(n) amortized
             char_set.remove(s[left])
             left += 1
         char_set.add(s[right])
@@ -83,6 +94,11 @@ def longest_unique_substring(s):
 <summary><strong>Tree Traversals</strong></summary>
 
 ```python
+# Time Complexity:
+# - Inorder Traversal: O(n) where n is number of nodes
+# - Level Order Traversal: O(n) where n is number of nodes
+# Space Complexity: O(h) for inorder where h is tree height, O(w) for level order where w is max width
+
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -95,8 +111,8 @@ def inorder_iterative(root):
     stack = []
     current = root
     
-    while stack or current:
-        while current:
+    while stack or current:                     # O(n)
+        while current:                          # O(h) where h is tree height
             stack.append(current)
             current = current.left
         
@@ -115,11 +131,11 @@ def level_order(root):
     result = []
     queue = deque([root])
     
-    while queue:
+    while queue:                                # O(n)
         level_size = len(queue)
         level = []
         
-        for _ in range(level_size):
+        for _ in range(level_size):            # O(w) where w is max width
             node = queue.popleft()
             level.append(node.val)
             
@@ -139,6 +155,13 @@ def level_order(root):
 <summary><strong>Graph Algorithms</strong></summary>
 
 ```python
+# Time Complexity:
+# - BFS Shortest Path: O(V + E) where V is vertices and E is edges
+# - DFS Path Finding: O(V + E)
+# - Cycle Detection: O(V + E)
+# - Build Graph: O(E) where E is number of edges
+# Space Complexity: O(V) for all operations
+
 from collections import deque, defaultdict
 
 # BFS for shortest path (unweighted)
@@ -149,10 +172,10 @@ def bfs_shortest_path(graph, start, end):
     queue = deque([(start, [start])])
     visited = {start}
     
-    while queue:
+    while queue:                                # O(V)
         node, path = queue.popleft()
         
-        for neighbor in graph[node]:
+        for neighbor in graph[node]:            # O(E) total
             if neighbor == end:
                 return path + [neighbor]
             
@@ -172,7 +195,7 @@ def dfs_find_path(graph, start, end, visited=None):
     if start == end:
         return [start]
     
-    for neighbor in graph[start]:
+    for neighbor in graph[start]:               # O(V + E)
         if neighbor not in visited:
             path = dfs_find_path(graph, neighbor, end, visited)
             if path:
@@ -184,7 +207,7 @@ def dfs_find_path(graph, start, end, visited=None):
 def has_cycle_undirected(graph):
     visited = set()
     
-    def dfs(node, parent):
+    def dfs(node, parent):                      # O(V + E)
         visited.add(node)
         for neighbor in graph[node]:
             if neighbor == parent:
@@ -193,7 +216,7 @@ def has_cycle_undirected(graph):
                 return True
         return False
     
-    for node in graph:
+    for node in graph:                          # O(V)
         if node not in visited:
             if dfs(node, None):
                 return True
@@ -202,7 +225,7 @@ def has_cycle_undirected(graph):
 # Build adjacency list from edges
 def build_graph(edges):
     graph = defaultdict(list)
-    for u, v in edges:
+    for u, v in edges:                          # O(E)
         graph[u].append(v)
         graph[v].append(u)  # For undirected graph
     return graph
@@ -214,6 +237,11 @@ def build_graph(edges):
 <summary><strong>Grid Traversal</strong></summary>
 
 ```python
+# Time Complexity:
+# - DFS Grid: O(R*C) where R is rows and C is columns
+# - BFS Grid: O(R*C) for shortest path
+# Space Complexity: O(R*C) for visited array/matrix
+
 from collections import deque
 
 # DFS on grid (find connected components)
@@ -228,7 +256,7 @@ def dfs_grid(grid, row, col, visited):
     
     # Explore 4 directions
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    for dr, dc in directions:
+    for dr, dc in directions:                   # O(4) = O(1)
         size += dfs_grid(grid, row + dr, col + dc, visited)
     
     return size
@@ -244,61 +272,22 @@ def bfs_grid_shortest_path(grid, start, end):
     
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     
-    while queue:
+    while queue:                                # O(R*C)
         row, col, dist = queue.popleft()
         
         if (row, col) == end:
             return dist
         
-        for dr, dc in directions:
-            nr, nc = row + dr, col + dc
-            
-            if (0 <= nr < rows and 0 <= nc < cols and 
-                (nr, nc) not in visited and grid[nr][nc] == 1):
-                visited.add((nr, nc))
-                queue.append((nr, nc, dist + 1))
+        for dr, dc in directions:              # O(4) = O(1)
+            new_row, new_col = row + dr, col + dc
+            if (0 <= new_row < rows and 
+                0 <= new_col < cols and 
+                grid[new_row][new_col] == 1 and 
+                (new_row, new_col) not in visited):
+                visited.add((new_row, new_col))
+                queue.append((new_row, new_col, dist + 1))
     
     return -1
-
-# Count islands (connected components)
-def count_islands(grid):
-    if not grid:
-        return 0
-    
-    rows, cols = len(grid), len(grid[0])
-    visited = [[False] * cols for _ in range(rows)]
-    count = 0
-    
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] == 1 and not visited[i][j]:
-                dfs_grid(grid, i, j, visited)
-                count += 1
-    
-    return count
-
-# Flood fill
-def flood_fill(image, sr, sc, new_color):
-    original_color = image[sr][sc]
-    if original_color == new_color:
-        return image
-    
-    def dfs(row, col):
-        if (row < 0 or row >= len(image) or 
-            col < 0 or col >= len(image[0]) or 
-            image[row][col] != original_color):
-            return
-        
-        image[row][col] = new_color
-        
-        # Fill 4 directions
-        dfs(row - 1, col)
-        dfs(row + 1, col)
-        dfs(row, col - 1)
-        dfs(row, col + 1)
-    
-    dfs(sr, sc)
-    return image
 ```
 
 </details>

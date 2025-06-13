@@ -7,6 +7,11 @@
 from collections import Counter, defaultdict, deque, OrderedDict
 
 # Counter - frequency counting
+# Time Complexity:
+# - Creation: O(n)
+# - most_common(k): O(n log k)
+# - Access/Update: O(1)
+# - Arithmetic ops: O(n)
 nums = [1, 2, 2, 3, 3, 3]
 cnt = Counter(nums)                            # {1: 1, 2: 2, 3: 3}
 cnt.most_common(2)                             # [(3, 3), (2, 2)] (top 2 frequencies)
@@ -19,15 +24,25 @@ c1 + c2                                        # Counter({'a': 4, 'b': 3})
 c1 - c2                                        # Counter({'a': 2}) (negative counts removed)
 
 # defaultdict - auto-initializing dict
+# Time Complexity: Same as dict
+# - Access/Insert/Delete: O(1) average case
 dd = defaultdict(list)                         # Auto-initializes to empty list
 dd['key'].append(1)                            # No KeyError if 'key' doesn't exist
 
 # OrderedDict - maintains insertion order
+# Time Complexity: Same as dict
+# - Access/Insert/Delete: O(1) average case
+# - move_to_end: O(1)
 od = OrderedDict()
 od['a'] = 1; od['b'] = 2; od['c'] = 3         # Preserves order: a -> b -> c
 od.move_to_end('a')                            # Moves 'a' to end: b -> c -> a
 
 # deque - double-ended queue
+# Time Complexity:
+# - append/appendleft: O(1)
+# - pop/popleft: O(1)
+# - extend/extendleft: O(k) where k is length of iterable
+# - rotate: O(k) where k is rotation amount
 d = deque([1, 2, 3])
 d.appendleft(0)                                # [0, 1, 2, 3]
 d.extendleft([-1, -2])                         # [-2, -1, 0, 1, 2, 3]
@@ -40,36 +55,45 @@ d.rotate(2)                                    # [2, 3, -2, -1, 0, 1]
 <summary><strong>List/Array</strong></summary>
 
 ```python
+# Time Complexity:
+# - Access by index: O(1)
+# - Search: O(n)
+# - Insert/Delete at end: O(1)
+# - Insert/Delete at beginning/middle: O(n)
+# - Slice: O(k) where k is slice length
+# - Sort: O(n log n)
+# Space Complexity: O(n)
+
 arr = [1, 2, 3, 4, 5]
 
 # Basic operations
-arr.append(6)                                   # [1, 2, 3, 4, 5, 6]
-arr.insert(0, 0)                                # [0, 1, 2, 3, 4, 5, 6]
+arr.append(6)                                   # [1, 2, 3, 4, 5, 6] - O(1)
+arr.insert(0, 0)                                # [0, 1, 2, 3, 4, 5, 6] - O(n)
 
 # Remove operations
-arr.remove(3)                                   # [0, 1, 2, 4, 5, 6] (removes first occurrence by value)
-popped = arr.pop()                              # 6, arr becomes [0, 1, 2, 4, 5] (removes last)
-popped_at = arr.pop(1)                          # 1, arr becomes [0, 2, 4, 5] (removes at index)
-del arr[0]                                      # [2, 4, 5] (removes at index, no return)
-del arr[1:3]                                    # [2] (removes slice)
+arr.remove(3)                                   # [0, 1, 2, 4, 5, 6] - O(n)
+popped = arr.pop()                              # 6, arr becomes [0, 1, 2, 4, 5] - O(1)
+popped_at = arr.pop(1)                          # 1, arr becomes [0, 2, 4, 5] - O(n)
+del arr[0]                                      # [2, 4, 5] - O(n)
+del arr[1:3]                                    # [2] - O(n)
 
 # Reverse
-arr.reverse()                                   # [5, 4, 2, 0] (in-place)
-reversed_arr = arr[::-1]                        # [0, 2, 4, 5] (new list)
+arr.reverse()                                   # [5, 4, 2, 0] - O(n)
+reversed_arr = arr[::-1]                        # [0, 2, 4, 5] - O(n)
 
 # Slicing and copying
-first_two = arr[:2]                             # [5, 4]
-last_two = arr[-2:]                             # [2, 0]
-copy_arr = arr.copy()                           # Shallow copy
+first_two = arr[:2]                             # [5, 4] - O(k)
+last_two = arr[-2:]                             # [2, 0] - O(k)
+copy_arr = arr.copy()                           # O(n)
 
 # Find and count
-index = arr.index(4)                            # 1 (first occurrence)
-count = arr.count(2)                            # 1
-exists = 4 in arr                               # True
+index = arr.index(4)                            # 1 - O(n)
+count = arr.count(2)                            # 1 - O(n)
+exists = 4 in arr                               # True - O(n)
 
 # Extend and clear
-arr.extend([1, 2, 3])                           # [5, 4, 2, 0, 1, 2, 3]
-arr.clear()                                     # []
+arr.extend([1, 2, 3])                           # [5, 4, 2, 0, 1, 2, 3] - O(k)
+arr.clear()                                     # [] - O(1)
 
 # Slice notation with step [start:stop:step]
 arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -103,19 +127,26 @@ modified_string = ''.join(char_list)            # "Hello world"
 <summary><strong>Stack</strong></summary>
 
 ```python
-stack = []
-stack.append('a')                               # Stack is now ['a']
-stack.append('b')                               # Stack is now ['a', 'b']
-stack.append('c')                               # Stack is now ['a', 'b', 'c']
+# Time Complexity:
+# - push (append): O(1)
+# - pop: O(1)
+# - peek: O(1)
+# - search: O(n)
+# Space Complexity: O(n)
 
-is_empty = not stack                            # Returns False as the stack has elements
-size = len(stack)                               # Returns 3
-top_item = stack.pop()                          # top_item is 'c', stack is now ['a', 'b']
-peek_item = stack[-1]                           # peek_item is 'b' (without removing)
+stack = []
+stack.append('a')                               # Stack is now ['a'] - O(1)
+stack.append('b')                               # Stack is now ['a', 'b'] - O(1)
+stack.append('c')                               # Stack is now ['a', 'b', 'c'] - O(1)
+
+is_empty = not stack                            # O(1)
+size = len(stack)                               # O(1)
+top_item = stack.pop()                          # O(1)
+peek_item = stack[-1]                           # O(1)
 
 # Remove all items from the stack
 while stack:
-    item = stack.pop()                          # Removes 'b', then 'a'
+    item = stack.pop()                          # O(1) per operation
 ```
 
 </details>
@@ -124,29 +155,35 @@ while stack:
 <summary><strong>Queue/Deque</strong></summary>
 
 ```python
+# Time Complexity:
+# - Enqueue/Dequeue (deque): O(1)
+# - Enqueue/Dequeue (list): O(n) for dequeue
+# - Rotate: O(k) where k is rotation amount
+# Space Complexity: O(n)
+
 from collections import deque
 
 # Initialize
-d1 = deque([1, 2, 3, 4, 5])
+d1 = deque([1, 2, 3, 4, 5])                    # O(n)
 
 # Add elements
-d1.append(6)                                    # Add to right: [1, 2, 3, 4, 5, 6]
-d1.appendleft(0)                                # Add to left: [0, 1, 2, 3, 4, 5, 6]
+d1.append(6)                                    # O(1)
+d1.appendleft(0)                                # O(1)
 
 # Remove elements
-right_item = d1.pop()                           # Remove from right: 6
-left_item = d1.popleft()                        # Remove from left: 0
+right_item = d1.pop()                           # O(1)
+left_item = d1.popleft()                        # O(1)
 
 # Extend
-d1.extend([7, 8, 9])                            # Extend right
-d1.extendleft([-1, -2, -3])                     # Extend left (order reversed)
+d1.extend([7, 8, 9])                            # O(k)
+d1.extendleft([-1, -2, -3])                     # O(k)
 
 # Rotate
-d1.rotate(2)                                    # Rotate right by 2 positions
-d1.rotate(-1)                                   # Rotate left by 1 position
+d1.rotate(2)                                    # O(k)
+d1.rotate(-1)                                   # O(k)
 
 # Clear
-d1.clear()                                      # Remove all elements
+d1.clear()                                      # O(1)
 
 # Additional queue patterns:
 
@@ -168,37 +205,42 @@ queue.popleft()                                # Dequeue (O(1) operation)
 <summary><strong>OrderedDict</strong></summary>
 
 ```python
+# Time Complexity:
+# - Access/Insert/Delete: O(1) average case
+# - move_to_end: O(1)
+# - popitem: O(1)
+# Space Complexity: O(n)
+
 from collections import OrderedDict
 
 od = OrderedDict()
-od['a'] = 1                                     # OrderedDict([('a', 1)])
-od['b'] = 2                                     # OrderedDict([('a', 1), ('b', 2)])
-od['c'] = 3                                     # OrderedDict([('a', 1), ('b', 2), ('c', 3)])
+od['a'] = 1                                     # O(1)
+od['b'] = 2                                     # O(1)
+od['c'] = 3                                     # O(1)
 
 # Access and modify
-value = od['a']                                 # value is 1
-od['a'] = 4                                     # OrderedDict([('a', 4), ('b', 2), ('c', 3)])
-size = len(od)                                  # size = 3
+value = od['a']                                 # O(1)
+od['a'] = 4                                     # O(1)
+size = len(od)                                  # O(1)
 
 # Check membership
-if 'a' in od:
-    od['a'] = 6                                 # OrderedDict([('a', 6), ('b', 2), ('c', 3)])
+if 'a' in od:                                   # O(1)
+    od['a'] = 6                                 # O(1)
 
 # Move elements
-od.move_to_end('a')                             # OrderedDict([('b', 2), ('c', 3), ('a', 6)])
-od.move_to_end('b', last=False)                 # OrderedDict([('b', 2), ('c', 3), ('a', 6)])
+od.move_to_end('a')                             # O(1)
+od.move_to_end('b', last=False)                 # O(1)
 
 # Pop operations
-key, value = od.popitem()                       # ('a', 6), od becomes [('b', 2), ('c', 3)]
-key, value = od.popitem(last=False)             # ('b', 2), od becomes [('c', 3)]
+key, value = od.popitem()                       # O(1)
+key, value = od.popitem(last=False)             # O(1)
 
-# Peek operations (rebuild for demo)
-od = OrderedDict([('x', 10), ('y', 20), ('z', 30)])
-key, value = next(iter(od.items()))             # ('x', 10) - peek first
-key, value = next(reversed(od.items()))         # ('z', 30) - peek last
+# Peek operations
+key, value = next(iter(od.items()))             # O(1)
+key, value = next(reversed(od.items()))         # O(1)
 
 # Clear
-od.clear()                                      # OrderedDict([])
+od.clear()                                      # O(1)
 
 # LRU Cache implementation
 class LRUCache:
@@ -226,32 +268,34 @@ class LRUCache:
 <summary><strong>Set</strong></summary>
 
 ```python
+# Time Complexity:
+# - Add/Remove/Contains: O(1) average case
+# - Union/Intersection/Difference: O(len(s1) + len(s2))
+# - issubset/issuperset: O(len(s1))
+# Space Complexity: O(n)
+
 s = {1, 2, 3}
-s.add(4)                                        # s becomes {1, 2, 3, 4}
-len(s)                                          # Returns 4
-s.discard(2)                                    # Remove element (no error if missing)
+s.add(4)                                        # O(1)
+len(s)                                          # O(1)
+s.discard(2)                                    # O(1)
 
 # Set operations
 s1 = {1, 2, 3, 4}
 s2 = {3, 4, 5, 6}
 
-s1.union(s2)                                    # {1, 2, 3, 4, 5, 6}
-s1.intersection(s2)                             # {3, 4}
-s1.difference(s2)                               # {1, 2}
-s1.symmetric_difference(s2)                     # {1, 2, 5, 6}
+s1.union(s2)                                    # O(len(s1) + len(s2))
+s1.intersection(s2)                             # O(min(len(s1), len(s2)))
+s1.difference(s2)                               # O(len(s1))
+s1.symmetric_difference(s2)                     # O(len(s1) + len(s2))
 
 # Set comparisons
-s1.issubset(s2)                                 # False
-s1.issuperset({1, 2})                           # True
-s1.isdisjoint({7, 8})                           # True
+s1.issubset(s2)                                 # O(len(s1))
+s1.issuperset({1, 2})                           # O(len(s2))
+s1.isdisjoint({7, 8})                           # O(min(len(s1), len(s2)))
 
 # Modify in place
-s1.update({5, 6})                               # s1 becomes {1, 2, 3, 4, 5, 6}
-s1.intersection_update(s2)                      # s1 becomes {3, 4, 5, 6}
-
-# Pop and clear
-popped = s1.pop()                               # Remove and return arbitrary element
-s1.clear()                                      # Remove all elements
+s1.update({5, 6})                               # O(len(s2))
+s1.intersection_update(s2)                      # O(len(s1))
 ```
 
 </details>
