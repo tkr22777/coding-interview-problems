@@ -74,39 +74,29 @@ def dijkstra(graph, start):
     
     return distances
 
+# With path reconstruction
 def dijkstra_with_path(graph, start, end):
-    """
-    Find shortest path from start to end with path reconstruction
-    Returns: (distance, path)
-    """
     distances = {node: float('inf') for node in graph}
     distances[start] = 0
     previous = {}
-    
     pq = [(0, start)]
     visited = set()
     
     while pq:
         current_dist, current = heapq.heappop(pq)
-        
         if current == end:
             break
-            
         if current in visited:
             continue
-            
         visited.add(current)
         
         for neighbor, weight in graph[current]:
-            if neighbor in visited:
-                continue
-                
-            new_dist = current_dist + weight
-            
-            if new_dist < distances[neighbor]:
-                distances[neighbor] = new_dist
-                previous[neighbor] = current
-                heapq.heappush(pq, (new_dist, neighbor))
+            if neighbor not in visited:
+                new_dist = current_dist + weight
+                if new_dist < distances[neighbor]:
+                    distances[neighbor] = new_dist
+                    previous[neighbor] = current
+                    heapq.heappush(pq, (new_dist, neighbor))
     
     # Reconstruct path
     path = []
@@ -117,18 +107,6 @@ def dijkstra_with_path(graph, start, end):
     path.reverse()
     
     return distances[end], path if path[0] == start else []
-
-# Example usage
-graph = {
-    'A': [('B', 4), ('C', 2)],
-    'B': [('C', 1), ('D', 5)],
-    'C': [('D', 8), ('E', 10)],
-    'D': [('E', 2)],
-    'E': []
-}
-
-distances = dijkstra(graph, 'A')               # {'A': 0, 'B': 4, 'C': 2, 'D': 9, 'E': 11}
-dist, path = dijkstra_with_path(graph, 'A', 'E')  # (11, ['A', 'C', 'D', 'E'])
 ```
 
 </details>
@@ -172,55 +150,32 @@ def bellman_ford(graph, start):
     
     return distances, has_negative_cycle
 
-def bellman_ford_with_path(graph, start):
-    """
-    Bellman-Ford with path reconstruction and negative cycle detection
-    Returns: (distances, predecessors, negative_cycle_nodes)
-    """
+# With negative cycle detection
+def detect_negative_cycle(graph):
+    """Returns True if graph has negative cycle"""
     vertices = set()
     for src, dest, weight in graph:
         vertices.add(src)
         vertices.add(dest)
     
-    distances = {v: float('inf') for v in vertices}
-    distances[start] = 0
-    predecessors = {v: None for v in vertices}
+    if not vertices:
+        return False
     
-    # Relax edges V-1 times
+    distances = {v: float('inf') for v in vertices}
+    distances[next(iter(vertices))] = 0
+    
+    # Relax V-1 times
     for _ in range(len(vertices) - 1):
         for src, dest, weight in graph:
             if distances[src] != float('inf') and distances[src] + weight < distances[dest]:
                 distances[dest] = distances[src] + weight
-                predecessors[dest] = src
     
-    # Find negative cycle nodes
-    negative_cycle_nodes = set()
+    # Check for negative cycle
     for src, dest, weight in graph:
         if distances[src] != float('inf') and distances[src] + weight < distances[dest]:
-            negative_cycle_nodes.add(dest)
+            return True
     
-    # Propagate negative cycle effect
-    for _ in range(len(vertices)):
-        new_negative_nodes = set()
-        for src, dest, weight in graph:
-            if src in negative_cycle_nodes:
-                new_negative_nodes.add(dest)
-        negative_cycle_nodes.update(new_negative_nodes)
-    
-    return distances, predecessors, negative_cycle_nodes
-
-# Example usage
-edges = [
-    ('A', 'B', 4),
-    ('A', 'C', 2),
-    ('B', 'C', -3),
-    ('B', 'D', 2),
-    ('C', 'D', 4),
-    ('D', 'B', -5)  # Creates negative cycle
-]
-
-distances, has_cycle = bellman_ford(edges, 'A')
-print(f"Has negative cycle: {has_cycle}")
+    return False
 ```
 
 </details>
@@ -266,7 +221,7 @@ def floyd_warshall(graph):
     return dist, next_vertex
 
 def reconstruct_path(next_vertex, start, end):
-    """Reconstruct path from start to end using next_vertex matrix"""
+    """Reconstruct path using next_vertex matrix"""
     if next_vertex[start][end] is None:
         return []
     
@@ -277,27 +232,6 @@ def reconstruct_path(next_vertex, start, end):
         path.append(current)
     
     return path
-
-def detect_negative_cycles(dist):
-    """Check if there are negative cycles in the graph"""
-    n = len(dist)
-    for i in range(n):
-        if dist[i][i] < 0:
-            return True
-    return False
-
-# Example usage
-INF = float('inf')
-graph = [
-    [0, 3, INF, 7],
-    [8, 0, 2, INF],
-    [5, INF, 0, 1],
-    [2, INF, INF, 0]
-]
-
-dist, next_v = floyd_warshall(graph)
-path = reconstruct_path(next_v, 0, 3)          # Path from vertex 0 to vertex 3
-has_negative_cycle = detect_negative_cycles(dist)
 ```
 
 </details>
@@ -400,29 +334,9 @@ def prim_mst(graph, start=0):
     
     return mst_weight, mst_edges
 
-# Example usage
-# Kruskal's
-vertices = 4
-edges = [
-    (1, 0, 1),  # (weight, u, v)
-    (2, 1, 2),
-    (3, 2, 3),
-    (4, 3, 0),
-    (5, 0, 2),
-    (6, 1, 3)
-]
-
-mst_weight, mst_edges = kruskal_mst(vertices, edges)
-
-# Prim's
-graph = {
-    0: [(1, 1), (4, 3), (5, 2)],
-    1: [(1, 0), (2, 2), (6, 3)],
-    2: [(2, 1), (5, 0), (3, 3)],
-    3: [(4, 0), (6, 1), (3, 2)]
-}
-
-mst_weight, mst_edges = prim_mst(graph, 0)
+# Usage: Both algorithms find MST, choose based on graph density
+# Kruskal's: Better for sparse graphs (fewer edges)
+# Prim's: Better for dense graphs (many edges)
 ```
 
 </details>
@@ -504,31 +418,15 @@ def topological_sort_dfs(graph, vertices):
     result.reverse()  # Reverse to get correct order
     return result
 
-# Course Schedule problem
+# Application: Course scheduling
 def can_finish_courses(num_courses, prerequisites):
-    """
-    Determine if all courses can be finished given prerequisites
-    prerequisites: list of [course, prerequisite] pairs
-    """
+    """Check if all courses can be finished (no cycles)"""
     graph = defaultdict(list)
     for course, prereq in prerequisites:
         graph[prereq].append(course)
     
     vertices = list(range(num_courses))
-    topo_order = topological_sort_kahn(graph, vertices)
-    
-    return topo_order is not None
-
-# Example usage
-graph = {
-    'A': ['B', 'C'],
-    'B': ['D'],
-    'C': ['D'],
-    'D': []
-}
-vertices = ['A', 'B', 'C', 'D']
-
-topo_order = topological_sort_kahn(graph, vertices)  # ['A', 'B', 'C', 'D'] or ['A', 'C', 'B', 'D']
+    return topological_sort_kahn(graph, vertices) is not None
 ```
 
 </details> 

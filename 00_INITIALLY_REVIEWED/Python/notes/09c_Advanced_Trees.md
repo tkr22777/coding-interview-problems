@@ -151,7 +151,7 @@ class SegmentTreeLazy:
     def range_sum(self, l, r):
         return self.query_range(0, 0, self.n-1, l, r)
 
-# Min/Max Segment Tree
+# Min/Max Segment Tree (similar structure, change operation)
 class MinSegmentTree:
     def __init__(self, arr):
         self.n = len(arr)
@@ -165,18 +165,7 @@ class MinSegmentTree:
             mid = (start + end) // 2
             self.build(arr, 2*node+1, start, mid)
             self.build(arr, 2*node+2, mid+1, end)
-            self.tree[node] = min(self.tree[2*node+1], self.tree[2*node+2])
-    
-    def update(self, node, start, end, idx, val):
-        if start == end:
-            self.tree[node] = val
-        else:
-            mid = (start + end) // 2
-            if idx <= mid:
-                self.update(2*node+1, start, mid, idx, val)
-            else:
-                self.update(2*node+2, mid+1, end, idx, val)
-            self.tree[node] = min(self.tree[2*node+1], self.tree[2*node+2])
+            self.tree[node] = min(self.tree[2*node+1], self.tree[2*node+2])  # Change to min
     
     def query(self, node, start, end, l, r):
         if r < start or end < l:
@@ -191,59 +180,6 @@ class MinSegmentTree:
     
     def range_min(self, l, r):
         return self.query(0, 0, self.n-1, l, r)
-    
-    def update_value(self, idx, val):
-        self.update(0, 0, self.n-1, idx, val)
-
-# Example usage and applications
-def range_sum_query_mutable(nums):
-    """LeetCode 307: Range Sum Query - Mutable"""
-    class NumArray:
-        def __init__(self, nums):
-            self.seg_tree = SegmentTree(nums)
-        
-        def update(self, index, val):
-            self.seg_tree.update_value(index, val)
-        
-        def sumRange(self, left, right):
-            return self.seg_tree.range_sum(left, right)
-    
-    return NumArray(nums)
-
-# Count of Range Sum
-def count_range_sum(nums, lower, upper):
-    """Count number of range sums that lie in [lower, upper]"""
-    # This is a complex problem that uses coordinate compression + segment tree
-    # or merge sort with segment tree
-    
-    def merge_sort_count(prefix_sums, start, end):
-        if start >= end:
-            return 0
-        
-        mid = (start + end) // 2
-        count = merge_sort_count(prefix_sums, start, mid) + \
-                merge_sort_count(prefix_sums, mid + 1, end)
-        
-        # Count cross-boundary range sums
-        j = k = mid + 1
-        for i in range(start, mid + 1):
-            # Find range [j, k) where prefix_sums[j] - prefix_sums[i] is in [lower, upper]
-            while j <= end and prefix_sums[j] - prefix_sums[i] < lower:
-                j += 1
-            while k <= end and prefix_sums[k] - prefix_sums[i] <= upper:
-                k += 1
-            count += k - j
-        
-        # Merge step
-        prefix_sums[start:end+1] = sorted(prefix_sums[start:end+1])
-        return count
-    
-    # Calculate prefix sums
-    prefix_sums = [0]
-    for num in nums:
-        prefix_sums.append(prefix_sums[-1] + num)
-    
-    return merge_sort_count(prefix_sums, 0, len(prefix_sums) - 1)
 ```
 
 </details>
@@ -310,55 +246,27 @@ class FenwickTreeZeroBased:
             return self.prefix_sum(r)
         return self.prefix_sum(r) - self.prefix_sum(l - 1)
 
-# 2D Fenwick Tree (for 2D range sum queries)
+# 2D Fenwick Tree (extends 1D concept to 2D)
 class FenwickTree2D:
     def __init__(self, matrix):
-        if not matrix or not matrix[0]:
-            return
-        
         self.m, self.n = len(matrix), len(matrix[0])
         self.tree = [[0] * (self.n + 1) for _ in range(self.m + 1)]
-        
-        # Build tree
         for i in range(self.m):
             for j in range(self.n):
                 self.update(i, j, matrix[i][j])
     
     def update(self, row, col, delta):
-        """Add delta to element at (row, col)"""
-        i = row + 1  # Convert to 1-indexed
+        i = row + 1
         while i <= self.m:
             j = col + 1
             while j <= self.n:
                 self.tree[i][j] += delta
                 j += j & (-j)
             i += i & (-i)
-    
-    def query(self, row, col):
-        """Get sum of rectangle from (0,0) to (row, col)"""
-        result = 0
-        i = row + 1
-        while i > 0:
-            j = col + 1
-            while j > 0:
-                result += self.tree[i][j]
-                j -= j & (-j)
-            i -= i & (-i)
-        return result
-    
-    def range_sum(self, row1, col1, row2, col2):
-        """Get sum of rectangle from (row1,col1) to (row2,col2)"""
-        return (self.query(row2, col2) - 
-                (self.query(row1-1, col2) if row1 > 0 else 0) -
-                (self.query(row2, col1-1) if col1 > 0 else 0) +
-                (self.query(row1-1, col1-1) if row1 > 0 and col1 > 0 else 0))
 
-# Applications and Examples
-
-# Count Inversions using Fenwick Tree
+# Applications
 def count_inversions(arr):
-    """Count number of inversions in array using coordinate compression + Fenwick Tree"""
-    # Coordinate compression
+    """Count inversions using coordinate compression + Fenwick Tree"""
     sorted_vals = sorted(set(arr))
     coord_map = {val: i+1 for i, val in enumerate(sorted_vals)}
     
@@ -367,58 +275,10 @@ def count_inversions(arr):
     
     for num in arr:
         compressed = coord_map[num]
-        # Count elements greater than current element that appeared before
         inversions += fenwick.query(len(sorted_vals)) - fenwick.query(compressed)
         fenwick.update(compressed, 1)
     
     return inversions
-
-# Range Sum Query - Mutable (LeetCode 307)
-class NumArrayFenwick:
-    def __init__(self, nums):
-        self.nums = nums[:]
-        self.fenwick = FenwickTreeZeroBased(nums)
-    
-    def update(self, index, val):
-        delta = val - self.nums[index]
-        self.nums[index] = val
-        self.fenwick.update(index, delta)
-    
-    def sumRange(self, left, right):
-        return self.fenwick.range_sum(left, right)
-
-# Count of Smaller Numbers After Self
-def count_smaller(nums):
-    """For each element, count how many smaller elements appear after it"""
-    # Coordinate compression
-    sorted_vals = sorted(set(nums))
-    coord_map = {val: i+1 for i, val in enumerate(sorted_vals)}
-    
-    fenwick = FenwickTree(len(sorted_vals))
-    result = []
-    
-    # Process from right to left
-    for i in range(len(nums) - 1, -1, -1):
-        compressed = coord_map[nums[i]]
-        # Count elements smaller than current element
-        count = fenwick.query(compressed - 1)
-        result.append(count)
-        fenwick.update(compressed, 1)
-    
-    return result[::-1]
-
-# Example usage
-arr = [3, 2, -1, 6, 5, 4, -3, 3, 7, 2, 3]
-
-# Using Fenwick Tree
-fenwick = FenwickTreeZeroBased(arr)
-print(f"Sum from index 2 to 5: {fenwick.range_sum(2, 5)}")
-fenwick.update(3, 10)  # Add 10 to element at index 3
-print(f"Sum from index 2 to 5 after update: {fenwick.range_sum(2, 5)}")
-
-# Count inversions
-inversions = count_inversions([2, 3, 8, 6, 1])
-print(f"Number of inversions: {inversions}")
 ```
 
 </details> 

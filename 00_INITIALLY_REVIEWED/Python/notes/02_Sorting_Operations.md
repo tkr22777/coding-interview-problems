@@ -10,31 +10,20 @@
 # Space Complexity: O(n) for sorted(), O(1) for .sort()
 
 # Basic operations
-vals = [4, 2, 0, 3, 1], vals1 = [5, 6, 7, 8, 9]
-sorted(vals)                                    # [0, 1, 2, 3, 4] (doesn't mutate) - O(n log n)
-vals.sort()                                     # mutates vals to [0, 1, 2, 3, 4] - O(n log n)
-sorted(vals) + vals1                            # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] - O(n log n + m)
+sorted_list = sorted([4, 2, 0, 3, 1])          # [0, 1, 2, 3, 4] (doesn't mutate)
+vals.sort()                                     # mutates vals in-place
 
-# Examples
-numbers = [5, 2, 9, 1, 5, 6]
-sorted(numbers)                                 # [1, 2, 5, 5, 6, 9] - O(n log n)
-sorted(numbers, reverse=True)                   # [9, 6, 5, 5, 2, 1] - O(n log n)
+# Iterate through sorted results
+for element in sorted_list:                     # Iterate through sorted elements
+    print(element)
 
-strings = ["banana", "apple", "cherry"]
-sorted(strings)                                 # ['apple', 'banana', 'cherry'] - O(n log n)
-sorted(strings, key=str.lower)                  # Case-insensitive - O(n log n)
+# Access by index
+for i, element in enumerate(sorted_list):       # Get index and element
+    print(f"Index {i}: {element}")
 
 # Custom sorting
-tuples = [(1, 'b'), (2, 'a'), (3, 'c')]
-sorted(tuples, key=lambda x: x[1])              # [(2, 'a'), (1, 'b'), (3, 'c')] - O(n log n)
-
-words = ["banana", "apple", "cherry", "date"]
-sorted(words, key=len)                          # ['date', 'apple', 'banana', 'cherry'] - O(n log n)
-
-# Zip and sort
-difficulty = [3, 1, 2]
-profit = [30, 10, 20]
-sorted(list(zip(difficulty, profit)), key=lambda x: x[0])  # [(1, 10), (2, 20), (3, 30)] - O(n log n)
+sorted([(1, 'b'), (2, 'a')], key=lambda x: x[1])  # [(2, 'a'), (1, 'b')]
+sorted(["banana", "apple"], key=len)            # ['apple', 'banana']
 ```
 
 </details>
@@ -52,14 +41,11 @@ import bisect
 
 # Basic operations
 arr = [1, 2, 4, 4, 5, 6, 8]
-bisect.bisect_left(arr, 4)                     # 2 (first position where 4 can be inserted) - O(log n)
-bisect.bisect_right(arr, 4)                    # 4 (position after existing 4s) - O(log n)
-bisect.bisect_left(arr, 3)                     # 2 (value not in array) - O(log n)
-bisect.bisect_right(arr, 7)                    # 6 (value not in array) - O(log n)
+bisect.bisect_left(arr, 4)                     # 2 (first position where 4 can be inserted)
+bisect.bisect_right(arr, 4)                    # 4 (position after existing 4s)
 
 # Insert maintaining order
-sorted_list = [10, 20, 30, 40, 50]
-bisect.insort(sorted_list, 25)                 # [10, 20, 25, 30, 40, 50] - O(n)
+bisect.insort(sorted_list, 25)                 # Inserts 25 in correct position
 
 # Count elements pattern
 def count_elements(arr, queries):
@@ -93,103 +79,34 @@ count_elements(arr, queries)                    # [(4, 2), (0, 6), (7, 0)] - O(n
 from sortedcontainers import SortedSet
 
 # Basic usage
-ss = SortedSet([3, 1, 4, 1, 5])               # SortedSet([1, 3, 4, 5]) - O(n log n)
-ss.add(2)                                      # SortedSet([1, 2, 3, 4, 5]) - O(log n)
-ss.remove(3)                                   # SortedSet([1, 2, 4, 5]) - O(log n)
-
-# Custom sorting with objects
-class Person:
-    def __init__(self, name, age):
-        self.name, self.age = name, age
-    
-    def __repr__(self):
-        return f"{self.name} ({self.age})"
-    
-    def __lt__(self, other):
-        return self.age < other.age
-
-people = SortedSet([Person("Alice", 30), Person("Bob", 25), Person("Charlie", 35)])
-# Output: [Bob (25), Alice (30), Charlie (35)] - O(n log n)
-people.add(Person("Dave", 20))
-# Output: [Dave (20), Bob (25), Alice (30), Charlie (35)] - O(log n)
+ss = SortedSet([3, 1, 4, 1, 5])               # SortedSet([1, 3, 4, 5])
+ss.add(2)                                      # Adds in correct position
+ss.remove(3)                                   # Removes element
 
 # Range operations and element finding
-# IMPORTANT: Use irange() for efficient range queries - O(log n + k)
-# Converting to list() first would be O(n) and defeat the purpose!
 ss = SortedSet([10, 20, 30, 40, 50])
 
-# Find closest elements to a query value
+# Find closest elements
 def find_floor(sorted_set, query):
-    """Find largest element <= query - O(log n)"""
+    """Find largest element <= query"""
     idx = sorted_set.bisect_right(query) - 1
     return sorted_set[idx] if idx >= 0 else None
 
-def find_ceiling(sorted_set, query):
-    """Find smallest element >= query - O(log n)"""
-    idx = sorted_set.bisect_left(query)
-    return sorted_set[idx] if idx < len(sorted_set) else None
+# Range queries and iteration
+list(ss.irange(25, 45))                        # [30, 40]
+ss.bisect_left(35)                             # Count elements < 35
+ss[0], ss[-1]                                  # First, last elements
 
-def find_predecessor(sorted_set, query):
-    """Find largest element < query - O(log n)"""
-    idx = sorted_set.bisect_left(query) - 1
-    return sorted_set[idx] if idx >= 0 else None
+# Iterate through elements
+for element in ss:                              # Iterate all elements in sorted order
+    print(element)
 
-def find_successor(sorted_set, query):
-    """Find smallest element > query - O(log n)"""
-    idx = sorted_set.bisect_right(query)
-    return sorted_set[idx] if idx < len(sorted_set) else None
+# Iterate through range
+for element in ss.irange(20, 40):               # Iterate elements in [20, 40]
+    print(element)
 
-# Examples with ss = [10, 20, 30, 40, 50]
-find_floor(ss, 25)                             # 20 (largest <= 25) - O(log n)
-find_ceiling(ss, 25)                           # 30 (smallest >= 25) - O(log n)
-find_predecessor(ss, 30)                       # 20 (largest < 30) - O(log n)
-find_successor(ss, 30)                         # 40 (smallest > 30) - O(log n)
-
-# Get elements in range
-def get_range_set(sorted_set, min_val, max_val):
-    """Get elements in [min_val, max_val] - O(log n + k) where k is result size"""
-    return list(sorted_set.irange(min_val, max_val))
-
-# Get elements >= threshold
-def get_elements_gte(sorted_set, threshold):
-    """Get elements >= threshold - O(log n + k) where k is result size"""
-    return list(sorted_set.irange(threshold))
-
-# Get elements <= threshold
-def get_elements_lte(sorted_set, threshold):
-    """Get elements <= threshold - O(log n + k) where k is result size"""
-    return list(sorted_set.irange(None, threshold, (True, True)))
-
-# Examples
-get_range_set(ss, 25, 45)                      # [30, 40] - O(log n + k)
-get_elements_gte(ss, 35)                       # [40, 50] - O(log n + k)
-get_elements_lte(ss, 35)                       # [10, 20, 30] - O(log n + k)
-
-# Count operations
-def count_less_than(sorted_set, query):
-    """Count elements < query - O(log n)"""
-    return sorted_set.bisect_left(query)
-
-def count_less_equal(sorted_set, query):
-    """Count elements <= query - O(log n)"""
-    return sorted_set.bisect_right(query)
-
-def count_in_range(sorted_set, min_val, max_val):
-    """Count elements in [min_val, max_val] - O(log n)"""
-    return sorted_set.bisect_right(max_val) - sorted_set.bisect_left(min_val)
-
-# Examples
-count_less_than(ss, 35)                        # 3 (elements < 35: 10,20,30) - O(log n)
-count_less_equal(ss, 30)                       # 3 (elements <= 30: 10,20,30) - O(log n)
-count_in_range(ss, 20, 40)                     # 3 (elements in [20,40]: 20,30,40) - O(log n)
-
-# Peek operations
-first_element = ss[0]                           # 10 (smallest) - O(1)
-last_element = ss[-1]                          # 50 (largest) - O(1)
-
-# Pop operations
-smallest = ss.pop(0)                           # 10 - O(log n)
-largest = ss.pop(-1)                           # 50 - O(log n)
+# Get elements as list for processing
+elements_in_range = list(ss.irange(20, 40))    # Convert to list for indexing
 ```
 
 </details>
@@ -213,63 +130,28 @@ sd = SortedDict({30: "Alice", 25: "Bob", 35: "Charlie"})
 sd[20] = "Dave"                                # Maintains sorted order - O(log n)
 sd[25] = "Eve"                                 # Updates existing key - O(log n)
 
-# With custom objects
-class Person:
-    def __init__(self, name, age):
-        self.name, self.age = name, age
-    
-    def __repr__(self):
-        return f"Person({self.name}, {self.age})"
-
-people = SortedDict({
-    30: Person("Alice", 30),
-    25: Person("Bob", 25),
-    35: Person("Charlie", 35)
-})
-# Keys remain sorted: {25: Person(Bob, 25), 30: Person(Alice, 30), 35: Person(Charlie, 35)} - O(n log n)
-
-# Range operations and subtree extraction
-# IMPORTANT: Use irange() for efficient range queries - O(log n + k)
-# Converting to list() first would be O(n) and defeat the purpose!
+# Range operations and iteration
 sd = SortedDict({10: "A", 20: "B", 30: "C", 40: "D", 50: "E"})
+list(sd.irange(20, 40))                        # [(20, 'B'), (30, 'C'), (40, 'D')]
 
-# Get all items with keys >= threshold
-def get_items_gte(sorted_dict, threshold):
-    """Get all items with keys >= threshold - O(log n + k) where k is result size"""
-    return [(k, v) for k, v in sorted_dict.irange(threshold)]
+# Iterate through key-value pairs
+for key, value in sd.items():                  # Iterate all items in key order
+    print(f"{key}: {value}")
 
-# Get all items with keys <= threshold  
-def get_items_lte(sorted_dict, threshold):
-    """Get all items with keys <= threshold - O(log n + k) where k is result size"""
-    return [(k, v) for k, v in sorted_dict.irange(None, threshold, (True, True))]
+# Iterate through range
+for key, value in sd.irange(20, 40):           # Iterate items in key range [20, 40]
+    print(f"{key}: {value}")
 
-# Get range of items between two keys (inclusive)
-def get_range(sorted_dict, min_key, max_key):
-    """Get items with keys in [min_key, max_key] - O(log n + k) where k is result size"""
-    return [(k, v) for k, v in sorted_dict.irange(min_key, max_key)]
+# Iterate keys only
+for key in sd:                                 # Iterate keys in sorted order
+    print(key)
 
-# Examples
-get_items_gte(sd, 25)                          # [(30, 'C'), (40, 'D'), (50, 'E')] - O(log n + k)
-get_items_lte(sd, 35)                          # [(10, 'A'), (20, 'B'), (30, 'C')] - O(log n + k)
-get_range(sd, 20, 40)                          # [(20, 'B'), (30, 'C'), (40, 'D')] - O(log n + k)
+# Get range as list for processing
+items_in_range = list(sd.irange(20, 40))       # [(20, 'B'), (30, 'C'), (40, 'D')]
 
-# Iterate from specific key onwards
-def iterate_from(sorted_dict, start_key):
-    """Iterate starting from start_key - O(log n) to find start, O(1) per iteration"""
-    for key, value in sorted_dict.irange(start_key):
-        yield key, value
-
-# Usage: iterate from key 25 onwards
-for key, value in iterate_from(sd, 25):
-    print(f"{key}: {value}")                   # Prints 30:C, 40:D, 50:E
-
-# Peek operations for first/last elements
-first_key, first_value = sd.peekitem(0)        # (10, 'A') - O(1)
-last_key, last_value = sd.peekitem(-1)         # (50, 'E') - O(1)
-
-# Pop operations maintaining order
-smallest = sd.popitem(0)                       # (10, 'A') - O(log n)
-largest = sd.popitem(-1)                       # (50, 'E') - O(log n)
+# Peek operations
+sd.peekitem(0)                                 # (10, 'A') - first item
+sd.peekitem(-1)                                # (50, 'E') - last item
 ```
 
 </details>
@@ -303,129 +185,43 @@ sl = SortedList([1, 2, 2, 3, 3, 3])
 sl.count(2)                                    # 2 - O(log n)
 sl.count(3)                                    # 3 - O(log n)
 
-# Range operations using irange() for efficiency
-# IMPORTANT: Use irange() for efficient range queries - O(log n + k)
+# Range operations and iteration
 sl = SortedList([10, 20, 30, 40, 50, 60])
+list(sl.irange(25, 45))                        # [30, 40]
+sl.bisect_left(25)                             # 2 (insertion point)
 
-# Get elements in range
-def get_range_list(sorted_list, min_val, max_val):
-    """Get elements in [min_val, max_val] - O(log n + k) where k is result size"""
-    return list(sorted_list.irange(min_val, max_val))
+# Iterate through elements
+for element in sl:                             # Iterate all elements in sorted order
+    print(element)
 
-# Get elements >= threshold
-def get_elements_gte_list(sorted_list, threshold):
-    """Get elements >= threshold - O(log n + k) where k is result size"""
-    return list(sorted_list.irange(threshold))
+# Iterate through range
+for element in sl.irange(25, 45):              # Iterate elements in range [25, 45]
+    print(element)
 
-# Get elements <= threshold
-def get_elements_lte_list(sorted_list, threshold):
-    """Get elements <= threshold - O(log n + k) where k is result size"""
-    return list(sorted_list.irange(None, threshold, (True, True)))
+# Access by index (unlike SortedSet)
+for i in range(len(sl)):                       # Access by index
+    print(f"Index {i}: {sl[i]}")
 
-# Examples
-get_range_list(sl, 25, 45)                     # [30, 40] - O(log n + k)
-get_elements_gte_list(sl, 35)                  # [40, 50, 60] - O(log n + k)
-get_elements_lte_list(sl, 35)                  # [10, 20, 30] - O(log n + k)
-
-# Binary search operations
-sl = SortedList([10, 20, 30, 40, 50])
-sl.bisect_left(25)                             # 2 (insertion point for 25) - O(log n)
-sl.bisect_right(30)                            # 3 (insertion point after 30) - O(log n)
+# Get range as list for processing
+elements_in_range = list(sl.irange(25, 45))    # [30, 40]
 
 # Find closest elements
 def find_floor_list(sorted_list, query):
-    """Find largest element <= query - O(log n)"""
+    """Find largest element <= query"""
     idx = sorted_list.bisect_right(query) - 1
     return sorted_list[idx] if idx >= 0 else None
 
-def find_ceiling_list(sorted_list, query):
-    """Find smallest element >= query - O(log n)"""
-    idx = sorted_list.bisect_left(query)
-    return sorted_list[idx] if idx < len(sorted_list) else None
-
-# Examples with sl = [10, 20, 30, 40, 50]
-find_floor_list(sl, 25)                        # 20 (largest <= 25) - O(log n)
-find_ceiling_list(sl, 25)                      # 30 (smallest >= 25) - O(log n)
-
-# Count operations
-def count_less_than_list(sorted_list, query):
-    """Count elements < query - O(log n)"""
-    return sorted_list.bisect_left(query)
-
-def count_in_range_list(sorted_list, min_val, max_val):
-    """Count elements in [min_val, max_val] - O(log n)"""
-    return sorted_list.bisect_right(max_val) - sorted_list.bisect_left(min_val)
-
-# Examples
-count_less_than_list(sl, 35)                   # 3 (elements < 35: 10,20,30) - O(log n)
-count_in_range_list(sl, 20, 40)                # 3 (elements in [20,40]: 20,30,40) - O(log n)
-
-# Pop operations
-smallest = sl.pop(0)                           # 10 - O(log n)
-largest = sl.pop(-1)                           # 50 - O(log n)
-middle = sl.pop(len(sl)//2)                    # Remove middle element - O(log n)
-
 # Practical use cases
-# 1. Sliding window median
 class MedianFinder:
     def __init__(self):
         self.nums = SortedList()
     
     def add_num(self, num):
-        self.nums.add(num)                     # O(log n)
+        self.nums.add(num)
     
     def find_median(self):
         n = len(self.nums)
-        if n % 2 == 1:
-            return self.nums[n // 2]           # O(log n)
-        else:
-            return (self.nums[n // 2 - 1] + self.nums[n // 2]) / 2  # O(log n)
-
-# 2. Range sum queries with updates
-class RangeSumSortedList:
-    def __init__(self, nums):
-        self.nums = SortedList(nums)           # O(n log n)
-    
-    def update(self, old_val, new_val):
-        self.nums.remove(old_val)              # O(log n)
-        self.nums.add(new_val)                 # O(log n)
-    
-    def range_sum(self, min_val, max_val):
-        return sum(self.nums.irange(min_val, max_val))  # O(log n + k)
-
-# 3. Kth smallest/largest element queries
-def kth_smallest(sorted_list, k):
-    """Get kth smallest element (1-indexed) - O(log n)"""
-    return sorted_list[k - 1] if 1 <= k <= len(sorted_list) else None
-
-def kth_largest(sorted_list, k):
-    """Get kth largest element (1-indexed) - O(log n)"""
-    return sorted_list[-k] if 1 <= k <= len(sorted_list) else None
-
-# Examples
-sl = SortedList([3, 1, 4, 1, 5, 9, 2, 6])
-kth_smallest(sl, 3)                            # 2 (3rd smallest) - O(log n)
-kth_largest(sl, 2)                             # 6 (2nd largest) - O(log n)
-
-# Custom sorting with key function
-from operator import attrgetter
-
-class Student:
-    def __init__(self, name, grade):
-        self.name, self.grade = name, grade
-    
-    def __repr__(self):
-        return f"Student({self.name}, {self.grade})"
-
-# Sort by grade
-students = SortedList([
-    Student("Alice", 85),
-    Student("Bob", 90),
-    Student("Charlie", 78)
-], key=attrgetter('grade'))
-
-students.add(Student("Dave", 88))              # Maintains sorted order by grade - O(log n)
-# Result: [Student(Charlie, 78), Student(Alice, 85), Student(Dave, 88), Student(Bob, 90)]
+        return self.nums[n // 2] if n % 2 == 1 else (self.nums[n // 2 - 1] + self.nums[n // 2]) / 2
 ```
 
 </details>
@@ -445,84 +241,46 @@ import heapq
 
 # Basic operations
 heap = []
-heapq.heappush(heap, 3)                         # heap: [3] - O(log n)
-heapq.heappush(heap, 1)                         # heap: [1, 3] - O(log n)
-heapq.heappush(heap, 2)                         # heap: [1, 2, 3] - O(log n)
-
-smallest = heapq.heappop(heap)                  # smallest: 1, heap: [2, 3] - O(log n)
-
-# Combined push and pop
-next_smallest = heapq.heappushpop(heap, 4)      # push 4, pop smallest: 2, heap: [3, 4] - O(log n)
-replaced = heapq.heapreplace(heap, 6)           # pop 3, push 6: heap: [4, 6] - O(log n)
+heapq.heappush(heap, 3)                         # heap: [3]
+heapq.heappop(heap)                             # Returns and removes smallest
 
 # Transform list to heap
-list_to_heap = [5, 1, 3, 2]
-heapq.heapify(list_to_heap)                     # [1, 2, 3, 5] in-place - O(n)
+heapq.heapify([5, 1, 3, 2])                    # In-place heapification
 
 # Find largest/smallest
-data = [3, 1, 4, 1, 5, 9, 2]
-heapq.nlargest(2, data)                         # [9, 5] - O(n log k)
-heapq.nsmallest(2, data)                        # [1, 1] - O(n log k)
+largest = heapq.nlargest(2, [3, 1, 4, 1, 5, 9, 2])    # [9, 5]
+smallest = heapq.nsmallest(2, [3, 1, 4, 1, 5, 9, 2])  # [1, 1]
 
-# Heap with objects
-class Item:
-    def __init__(self, name, priority):
-        self.name, self.priority = name, priority
-    
-    def __repr__(self):
-        return f"Item({self.name}, {self.priority})"
+# Iterate through results
+for element in largest:                         # Iterate through largest elements
+    print(f"Large: {element}")
 
-items = [Item("item1", 5), Item("item2", 1), Item("item3", 3)]
-heap = [(item.priority, item) for item in items]
-heapq.heapify(heap)                             # O(n)
+for element in smallest:                        # Iterate through smallest elements
+    print(f"Small: {element}")
 
-new_item = Item("item4", 2)
-heapq.heappush(heap, (new_item.priority, new_item))  # O(log n)
-popped_item = heapq.heappop(heap)[1]            # Get the item, not the priority - O(log n)
+# Heap with objects (use tuples for priority)
+heap = [(priority, item) for priority, item in [(5, "item1"), (1, "item2")]]
+heapq.heapify(heap)
+heapq.heappush(heap, (2, "item3"))
+priority, item = heapq.heappop(heap)            # Get both priority and item
 
-# Max heap of size k (for k largest elements)
-def maintain_k_largest(arr, k):
-    heap = []
-    for num in arr:                             # O(n log k)
-        heapq.heappush(heap, num)
-        if len(heap) > k:
-            heapq.heappop(heap)                 # Remove smallest
-    return heap                                 # heap[0] is kth largest
-
-# Nth largest element O(N log k)
-def nth_largest(arr, n):
-    heap = arr[:n]
-    heapq.heapify(heap)                         # O(n)
-    for num in arr[n:]:                         # O((N-n) log n)
+# Kth largest using min heap
+def kth_largest(arr, k):
+    heap = arr[:k]
+    heapq.heapify(heap)
+    for num in arr[k:]:
         if num > heap[0]:
             heapq.heapreplace(heap, num)
-    return heap[0]                              # nth largest
+    return heap[0]
 
-# Nth smallest element O(N log k) 
-def nth_smallest(arr, n):
-    heap = [-x for x in arr[:n]]                # Max heap (negate values)
-    heapq.heapify(heap)                         # O(n)
-    for num in arr[n:]:                         # O((N-n) log n)
+# Max heap simulation (negate values)
+def kth_smallest(arr, k):
+    heap = [-x for x in arr[:k]]
+    heapq.heapify(heap)
+    for num in arr[k:]:
         if num < -heap[0]:
             heapq.heapreplace(heap, -num)
-    return -heap[0]                             # nth smallest
-
-# Examples
-arr = [3, 1, 4, 1, 5, 9, 2, 6]
-maintain_k_largest(arr, 3)                      # [4, 5, 9] (3 largest) - O(n log k)
-nth_largest(arr, 3)                             # 5 (3rd largest) - O(n log n)
-nth_smallest(arr, 3)                            # 2 (3rd smallest) - O(n log n)
-
-# Heap indexing (array-based tree)
-# Parent of i: (i-1)//2, Left child: 2*i+1, Right child: 2*i+2
-arr = [5, 1, 3, 2]
-heapq.heapify(arr)                              # [1, 2, 3, 5] - O(n)
-# Index:  0  1  2  3  (parent of 3 is (3-1)//2 = 1)
-# Tree:      1
-#           / \
-#          2   3
-#         /
-#        5
+    return -heap[0]
 ```
 
 </details> 
