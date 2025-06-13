@@ -132,14 +132,15 @@ sd[25] = "Eve"                                 # Updates existing key - O(log n)
 
 # Range operations and iteration
 sd = SortedDict({10: "A", 20: "B", 30: "C", 40: "D", 50: "E"})
-list(sd.irange(20, 40))                        # [(20, 'B'), (30, 'C'), (40, 'D')]
+list(sd.irange(20, 40))                        # [20, 30, 40] - keys only!
 
 # Iterate through key-value pairs
 for key, value in sd.items():                  # Iterate all items in key order
     print(f"{key}: {value}")
 
 # Iterate through range
-for key, value in sd.irange(20, 40):           # Iterate items in key range [20, 40]
+for key in sd.irange(20, 40):                 # Iterate keys in range [20, 40]
+    value = sd[key]                              # Access value separately
     print(f"{key}: {value}")
 
 # Iterate keys only
@@ -147,7 +148,8 @@ for key in sd:                                 # Iterate keys in sorted order
     print(key)
 
 # Get range as list for processing
-items_in_range = list(sd.irange(20, 40))       # [(20, 'B'), (30, 'C'), (40, 'D')]
+keys_in_range = list(sd.irange(20, 40))        # [20, 30, 40] - keys only!
+items_in_range = [(k, sd[k]) for k in sd.irange(20, 40)]  # Get key-value pairs
 
 # Peek operations
 sd.peekitem(0)                                 # (10, 'A') - first item
