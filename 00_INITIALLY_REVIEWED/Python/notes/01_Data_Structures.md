@@ -501,6 +501,188 @@ def transpose_zip(matrix):
 </details>
 
 <details>
+<summary><strong>Trie (Prefix Tree)</strong></summary>
+
+```python
+# Time Complexity:
+# - Insert: O(m) where m is length of word
+# - Search: O(m) where m is length of word
+# - StartsWith: O(m) where m is length of prefix
+# Space Complexity: O(ALPHABET_SIZE * N * M) where N is number of words, M is average length
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}  # char -> TrieNode
+        self.is_end_word = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    
+    def insert(self, word):
+        """Insert word into trie - O(m)"""
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end_word = True
+    
+    def search(self, word):
+        """Search for exact word - O(m)"""
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return node.is_end_word
+    
+    def starts_with(self, prefix):
+        """Check if any word starts with prefix - O(m)"""
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return True
+    
+    def get_all_words_with_prefix(self, prefix):
+        """Get all words that start with prefix - O(m + k) where k is result size"""
+        node = self.root
+        # Navigate to prefix end
+        for char in prefix:
+            if char not in node.children:
+                return []
+            node = node.children[char]
+        
+        # DFS to collect all words from this node
+        result = []
+        self._dfs_collect_words(node, prefix, result)
+        return result
+    
+    def _dfs_collect_words(self, node, current_word, result):
+        """Helper for collecting all words from a node"""
+        if node.is_end_word:
+            result.append(current_word)
+        
+        for char, child_node in node.children.items():
+            self._dfs_collect_words(child_node, current_word + char, result)
+
+# Practical use cases
+# 1. Autocomplete system
+class AutoComplete:
+    def __init__(self, words):
+        self.trie = Trie()
+        for word in words:
+            self.trie.insert(word)
+    
+    def get_suggestions(self, prefix, max_suggestions=5):
+        """Get autocomplete suggestions - O(m + k)"""
+        suggestions = self.trie.get_all_words_with_prefix(prefix)
+        return suggestions[:max_suggestions]
+
+# 2. Word search in grid
+def word_search_trie(board, words):
+    """Find all words from list that exist in 2D board - O(M*N*4^L) where L is max word length"""
+    trie = Trie()
+    for word in words:
+        trie.insert(word)
+    
+    result = set()
+    m, n = len(board), len(board[0])
+    
+    def dfs(i, j, node, path):
+        if node.is_end_word:
+            result.add(path)
+        
+        if i < 0 or i >= m or j < 0 or j >= n:
+            return
+        
+        char = board[i][j]
+        if char not in node.children:
+            return
+        
+        # Mark as visited
+        board[i][j] = '#'
+        
+        # Explore all 4 directions
+        for di, dj in [(0,1), (1,0), (0,-1), (-1,0)]:
+            dfs(i + di, j + dj, node.children[char], path + char)
+        
+        # Backtrack
+        board[i][j] = char
+    
+    for i in range(m):
+        for j in range(n):
+            dfs(i, j, trie.root, "")
+    
+    return list(result)
+
+# 3. Longest word with all prefixes
+def longest_word_with_prefixes(words):
+    """Find longest word where all prefixes are also words - O(N*M)"""
+    trie = Trie()
+    for word in words:
+        trie.insert(word)
+    
+    def has_all_prefixes(word):
+        node = trie.root
+        for char in word:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+            if not node.is_end_word:  # Prefix must be a complete word
+                return False
+        return True
+    
+    result = ""
+    for word in words:
+        if has_all_prefixes(word):
+            if len(word) > len(result) or (len(word) == len(result) and word < result):
+                result = word
+    
+    return result
+
+# 4. Replace words (implement dictionary)
+def replace_words(dictionary, sentence):
+    """Replace words with their shortest root from dictionary - O(N*M + S*M)"""
+    trie = Trie()
+    for root in dictionary:
+        trie.insert(root)
+    
+    def find_root(word):
+        node = trie.root
+        for i, char in enumerate(word):
+            if char not in node.children:
+                return word  # No root found
+            node = node.children[char]
+            if node.is_end_word:
+                return word[:i+1]  # Found shortest root
+        return word
+    
+    words = sentence.split()
+    return ' '.join(find_root(word) for word in words)
+
+# Examples
+trie = Trie()
+words = ["apple", "app", "application", "apply", "banana"]
+for word in words:
+    trie.insert(word)
+
+trie.search("app")                              # True
+trie.search("appl")                             # False
+trie.starts_with("app")                         # True
+trie.get_all_words_with_prefix("app")           # ['app', 'apple', 'application', 'apply']
+
+# Autocomplete example
+autocomplete = AutoComplete(["apple", "application", "apply", "banana", "band"])
+autocomplete.get_suggestions("app")             # ['apple', 'application', 'apply']
+autocomplete.get_suggestions("ban")             # ['banana', 'band']
+```
+
+</details>
+
+<details>
 <summary><strong>LinkedList</strong></summary>
 
 ```python

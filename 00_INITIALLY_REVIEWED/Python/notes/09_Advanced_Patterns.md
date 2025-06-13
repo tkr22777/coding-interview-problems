@@ -538,4 +538,359 @@ def split_list(head):
     return head, slow  # Return both halves
 ```
 
+</details>
+
+<details>
+<summary><strong>Segment Tree</strong></summary>
+
+```python
+# Time Complexity:
+# - Build: O(n)
+# - Query: O(log n)
+# - Update: O(log n)
+# Space Complexity: O(n)
+
+class SegmentTree:
+    def __init__(self, arr):
+        self.n = len(arr)
+        self.tree = [0] * (4 * self.n)  # 4*n is safe upper bound
+        self.build(arr, 0, 0, self.n - 1)
+    
+    def build(self, arr, node, start, end):
+        """Build segment tree - O(n)"""
+        if start == end:
+            self.tree[node] = arr[start]
+        else:
+            mid = (start + end) // 2
+            self.build(arr, 2*node+1, start, mid)
+            self.build(arr, 2*node+2, mid+1, end)
+            self.tree[node] = self.tree[2*node+1] + self.tree[2*node+2]
+    
+    def update(self, node, start, end, idx, val):
+        """Update single element - O(log n)"""
+        if start == end:
+            self.tree[node] = val
+        else:
+            mid = (start + end) // 2
+            if idx <= mid:
+                self.update(2*node+1, start, mid, idx, val)
+            else:
+                self.update(2*node+2, mid+1, end, idx, val)
+            self.tree[node] = self.tree[2*node+1] + self.tree[2*node+2]
+    
+    def query(self, node, start, end, l, r):
+        """Range sum query - O(log n)"""
+        if r < start or end < l:
+            return 0  # No overlap
+        if l <= start and end <= r:
+            return self.tree[node]  # Complete overlap
+        
+        # Partial overlap
+        mid = (start + end) // 2
+        left_sum = self.query(2*node+1, start, mid, l, r)
+        right_sum = self.query(2*node+2, mid+1, end, l, r)
+        return left_sum + right_sum
+    
+    def update_point(self, idx, val):
+        """Public interface for point update"""
+        self.update(0, 0, self.n-1, idx, val)
+    
+    def range_sum(self, l, r):
+        """Public interface for range query"""
+        return self.query(0, 0, self.n-1, l, r)
+
+# Range Minimum Query (RMQ) Segment Tree
+class RMQSegmentTree:
+    def __init__(self, arr):
+        self.n = len(arr)
+        self.tree = [float('inf')] * (4 * self.n)
+        self.build(arr, 0, 0, self.n - 1)
+    
+    def build(self, arr, node, start, end):
+        if start == end:
+            self.tree[node] = arr[start]
+        else:
+            mid = (start + end) // 2
+            self.build(arr, 2*node+1, start, mid)
+            self.build(arr, 2*node+2, mid+1, end)
+            self.tree[node] = min(self.tree[2*node+1], self.tree[2*node+2])
+    
+    def update(self, node, start, end, idx, val):
+        if start == end:
+            self.tree[node] = val
+        else:
+            mid = (start + end) // 2
+            if idx <= mid:
+                self.update(2*node+1, start, mid, idx, val)
+            else:
+                self.update(2*node+2, mid+1, end, idx, val)
+            self.tree[node] = min(self.tree[2*node+1], self.tree[2*node+2])
+    
+    def query(self, node, start, end, l, r):
+        if r < start or end < l:
+            return float('inf')
+        if l <= start and end <= r:
+            return self.tree[node]
+        
+        mid = (start + end) // 2
+        left_min = self.query(2*node+1, start, mid, l, r)
+        right_min = self.query(2*node+2, mid+1, end, l, r)
+        return min(left_min, right_min)
+    
+    def update_point(self, idx, val):
+        self.update(0, 0, self.n-1, idx, val)
+    
+    def range_min(self, l, r):
+        return self.query(0, 0, self.n-1, l, r)
+
+# Lazy Propagation Segment Tree (for range updates)
+class LazySegmentTree:
+    def __init__(self, arr):
+        self.n = len(arr)
+        self.tree = [0] * (4 * self.n)
+        self.lazy = [0] * (4 * self.n)
+        self.build(arr, 0, 0, self.n - 1)
+    
+    def build(self, arr, node, start, end):
+        if start == end:
+            self.tree[node] = arr[start]
+        else:
+            mid = (start + end) // 2
+            self.build(arr, 2*node+1, start, mid)
+            self.build(arr, 2*node+2, mid+1, end)
+            self.tree[node] = self.tree[2*node+1] + self.tree[2*node+2]
+    
+    def push(self, node, start, end):
+        """Push lazy value down"""
+        if self.lazy[node] != 0:
+            self.tree[node] += self.lazy[node] * (end - start + 1)
+            if start != end:  # Not a leaf
+                self.lazy[2*node+1] += self.lazy[node]
+                self.lazy[2*node+2] += self.lazy[node]
+            self.lazy[node] = 0
+    
+    def update_range(self, node, start, end, l, r, val):
+        """Range update with lazy propagation - O(log n)"""
+        self.push(node, start, end)
+        if start > r or end < l:
+            return
+        
+        if start >= l and end <= r:
+            self.lazy[node] += val
+            self.push(node, start, end)
+            return
+        
+        mid = (start + end) // 2
+        self.update_range(2*node+1, start, mid, l, r, val)
+        self.update_range(2*node+2, mid+1, end, l, r, val)
+        
+        self.push(2*node+1, start, mid)
+        self.push(2*node+2, mid+1, end)
+        self.tree[node] = self.tree[2*node+1] + self.tree[2*node+2]
+    
+    def query_range(self, node, start, end, l, r):
+        """Range query with lazy propagation - O(log n)"""
+        if start > r or end < l:
+            return 0
+        
+        self.push(node, start, end)
+        if start >= l and end <= r:
+            return self.tree[node]
+        
+        mid = (start + end) // 2
+        left_sum = self.query_range(2*node+1, start, mid, l, r)
+        right_sum = self.query_range(2*node+2, mid+1, end, l, r)
+        return left_sum + right_sum
+    
+    def update(self, l, r, val):
+        """Public interface for range update"""
+        self.update_range(0, 0, self.n-1, l, r, val)
+    
+    def query(self, l, r):
+        """Public interface for range query"""
+        return self.query_range(0, 0, self.n-1, l, r)
+
+# Examples
+arr = [1, 3, 5, 7, 9, 11]
+seg_tree = SegmentTree(arr)
+
+seg_tree.range_sum(1, 3)                       # 15 (3 + 5 + 7) - O(log n)
+seg_tree.update_point(1, 10)                   # Update arr[1] to 10 - O(log n)
+seg_tree.range_sum(1, 3)                       # 22 (10 + 5 + 7) - O(log n)
+
+# RMQ example
+rmq_tree = RMQSegmentTree(arr)
+rmq_tree.range_min(1, 4)                       # 3 (minimum in range [1,4]) - O(log n)
+```
+
+</details>
+
+<details>
+<summary><strong>Fenwick Tree (Binary Indexed Tree)</strong></summary>
+
+```python
+# Time Complexity:
+# - Build: O(n log n) or O(n) with optimized construction
+# - Update: O(log n)
+# - Query: O(log n)
+# Space Complexity: O(n)
+
+class FenwickTree:
+    def __init__(self, n):
+        self.n = n
+        self.tree = [0] * (n + 1)  # 1-indexed for easier bit manipulation
+    
+    def update(self, idx, delta):
+        """Add delta to element at index idx (1-indexed) - O(log n)"""
+        while idx <= self.n:
+            self.tree[idx] += delta
+            idx += idx & (-idx)  # Add last set bit
+    
+    def prefix_sum(self, idx):
+        """Get sum of elements from 1 to idx (inclusive) - O(log n)"""
+        result = 0
+        while idx > 0:
+            result += self.tree[idx]
+            idx -= idx & (-idx)  # Remove last set bit
+        return result
+    
+    def range_sum(self, left, right):
+        """Get sum of elements from left to right (inclusive, 1-indexed) - O(log n)"""
+        return self.prefix_sum(right) - self.prefix_sum(left - 1)
+    
+    def point_update(self, idx, new_val, old_val):
+        """Update element at idx to new_val (given old_val) - O(log n)"""
+        self.update(idx, new_val - old_val)
+
+# Optimized construction from array
+class FenwickTreeFromArray:
+    def __init__(self, arr):
+        self.n = len(arr)
+        self.tree = [0] * (self.n + 1)
+        
+        # Method 1: O(n log n) construction
+        # for i, val in enumerate(arr):
+        #     self.update(i + 1, val)
+        
+        # Method 2: O(n) construction
+        for i in range(1, self.n + 1):
+            self.tree[i] += arr[i - 1]
+            j = i + (i & -i)
+            if j <= self.n:
+                self.tree[j] += self.tree[i]
+    
+    def update(self, idx, delta):
+        """Add delta to element at index idx (1-indexed) - O(log n)"""
+        while idx <= self.n:
+            self.tree[idx] += delta
+            idx += idx & (-idx)
+    
+    def prefix_sum(self, idx):
+        """Get sum of elements from 1 to idx (inclusive) - O(log n)"""
+        result = 0
+        while idx > 0:
+            result += self.tree[idx]
+            idx -= idx & (-idx)
+        return result
+    
+    def range_sum(self, left, right):
+        """Get sum of elements from left to right (inclusive, 1-indexed) - O(log n)"""
+        return self.prefix_sum(right) - self.prefix_sum(left - 1)
+
+# 2D Fenwick Tree for matrix range sum queries
+class FenwickTree2D:
+    def __init__(self, m, n):
+        self.m, self.n = m, n
+        self.tree = [[0] * (n + 1) for _ in range(m + 1)]
+    
+    def update(self, row, col, delta):
+        """Add delta to element at (row, col) - O(log m * log n)"""
+        i = row
+        while i <= self.m:
+            j = col
+            while j <= self.n:
+                self.tree[i][j] += delta
+                j += j & (-j)
+            i += i & (-i)
+    
+    def prefix_sum(self, row, col):
+        """Get sum of rectangle from (1,1) to (row,col) - O(log m * log n)"""
+        result = 0
+        i = row
+        while i > 0:
+            j = col
+            while j > 0:
+                result += self.tree[i][j]
+                j -= j & (-j)
+            i -= i & (-i)
+        return result
+    
+    def range_sum(self, row1, col1, row2, col2):
+        """Get sum of rectangle from (row1,col1) to (row2,col2) - O(log m * log n)"""
+        return (self.prefix_sum(row2, col2) 
+                - self.prefix_sum(row1 - 1, col2)
+                - self.prefix_sum(row2, col1 - 1)
+                + self.prefix_sum(row1 - 1, col1 - 1))
+
+# Practical applications
+# 1. Count inversions in array
+def count_inversions(arr):
+    """Count number of inversions using Fenwick Tree - O(n log n)"""
+    # Coordinate compression
+    sorted_vals = sorted(set(arr))
+    val_to_idx = {val: i + 1 for i, val in enumerate(sorted_vals)}
+    
+    ft = FenwickTree(len(sorted_vals))
+    inversions = 0
+    
+    for i in range(len(arr) - 1, -1, -1):
+        idx = val_to_idx[arr[i]]
+        # Count elements smaller than current element that come after it
+        inversions += ft.prefix_sum(idx - 1)
+        ft.update(idx, 1)
+    
+    return inversions
+
+# 2. Range sum with updates (mutable array)
+class NumArray:
+    def __init__(self, nums):
+        self.nums = nums[:]
+        self.ft = FenwickTreeFromArray(nums)
+    
+    def update(self, index, val):
+        """Update nums[index] to val - O(log n)"""
+        old_val = self.nums[index]
+        self.nums[index] = val
+        self.ft.update(index + 1, val - old_val)  # Convert to 1-indexed
+    
+    def sumRange(self, left, right):
+        """Sum of elements from left to right - O(log n)"""
+        return self.ft.range_sum(left + 1, right + 1)  # Convert to 1-indexed
+
+# Examples
+arr = [1, 3, 5, 7, 9, 11]
+ft = FenwickTreeFromArray(arr)
+
+ft.prefix_sum(3)                                # 9 (1 + 3 + 5) - O(log n)
+ft.range_sum(2, 4)                              # 15 (3 + 5 + 7) - O(log n)
+ft.update(2, 2)                                 # Add 2 to arr[1] (3 -> 5) - O(log n)
+ft.range_sum(2, 4)                              # 17 (5 + 5 + 7) - O(log n)
+
+# Count inversions example
+inversions = count_inversions([2, 3, 8, 6, 1])  # 5 inversions - O(n log n)
+
+# 💡 INSIGHT: Fenwick Tree vs Segment Tree
+# Fenwick Tree:
+# - Simpler implementation
+# - Only supports commutative operations (sum, XOR)
+# - Slightly better constants
+# - Prefix queries are natural
+
+# Segment Tree:
+# - More flexible (min, max, GCD, etc.)
+# - Range updates with lazy propagation
+# - Can handle non-commutative operations
+# - More memory usage
+```
+
 </details> 
