@@ -436,4 +436,75 @@ def has_cycle(head):
     return False
 ```
 
+</details>
+
+<details>
+<summary><strong>Time Complexity Notes</strong></summary>
+
+- **List/Array**:
+  - Append: O(1) amortized
+  - Insert/Delete at arbitrary index: O(n)
+  - Search: O(n)
+  - Slice: O(k) where k is the slice size
+
+- **Stack**:
+  - Push/Pop: O(1)
+  - Peek: O(1)
+
+- **Queue/Deque**:
+  - Enqueue/Dequeue: O(1)
+  - Peek: O(1)
+
+- **OrderedDict**:
+  - Insert/Delete: O(1)
+  - Move to end: O(1)
+  - Pop first/last: O(1)
+
+- **Set**:
+  - Add/Remove: O(1) average, O(n) worst
+  - Search: O(1) average, O(n) worst
+
+- **DefaultDict**:
+  - Same as dict: O(1) average for insert/delete/search
+
+- **2D Arrays/Grids**:
+  - Access: O(1)
+  - Traversal: O(rows × cols)
+
+- **LinkedList**:
+  - Append/Prepend: O(1)
+  - Delete/Insert at arbitrary position: O(n)
+  - Search: O(n)
+  - Reverse: O(n)
+
+- **Heap/Priority Queue**:
+  - Insert: O(log n)
+  - Extract min/max: O(log n)
+  - Heapify: O(n)
+
+- **SortedSet/SortedDict**:
+  - Insert/Delete: O(log n)
+  - Search: O(log n)
+
+- **String Operations**:
+  - Concatenation: O(n + m) where n, m are lengths
+  - Substring: O(k) where k is substring length
+  - Split/Join: O(n)
+
+- **Map, Filter, Reduce**:
+  - Map/Filter: O(n)
+  - Reduce: O(n)
+
+- **Dynamic Programming**:
+  - 1D DP: O(n)
+  - 2D DP: O(rows × cols)
+
+- **Backtracking**:
+  - Time complexity varies, often exponential O(2^n) or O(n!)
+
+- **Advanced Patterns**:
+  - Union Find: O(log n) with path compression
+  - Monotonic Stack/Queue: O(n)
+  - Fast/Slow Pointers: O(n)
+
 </details> 
