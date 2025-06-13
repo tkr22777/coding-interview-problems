@@ -114,6 +114,8 @@ people.add(Person("Dave", 20))
 # Output: [Dave (20), Bob (25), Alice (30), Charlie (35)] - O(log n)
 
 # Range operations and element finding
+# IMPORTANT: Use irange() for efficient range queries - O(log n + k)
+# Converting to list() first would be O(n) and defeat the purpose!
 ss = SortedSet([10, 20, 30, 40, 50])
 
 # Find closest elements to a query value
@@ -146,21 +148,17 @@ find_successor(ss, 30)                         # 40 (smallest > 30) - O(log n)
 # Get elements in range
 def get_range_set(sorted_set, min_val, max_val):
     """Get elements in [min_val, max_val] - O(log n + k) where k is result size"""
-    start_idx = sorted_set.bisect_left(min_val)
-    end_idx = sorted_set.bisect_right(max_val)
-    return list(sorted_set)[start_idx:end_idx]
+    return list(sorted_set.irange(min_val, max_val))
 
 # Get elements >= threshold
 def get_elements_gte(sorted_set, threshold):
     """Get elements >= threshold - O(log n + k) where k is result size"""
-    start_idx = sorted_set.bisect_left(threshold)
-    return list(sorted_set)[start_idx:]
+    return list(sorted_set.irange(threshold))
 
 # Get elements <= threshold
 def get_elements_lte(sorted_set, threshold):
     """Get elements <= threshold - O(log n + k) where k is result size"""
-    end_idx = sorted_set.bisect_right(threshold)
-    return list(sorted_set)[:end_idx]
+    return list(sorted_set.irange(None, threshold, (True, True)))
 
 # Examples
 get_range_set(ss, 25, 45)                      # [30, 40] - O(log n + k)
@@ -231,26 +229,24 @@ people = SortedDict({
 # Keys remain sorted: {25: Person(Bob, 25), 30: Person(Alice, 30), 35: Person(Charlie, 35)} - O(n log n)
 
 # Range operations and subtree extraction
+# IMPORTANT: Use irange() for efficient range queries - O(log n + k)
+# Converting to list() first would be O(n) and defeat the purpose!
 sd = SortedDict({10: "A", 20: "B", 30: "C", 40: "D", 50: "E"})
 
 # Get all items with keys >= threshold
 def get_items_gte(sorted_dict, threshold):
     """Get all items with keys >= threshold - O(log n + k) where k is result size"""
-    start_idx = sorted_dict.bisect_left(threshold)
-    return list(sorted_dict.items())[start_idx:]
+    return [(k, v) for k, v in sorted_dict.irange(threshold)]
 
 # Get all items with keys <= threshold  
 def get_items_lte(sorted_dict, threshold):
     """Get all items with keys <= threshold - O(log n + k) where k is result size"""
-    end_idx = sorted_dict.bisect_right(threshold)
-    return list(sorted_dict.items())[:end_idx]
+    return [(k, v) for k, v in sorted_dict.irange(None, threshold, (True, True))]
 
 # Get range of items between two keys (inclusive)
 def get_range(sorted_dict, min_key, max_key):
     """Get items with keys in [min_key, max_key] - O(log n + k) where k is result size"""
-    start_idx = sorted_dict.bisect_left(min_key)
-    end_idx = sorted_dict.bisect_right(max_key)
-    return list(sorted_dict.items())[start_idx:end_idx]
+    return [(k, v) for k, v in sorted_dict.irange(min_key, max_key)]
 
 # Examples
 get_items_gte(sd, 25)                          # [(30, 'C'), (40, 'D'), (50, 'E')] - O(log n + k)
@@ -260,10 +256,8 @@ get_range(sd, 20, 40)                          # [(20, 'B'), (30, 'C'), (40, 'D'
 # Iterate from specific key onwards
 def iterate_from(sorted_dict, start_key):
     """Iterate starting from start_key - O(log n) to find start, O(1) per iteration"""
-    start_idx = sorted_dict.bisect_left(start_key)
-    keys = list(sorted_dict.keys())[start_idx:]
-    for key in keys:
-        yield key, sorted_dict[key]
+    for key, value in sorted_dict.irange(start_key):
+        yield key, value
 
 # Usage: iterate from key 25 onwards
 for key, value in iterate_from(sd, 25):
