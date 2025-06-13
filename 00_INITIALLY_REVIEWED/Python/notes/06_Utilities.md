@@ -11,20 +11,20 @@
 # Space Complexity: O(1) for single operations, O(n) for range iteration
 
 # Range function
-range(9)                                        # 0 - 8 - O(1) creation
-range(0, 9)                                     # 0 - 8 - O(1) creation
+range(9)                                        # 0 - 8
+range(0, 9)                                     # 0 - 8
 
 # Random operations
 import random
 
-random.random()                                 # Random float between 0 and 1 - O(1)
-random.randint(1, 100)                          # Random int between two numbers (inclusive) - O(1)
-random.choice(['apple', 'banana', 'cherry'])   # Random element from list - O(1)
+random.random()                                 # Random float between 0 and 1
+random.randint(1, 100)                          # Random int between two numbers (inclusive)
+random.choice(['apple', 'banana', 'cherry'])   # Random element from list
 random.shuffle(sample_list)                     # Shuffles a list in place - O(n)
 
 # Reproducible randomness
-random.seed(42)                                 # Set seed for reproducibility - O(1)
-seeded_random = random.random()                 # Deterministic result with seed - O(1)
+random.seed(42)                                 # Set seed for reproducibility
+seeded_random = random.random()                 # Deterministic result with seed
 ```
 
 </details>
@@ -80,37 +80,37 @@ re.split(r'(?=[A-Z])', "OneTwoThree")                                 # Split at
 import datetime
 
 # Current date and time
-now = datetime.datetime.now()                    # O(1)
-today = datetime.date.today()                    # O(1)
-current_year = now.year                         # O(1)
-current_month = now.month                       # O(1)
-current_day = now.day                          # O(1)
+now = datetime.datetime.now()
+today = datetime.date.today()
+current_year = now.year
+current_month = now.month
+current_day = now.day
 
 # Create specific dates
-specific_date = datetime.date(2024, 4, 26)      # O(1)
-specific_time = datetime.datetime(2024, 4, 26, 12, 30)  # O(1)
+specific_date = datetime.date(2024, 4, 26)
+specific_time = datetime.datetime(2024, 4, 26, 12, 30)
 
 # Date arithmetic
-future_date = now + datetime.timedelta(days=100)  # O(1)
-five_days_ago = now - datetime.timedelta(days=5)  # O(1)
-time_difference = datetime.date(2024, 12, 31) - datetime.date(2024, 1, 1)  # O(1)
-print(time_difference.days)                     # Days between dates - O(1)
+future_date = now + datetime.timedelta(days=100)
+five_days_ago = now - datetime.timedelta(days=5)
+time_difference = datetime.date(2024, 12, 31) - datetime.date(2024, 1, 1)
+print(time_difference.days)                     # Days between dates
 
 # Comparisons
-date1 = datetime.datetime(2024, 4, 26)          # O(1)
-date2 = datetime.datetime(2024, 5, 1)           # O(1)
-print(date1 < date2)                            # True - O(1)
-same_day = date1.date() == now.date()           # O(1)
+date1 = datetime.datetime(2024, 4, 26)
+date2 = datetime.datetime(2024, 5, 1)
+print(date1 < date2)                            # True
+same_day = date1.date() == now.date()
 
 # Formatting and parsing
-formatted = now.strftime("%A, %B %d, %Y %H:%M:%S")  # O(1)
-parsed = datetime.datetime.strptime("2024-04-26 12:00", "%Y-%m-%d %H:%M")  # O(1)
+formatted = now.strftime("%A, %B %d, %Y %H:%M:%S")
+parsed = datetime.datetime.strptime("2024-04-26 12:00", "%Y-%m-%d %H:%M")
 
 # Utilities
-day_of_week = now.weekday()                     # 0=Monday, 6=Sunday - O(1)
-beginning_of_day = datetime.datetime.combine(today, datetime.time())  # O(1)
+day_of_week = now.weekday()                     # 0=Monday, 6=Sunday
+beginning_of_day = datetime.datetime.combine(today, datetime.time())
 
 # Calculate age
-birthdate = datetime.date(1990, 4, 26)          # O(1)
-age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))  # O(1)
+birthdate = datetime.date(1990, 4, 26)
+age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
 ``` 

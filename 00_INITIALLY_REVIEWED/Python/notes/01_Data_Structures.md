@@ -66,42 +66,44 @@ d.rotate(2)                                    # [2, 3, -2, -1, 0, 1]
 
 arr = [1, 2, 3, 4, 5]
 
-# Basic operations
-arr.append(6)                                   # [1, 2, 3, 4, 5, 6] - O(1)
+# List operations
+arr.append(6)                                   # [1, 2, 3, 4, 5, 6]
 arr.insert(0, 0)                                # [0, 1, 2, 3, 4, 5, 6] - O(n)
+arr.extend([7, 8])                              # [0, 1, 2, 3, 4, 5, 6, 7, 8]
+arr.remove(3)                                   # [0, 1, 2, 4, 5, 6, 7, 8] - O(n)
+popped = arr.pop()                              # 8, arr becomes [0, 1, 2, 4, 5, 6, 7]
+popped_index = arr.pop(2)                       # 2, arr becomes [0, 1, 4, 5, 6, 7] - O(n)
 
-# Remove operations
-arr.remove(3)                                   # [0, 1, 2, 4, 5, 6] - O(n)
-popped = arr.pop()                              # 6, arr becomes [0, 1, 2, 4, 5] - O(1)
-popped_at = arr.pop(1)                          # 1, arr becomes [0, 2, 4, 5] - O(n)
-del arr[0]                                      # [2, 4, 5] - O(n)
-del arr[1:3]                                    # [2] - O(n)
+# List comprehensions
+squares = [x**2 for x in range(5)]             # [0, 1, 4, 9, 16]
+evens = [x for x in range(10) if x % 2 == 0]   # [0, 2, 4, 6, 8]
+matrix = [[i*j for j in range(3)] for i in range(3)]  # [[0, 0, 0], [0, 1, 2], [0, 2, 4]]
 
-# Reverse
-arr.reverse()                                   # [5, 4, 2, 0] - O(n)
-reversed_arr = arr[::-1]                        # [0, 2, 4, 5] - O(n)
+# Slicing - O(k) where k is slice length
+arr = [0, 1, 2, 3, 4, 5]
+sub_arr = arr[1:4]                              # [1, 2, 3]
+reversed_arr = arr[::-1]                        # [5, 4, 3, 2, 1, 0]
+every_second = arr[::2]                         # [0, 2, 4]
 
-# Slicing and copying
-first_two = arr[:2]                             # [5, 4] - O(k)
-last_two = arr[-2:]                             # [2, 0] - O(k)
-copy_arr = arr.copy()                           # O(n)
+# Searching and sorting
+arr = [3, 1, 4, 1, 5]
+arr.index(4)                                    # 2 - O(n)
+arr.count(1)                                    # 2 - O(n)
+arr.sort()                                      # [1, 1, 3, 4, 5] - O(n log n)
+sorted_arr = sorted(arr, reverse=True)          # [5, 4, 3, 1, 1] - O(n log n)
 
-# Find and count
-index = arr.index(4)                            # 1 - O(n)
-count = arr.count(2)                            # 1 - O(n)
-exists = 4 in arr                               # True - O(n)
+# Other operations
+arr.reverse()                                   # [5, 1, 4, 1, 3] - O(n)
+arr.clear()                                     # []
 
-# Extend and clear
-arr.extend([1, 2, 3])                           # [5, 4, 2, 0, 1, 2, 3] - O(k)
-arr.clear()                                     # [] - O(1)
-
-# Slice notation with step [start:stop:step]
-arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-arr[::-1]                                       # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0] (full reverse)
-arr[::2]                                        # [0, 2, 4, 6, 8] (every 2nd element)
-arr[1::2]                                       # [1, 3, 5, 7, 9] (every 2nd, starting at index 1)
-arr[::-2]                                       # [9, 7, 5, 3, 1] (every 2nd in reverse)
-arr[8:2:-1]                                     # [8, 7, 6, 5, 4, 3] (reverse from index 8 to 2)
+# List as different data structures
+# Stack (LIFO)
+stack = []
+stack.append('a')                               # Stack is now ['a']
+stack.append('b')                               # Stack is now ['a', 'b']
+stack.append('c')                               # Stack is now ['a', 'b', 'c']
+top = stack.pop()                               # 'c', stack is now ['a', 'b']
+peek = stack[-1] if stack else None             # 'b' (peek without removing)
 
 # *** STRING ↔ LIST CONVERSIONS & REVERSAL ***
 text = "hello world"
@@ -479,76 +481,5 @@ def has_cycle(head):
             return True
     return False
 ```
-
-</details>
-
-<details>
-<summary><strong>Time Complexity Notes</strong></summary>
-
-- **List/Array**:
-  - Append: O(1) amortized
-  - Insert/Delete at arbitrary index: O(n)
-  - Search: O(n)
-  - Slice: O(k) where k is the slice size
-
-- **Stack**:
-  - Push/Pop: O(1)
-  - Peek: O(1)
-
-- **Queue/Deque**:
-  - Enqueue/Dequeue: O(1)
-  - Peek: O(1)
-
-- **OrderedDict**:
-  - Insert/Delete: O(1)
-  - Move to end: O(1)
-  - Pop first/last: O(1)
-
-- **Set**:
-  - Add/Remove: O(1) average, O(n) worst
-  - Search: O(1) average, O(n) worst
-
-- **DefaultDict**:
-  - Same as dict: O(1) average for insert/delete/search
-
-- **2D Arrays/Grids**:
-  - Access: O(1)
-  - Traversal: O(rows × cols)
-
-- **LinkedList**:
-  - Append/Prepend: O(1)
-  - Delete/Insert at arbitrary position: O(n)
-  - Search: O(n)
-  - Reverse: O(n)
-
-- **Heap/Priority Queue**:
-  - Insert: O(log n)
-  - Extract min/max: O(log n)
-  - Heapify: O(n)
-
-- **SortedSet/SortedDict**:
-  - Insert/Delete: O(log n)
-  - Search: O(log n)
-
-- **String Operations**:
-  - Concatenation: O(n + m) where n, m are lengths
-  - Substring: O(k) where k is substring length
-  - Split/Join: O(n)
-
-- **Map, Filter, Reduce**:
-  - Map/Filter: O(n)
-  - Reduce: O(n)
-
-- **Dynamic Programming**:
-  - 1D DP: O(n)
-  - 2D DP: O(rows × cols)
-
-- **Backtracking**:
-  - Time complexity varies, often exponential O(2^n) or O(n!)
-
-- **Advanced Patterns**:
-  - Union Find: O(log n) with path compression
-  - Monotonic Stack/Queue: O(n)
-  - Fast/Slow Pointers: O(n)
 
 </details> 

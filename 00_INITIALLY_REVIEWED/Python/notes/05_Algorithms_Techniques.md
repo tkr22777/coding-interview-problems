@@ -288,39 +288,43 @@ def bfs_grid_shortest_path(grid, start, end):
                 queue.append((new_row, new_col, dist + 1))
     
     return -1
+
+# Number of Islands
+# Problem: Count number of islands in 2D grid (1s surrounded by 0s)
+def numIslands(self, grid: List[List[str]]) -> int:
+    if not grid:
+        return 0
+        
+    moves = [
+        (-1,0),  # up
+        (1,0),   # down
+        (0,1),   # right
+        (0,-1),  # left
+    ]
+    
+    rows = len(grid)
+    cols = len(grid[0])
+    count = 0
+    visited = set()
+
+    def dfs(r: int, c: int) -> None:
+        if (r < 0 or r >= rows or 
+            c < 0 or c >= cols or 
+            grid[r][c] == '0' or 
+            (r,c) in visited):
+            return
+            
+        visited.add((r,c))
+        for dr, dc in moves:
+            dfs(r + dr, c + dc)
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == '1' and (r,c) not in visited:
+                count += 1
+                dfs(r, c)
+                
+    return count
 ```
-
-</details>
-
-<details>
-<summary><strong>Time Complexity Notes</strong></summary>
-
-- **Two Pointers**:
-  - Traversal: O(n)
-  - Sliding Window: O(n)
-
-- **Sliding Window**:
-  - Fixed window: O(n)
-  - Variable window: O(n)
-
-- **Tree Traversals**:
-  - DFS/BFS: O(n) where n is the number of nodes
-  - Inorder/Preorder/Postorder: O(n)
-
-- **Graph Traversals**:
-  - DFS/BFS: O(V + E) where V is vertices and E is edges
-  - Dijkstra's Algorithm: O((V + E) log V) with binary heap
-
-- **Dynamic Programming**:
-  - 1D DP: O(n)
-  - 2D DP: O(rows × cols)
-
-- **Backtracking**:
-  - Time complexity varies, often exponential O(2^n) or O(n!)
-
-- **Advanced Patterns**:
-  - Union Find: O(log n) with path compression
-  - Monotonic Stack/Queue: O(n)
-  - Fast/Slow Pointers: O(n)
 
 </details> 

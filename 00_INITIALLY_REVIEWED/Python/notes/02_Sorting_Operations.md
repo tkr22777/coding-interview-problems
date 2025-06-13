@@ -248,34 +248,4 @@ heapq.heapify(arr)                              # [1, 2, 3, 5] - O(n)
 #        5
 ```
 
-</details>
-
-<details>
-<summary><strong>Time Complexity Notes</strong></summary>
-
-- **Basic Sorting**:
-  - Python's built-in `sorted()` and `.sort()`: O(n log n) average, O(n²) worst (Timsort)
-  - Custom sorting with key: O(n log n)
-
-- **Bisect (Binary Search)**:
-  - `bisect_left`/`bisect_right`: O(log n)
-  - `insort`: O(n) (due to shifting elements)
-
-- **SortedSet/SortedDict**:
-  - Insert/Delete: O(log n)
-  - Search: O(log n)
-
-- **Heap/Priority Queue**:
-  - Insert: O(log n)
-  - Extract min/max: O(log n)
-  - Heapify: O(n)
-
-- **Tree Data Structures**:
-  - Balanced Binary Search Tree (e.g., AVL, Red-Black):
-    - Insert/Delete: O(log n)
-    - Search: O(log n)
-  - Unbalanced BST:
-    - Insert/Delete: O(n) worst
-    - Search: O(n) worst
-
 </details> 

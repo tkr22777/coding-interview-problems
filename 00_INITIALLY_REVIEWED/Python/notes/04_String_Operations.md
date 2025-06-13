@@ -12,11 +12,11 @@
 s = "abcd"
 
 # Basic slicing
-print(s[0:0])                                   # "" (empty) - O(1)
-print(s[0:2])                                   # "ab" - O(2)
-print(s[1:2])                                   # "b" - O(1)
-print(s[3:3])                                   # "" (empty) - O(1)
-print(len(s))                                   # 4 - O(1)
+print(s[0:0])                                   # "" (empty)
+print(s[0:2])                                   # "ab"
+print(s[1:2])                                   # "b"
+print(s[3:3])                                   # "" (empty)
+print(len(s))                                   # 4
 
 # Common patterns
 print(s[:])                                     # "abcd" (whole string) - O(n)
@@ -24,10 +24,10 @@ print(s[1:])                                    # "bcd" (from index 1 to end) - 
 print(s[:3])                                    # "abc" (from start to index 3) - O(3)
 
 # Negative indexing
-print(s[-1:])                                   # "d" (last character) - O(1)
-print(s[:-1])                                   # "abc" (all but the last character) - O(n-1)
-print(s[-2:])                                   # "cd" (last two characters) - O(2)
-print(s[:-2])                                   # "ab" (all but the last two characters) - O(n-2)
+print(s[-1])                                    # "d" (last character)
+print(s[-2:])                                   # "cd" (last 2 characters)
+print(s[:-1])                                   # "abc" (all but last)
+print(s[-1:])                                   # "d" (last character)
 ```
 
 </details>
