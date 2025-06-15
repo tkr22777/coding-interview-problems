@@ -47,48 +47,7 @@ def is_palindrome(s):
 
 </details>
 
-<details>
-<summary><strong>Sliding Window</strong></summary>
 
-```python
-# Time Complexity:
-# - Max Sum Subarray: O(n) where n is array length
-# - Longest Unique Substring: O(n) where n is string length
-# Space Complexity: O(1) for max sum, O(min(m,n)) for unique substring where m is charset size
-
-# Maximum sum subarray of size k (fixed window)
-def max_sum_subarray(arr, k):
-    if len(arr) < k:
-        return -1
-    
-    # Calculate sum of first window
-    window_sum = sum(arr[:k])                   # O(k)
-    max_sum = window_sum
-    
-    # Slide the window
-    for i in range(k, len(arr)):               # O(n-k)
-        window_sum += arr[i] - arr[i - k]
-        max_sum = max(max_sum, window_sum)
-    
-    return max_sum
-
-# Longest substring without repeating characters (variable window)
-def longest_unique_substring(s):
-    char_set = set()
-    left = 0
-    max_length = 0
-    
-    for right in range(len(s)):                # O(n)
-        while s[right] in char_set:            # O(n) amortized
-            char_set.remove(s[left])
-            left += 1
-        char_set.add(s[right])
-        max_length = max(max_length, right - left + 1)
-    
-    return max_length
-```
-
-</details>
 
 <details>
 <summary><strong>Tree Traversals</strong></summary>

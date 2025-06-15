@@ -246,63 +246,7 @@ def largest_rectangle_area(heights):
 # Correct width = right_boundary - left_boundary - 1
 # When stack is empty, left_boundary = -1 (implicit)
 
-# Sliding Window Maximum
-# Problem: Find maximum element in each sliding window of size k
-def sliding_window_maximum(nums, k):
-    from collections import deque
-    
-    dq = deque()  # store indices, maintain decreasing order of values
-    result = []
-    
-    for i, num in enumerate(nums):
-        # Remove indices outside current window
-        while dq and dq[0] <= i - k:
-            dq.popleft()
-        
-        # Remove smaller elements from back (they can't be maximum)
-        while dq and nums[dq[-1]] < num:
-            dq.pop()
-        
-        dq.append(i)
-        
-        # Add maximum to result (front of deque)
-        if i >= k - 1:
-            result.append(nums[dq[0]])
-    
-    return result
 
-# 💡 INSIGHT: Deque maintains potential maximums in decreasing order
-# Front of deque is always the maximum of current window
-
-# 🚀 ALTERNATIVE: Using monotonic stack for preprocessing
-def sliding_window_maximum_preprocess(nums, k):
-    """Alternative approach using monotonic stack preprocessing"""
-    n = len(nums)
-    
-    # Precompute next greater element for each position
-    next_greater = [n] * n
-    stack = []
-    
-    for i in range(n):
-        while stack and nums[stack[-1]] < nums[i]:
-            next_greater[stack.pop()] = i
-        stack.append(i)
-    
-    result = []
-    for i in range(n - k + 1):
-        # Find maximum in window [i, i+k-1]
-        max_val = nums[i]
-        j = i
-        while j < i + k:
-            max_val = max(max_val, nums[j])
-            # Jump to next potentially larger element
-            if next_greater[j] < i + k:
-                j = next_greater[j]
-            else:
-                break
-        result.append(max_val)
-    
-    return result
 
 # Remove K Digits
 # Problem: Remove k digits from number to make smallest possible number

@@ -12,7 +12,7 @@ Focused collection of Python algorithms and data structures for coding interview
 - **`02_Sorting_Operations.md`** - Sorting algorithms, SortedList/Dict/Set with range operations
 - **`03_Map_Filter_Reduce.md`** - Functional programming patterns
 - **`04_String_Operations.md`** - String manipulation and algorithms
-- **`05_Algorithms_Techniques.md`** - Binary search, two pointers, sliding window
+- **`05_Algorithms_Techniques.md`** - Binary search, two pointers, tree/graph traversals
 - **`06_Utilities.md`** - Helper functions and common patterns
 
 ### **Problem-Solving Patterns**
@@ -22,7 +22,7 @@ Focused collection of Python algorithms and data structures for coding interview
 
 ### **Advanced Patterns (Split for Manageability)**
 - **`09a_Union_Find_Monotonic.md`** - Union-Find and Monotonic Stack/Queue
-- **`09b_Intervals_Pointers.md`** - Interval problems and Fast/Slow pointers  
+- **`09b_Fast_Slow_Pointers.md`** - Fast/Slow pointer patterns for cycle detection  
 - **`09c_Advanced_Trees.md`** - Segment Tree and Fenwick Tree
 
 ### **Graph Algorithms**

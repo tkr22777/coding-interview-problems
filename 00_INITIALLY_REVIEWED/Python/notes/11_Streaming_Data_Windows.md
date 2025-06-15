@@ -37,7 +37,24 @@
 
 from collections import deque, defaultdict
 
-# Fixed Size Sliding Window
+# Fixed Size Sliding Window - Maximum Sum
+def max_sum_subarray(arr, k):
+    """Maximum sum subarray of size k (fixed window)"""
+    if len(arr) < k:
+        return -1
+    
+    # Calculate sum of first window
+    window_sum = sum(arr[:k])
+    max_sum = window_sum
+    
+    # Slide the window
+    for i in range(k, len(arr)):
+        window_sum += arr[i] - arr[i - k]
+        max_sum = max(max_sum, window_sum)
+    
+    return max_sum
+
+# Fixed Size Sliding Window - Maximum Element
 def max_sliding_window(nums, k):
     """Find maximum in each sliding window of size k"""
     if not nums or k == 0:
