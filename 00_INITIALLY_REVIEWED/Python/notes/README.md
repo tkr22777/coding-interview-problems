@@ -18,6 +18,7 @@ Focused collection of Python algorithms and data structures for coding interview
 ### **Problem-Solving Patterns**
 - **`07_Dynamic_Programming.md`** - DP patterns and classic problems
 - **`08_Backtracking.md`** - Backtracking algorithms and templates
+- **`11_Streaming_Data_Windows.md`** - Stream processing, sliding windows, interval merging/intersection
 
 ### **Advanced Patterns (Split for Manageability)**
 - **`09a_Union_Find_Monotonic.md`** - Union-Find and Monotonic Stack/Queue
@@ -31,6 +32,7 @@ Focused collection of Python algorithms and data structures for coding interview
 
 **Basic Operations**: Start with `01a_Basic_Collections.md`  
 **Algorithm Patterns**: Check `05_Algorithms_Techniques.md`  
+**Streaming/Windows**: Reference `11_Streaming_Data_Windows.md`  
 **Graph Problems**: Use `10_Weighted_Graph_Algorithms.md`  
 **Advanced Data Structures**: Reference `09c_Advanced_Trees.md`
 
