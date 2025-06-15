@@ -1,138 +1,137 @@
 # Problem Classification Guide
 
 <details>
-<summary><strong>🎯 Quick Pattern Recognition</strong></summary>
+<summary><strong>🎯 Step-by-Step Problem Identification</strong></summary>
 
 ```python
-# 🚀 DECISION FLOWCHART:
-# 1. Read constraints → Identify data structure needs
-# 2. Analyze input/output → Recognize algorithmic family
-# 3. Check edge cases → Confirm approach
-# 4. Estimate complexity → Validate solution
+# 🚀 4-STEP DECISION PROCESS:
+# Step 1: Read constraints → Rule out slow approaches
+# Step 2: Identify keywords → Match to algorithm families  
+# Step 3: Check problem structure → Confirm approach
+# Step 4: Look for edge cases → Validate choice
 
-# ⏱️ CONSTRAINT-BASED CLASSIFICATION:
-# n ≤ 20          → Backtracking, Bit manipulation, Brute force
-# n ≤ 100         → O(n³) DP, Floyd-Warshall
-# n ≤ 1,000       → O(n²) DP, Nested loops
-# n ≤ 100,000     → O(n log n) sorting, Heaps, Binary search
-# n ≤ 1,000,000   → O(n) linear scan, Hash maps, Two pointers
-# n > 1,000,000   → O(log n) binary search, O(1) math formulas
+# ⏱️ CONSTRAINT-BASED ELIMINATION:
+# n ≤ 20          → Backtracking, Bit manipulation OK
+# n ≤ 1,000       → Nested loops, DP OK
+# n ≤ 100,000     → Sorting, Heaps, Binary search OK
+# n ≤ 1,000,000   → Hash maps, Two pointers OK
+# n > 1,000,000   → Only very efficient algorithms
+
+# 🔍 STEP 1: QUICK SIZE CHECK
+# Small n (≤20) → Try everything approaches work
+# Medium n (≤100K) → Standard algorithms work  
+# Large n (>100K) → Need very efficient approaches
 ```
 
 </details>
 
 <details>
-<summary><strong>Data Structure Indicators</strong></summary>
+<summary><strong>STEP 2: Keyword → Algorithm Mapping</strong></summary>
 
 ```python
-# 🔍 PROBLEM STATEMENT → DATA STRUCTURE
+# 🔍 KEYWORD DETECTION → ALGORITHM CHOICE
 
-# ARRAYS/LISTS:
-"subarray", "contiguous", "sliding window" → Array manipulation
-"maximum/minimum in range" → Segment tree, Monotonic stack
+# ARRAYS/LISTS KEYWORDS:
+"subarray", "contiguous" → Sliding window, Prefix sum
+"maximum/minimum in range" → Monotonic stack/queue
 "k-th largest/smallest" → Heap, QuickSelect
+"rotate", "reverse" → Array manipulation
 
-# HASH TABLES:
+# HASH TABLE KEYWORDS:
 "count frequency", "find duplicates" → Counter, Set
-"two sum", "complement" → Hash map
-"group by key" → defaultdict
+"two sum", "complement", "pair" → Hash map
+"group by", "anagram" → defaultdict, grouping
 
-# TREES:
-"binary tree", "ancestor", "path" → Tree traversal
-"range queries", "point updates" → Segment tree
-"predecessor/successor" → BST, Balanced trees
+# TREE KEYWORDS:
+"binary tree", "ancestor", "path" → Tree traversal (DFS/BFS)
+"level order", "breadth first" → BFS
+"depth first", "pre/in/post order" → DFS
 
-# GRAPHS:
-"connected components", "path finding" → BFS/DFS
-"shortest path", "minimum cost" → Dijkstra, BFS
-"dependencies", "ordering" → Topological sort
+# GRAPH KEYWORDS:
+"connected components", "islands" → DFS/Union-Find
+"shortest path", "minimum steps" → BFS, Dijkstra
+"dependencies", "prerequisites" → Topological sort
+"clone", "copy" → Graph traversal
 
-# HEAPS:
-"k largest/smallest", "merge streams" → Min/Max heap
-"running median" → Two heaps
-"schedule tasks" → Priority queue
-
-# LINKED LISTS:
-"cycle detection", "middle element" → Fast/slow pointers
-"reverse", "merge" → Pointer manipulation
+# SPECIAL PATTERNS:
+"running median", "data stream" → Two heaps
+"merge k sorted" → Min heap
+"cycle detection" → Fast/slow pointers
+"valid parentheses" → Stack
 ```
 
 </details>
 
 <details>
-<summary><strong>Algorithm Family Classification</strong></summary>
+<summary><strong>STEP 3: Problem Structure Recognition</strong></summary>
 
 ```python
-# 📊 PROBLEM TYPE → ALGORITHM FAMILY
+# 📊 PROBLEM STRUCTURE → ALGORITHM FAMILY
 
 # OPTIMIZATION PROBLEMS:
-"maximum/minimum", "best/optimal" → DP, Greedy
+"maximum/minimum", "best/optimal" → DP or Greedy
 "partition", "subset" → DP
-"scheduling", "interval" → Greedy
+"scheduling", "interval merging" → Greedy
 
 # SEARCH PROBLEMS:
 "find element", "exists" → Binary search, Hash lookup
 "all permutations", "all combinations" → Backtracking
-"shortest path" → BFS, Dijkstra
+"shortest path", "minimum steps" → BFS, Dijkstra
 
 # COUNTING PROBLEMS:
 "how many ways", "number of paths" → DP
-"combinations", "arrangements" → Math, DP
+"combinations", "arrangements" → Math or DP
 
-# SORTING/ORDERING:
-"sorted order", "rank", "kth element" → Sorting algorithms
-"merge", "union" → Merge operations
+# EXPLORATION PROBLEMS:
+"connected components", "islands", "regions" → DFS/BFS
+"flood fill", "paint bucket" → DFS
+"shortest path in grid" → BFS
 
 # PATTERN MATCHING:
 "substring", "sequence" → String algorithms
-"cycle", "duplicate" → Floyd's algorithm
 "anagram", "permutation" → Hash map, sorting
+"cycle", "duplicate" → Floyd's algorithm
 
-# GEOMETRIC/MATH:
-"area", "distance", "coordinates" → Computational geometry
-"modular arithmetic", "prime" → Number theory
-"probability", "expected value" → Mathematical analysis
+# CONSTRUCTION PROBLEMS:
+"build tree from traversal" → Tree construction
+"serialize/deserialize" → Encoding/decoding
+"merge data structures" → Merge algorithms
 ```
 
 </details>
 
 <details>
-<summary><strong>Quick Decision Rules</strong></summary>
+<summary><strong>STEP 4: Quick Elimination Rules</strong></summary>
 
 ```python
-# ⚡ INSTANT ELIMINATIONS:
+# ⚡ RULE OUT WRONG APPROACHES:
 
-# NOT GREEDY IF:
-- "All possible ways" (→ DP/Backtracking)
-- "Optimal substructure" breaks (→ DP)
-- Local optimum ≠ global optimum
+# DON'T USE GREEDY IF:
+- Problem asks "all possible ways" → Use DP/Backtracking instead
+- Local optimal ≠ global optimal → Use DP instead
+- Need to consider all combinations → Use Backtracking instead
 
-# NOT DP IF:
-- No overlapping subproblems
-- Greedy works (interval scheduling)
-- Simple linear scan suffices
+# DON'T USE DP IF:
+- Simple linear scan works → Use straightforward approach
+- Greedy clearly works → Use Greedy (interval scheduling)
+- No repeated subproblems → Use direct algorithm
 
-# NOT BACKTRACKING IF:
-- n > 20 (too slow)
-- No pruning possible
-- DP/Greedy applies
+# DON'T USE BACKTRACKING IF:
+- n > 20 (too slow) → Use DP or other approach
+- No pruning possible → Will timeout
+- Pattern fits DP/Greedy → Use those instead
 
-# NOT BFS/DFS IF:
-- No graph structure
-- Weighted edges (→ Dijkstra)
-- Need optimal path count (→ DP)
-
-# STREAMING/WINDOWS IF:
+# USE STREAMING/WINDOWS IF:
 - "Process as data arrives"
-- "Sliding window of size k"
+- "Sliding window of size k"  
 - "Running aggregation"
-- "Real-time processing"
+- "Online algorithm"
 
-# INTERVALS IF:
-- "Overlapping periods"
-- "Merge time ranges"
-- "Schedule meetings"
-- "Booking conflicts"
+# USE GRID EXPLORATION IF:
+- "2D matrix", "grid", "board"
+- "Connected regions", "islands"
+- "Flood fill", "paint bucket"
+- "Shortest path in maze"
 ```
 
 </details>
@@ -183,73 +182,40 @@
 </details>
 
 <details>
-<summary><strong>Advanced Pattern Recognition</strong></summary>
+<summary><strong>Tricky Pattern Recognition</strong></summary>
 
 ```python
-# 🧠 SUBTLE INDICATORS:
+# 🧠 DISGUISED PROBLEMS:
 
 # HIDDEN GRAPH PROBLEMS:
 "Dependencies between tasks" → Topological sort
 "Transform one thing to another" → BFS (shortest path)
 "Group similar items" → Union-Find
+"Word ladder", "gene mutation" → BFS on state space
 
 # DISGUISED DP:
 "Minimum operations to reach target" → DP
-"Number of ways to decode" → DP
-"Maximum profit" → DP
+"Number of ways to decode/arrange" → DP
+"Maximum profit with constraints" → DP
+"Optimal strategy games" → DP
 
 # TWO POINTERS VARIANTS:
 "Remove duplicates" → Slow/fast pointers
 "Container with most water" → Left/right pointers
-"3Sum" → Fixed + two pointers
+"3Sum, 4Sum" → Fixed + two pointers
+"Merge sorted arrays" → Two pointers
 
-# STACK/QUEUE USAGE:
-"Next greater element" → Monotonic stack
-"Valid expression" → Stack matching
+# STACK/QUEUE PATTERNS:
+"Next greater/smaller element" → Monotonic stack
+"Valid expression matching" → Stack
 "First unique in stream" → Queue + Hash map
+"Sliding window maximum" → Deque
 
 # BINARY SEARCH EXTENSIONS:
 "Search in rotated array" → Modified binary search
 "Find peak element" → Binary search on unimodal
+"Square root, power" → Binary search on answer
 "Minimum in sorted" → Binary search variant
-
-# HEAP APPLICATIONS:
-"Merge k sorted lists" → Min heap
-"Top k frequent" → Max heap (or min heap of k)
-"Meeting rooms" → Min heap (end times)
-```
-
-</details>
-
-<details>
-<summary><strong>Complexity-Driven Decisions</strong></summary>
-
-```python
-# ⚖️ TIME/SPACE TRADE-OFFS:
-
-# WHEN TO USE EXTRA SPACE:
-- Hash map for O(1) lookup vs O(n) search
-- Memoization for overlapping subproblems
-- Auxiliary array for two-pass algorithms
-
-# WHEN TO OPTIMIZE SPACE:
-- Input constraints are huge
-- Space complexity matters in problem
-- In-place modification possible
-
-# ALGORITHM SELECTION BY COMPLEXITY:
-# O(1)     → Hash map access, Array index, Math formula
-# O(log n) → Binary search, Heap operations, Tree height
-# O(n)     → Linear scan, Hash map build, BFS/DFS
-# O(n log n) → Sorting, Heap sort, Divide & conquer
-# O(n²)    → Nested loops, 2D DP, Graph algorithms
-# O(2ⁿ)    → Backtracking, Subset generation
-
-# RED FLAGS FOR OPTIMIZATION:
-- Nested loops with independent iterations → Can parallelize
-- Repeated calculations → Memoization
-- Sorting when only k elements needed → Partial sort/heap
-- Full graph traversal when early termination possible → Pruning
 ```
 
 </details> 
