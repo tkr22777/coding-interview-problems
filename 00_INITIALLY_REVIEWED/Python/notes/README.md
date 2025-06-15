@@ -2,6 +2,10 @@
 
 Focused collection of Python algorithms and data structures for coding interviews.
 
+## 🎯 Start Here
+
+**New to these notes?** Begin with **`00_Problem_Classification_Guide.md`** - Essential for quick problem type identification and algorithm selection during interviews.
+
 ## 📁 File Organization
 
 ### **Core Collections & Data Structures**
@@ -30,10 +34,11 @@ Focused collection of Python algorithms and data structures for coding interview
 
 ## 🎯 Quick Reference
 
-**Basic Operations**: Start with `01a_Basic_Collections.md`  
-**Algorithm Patterns**: Check `05_Algorithms_Techniques.md`  
-**Streaming/Windows**: Reference `11_Streaming_Data_Windows.md`  
-**Graph Problems**: Use `10_Weighted_Graph_Algorithms.md`  
+**Problem Classification**: Start with `00_Problem_Classification_Guide.md`  
+**Basic Operations**: Check `01a_Basic_Collections.md`  
+**Algorithm Patterns**: Reference `05_Algorithms_Techniques.md`  
+**Streaming/Windows**: Use `11_Streaming_Data_Windows.md`  
+**Graph Problems**: Check `10_Weighted_Graph_Algorithms.md`  
 **Advanced Data Structures**: Reference `09c_Advanced_Trees.md`
 
 ## 💡 Usage Tips
