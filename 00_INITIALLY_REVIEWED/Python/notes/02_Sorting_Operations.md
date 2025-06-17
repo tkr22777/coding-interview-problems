@@ -11,7 +11,8 @@
 
 # Basic operations
 sorted_list = sorted([4, 2, 0, 3, 1])          # [0, 1, 2, 3, 4] (doesn't mutate)
-vals.sort()                                     # mutates vals in-place
+vals = [4, 2, 0, 3, 1]
+vals.sort()                                     # [0, 1, 2, 3, 4] mutates vals in-place
 
 # Iterate through sorted results
 for element in sorted_list:                     # Iterate through sorted elements
@@ -45,7 +46,8 @@ bisect.bisect_left(arr, 4)                     # 2 (first position where 4 can b
 bisect.bisect_right(arr, 4)                    # 4 (position after existing 4s)
 
 # Insert maintaining order
-bisect.insort(sorted_list, 25)                 # Inserts 25 in correct position
+arr_copy = arr.copy()
+bisect.insort(arr_copy, 3)                     # [1, 2, 3, 4, 4, 5, 6, 8] inserts in correct position
 
 # Count elements pattern
 def count_elements(arr, queries):
@@ -79,9 +81,9 @@ count_elements(arr, queries)                    # [(4, 2), (0, 6), (7, 0)] - O(n
 from sortedcontainers import SortedSet
 
 # Basic usage
-ss = SortedSet([3, 1, 4, 1, 5])               # SortedSet([1, 3, 4, 5])
-ss.add(2)                                      # Adds in correct position
-ss.remove(3)                                   # Removes element
+ss = SortedSet([3, 1, 4, 1, 5])               # SortedSet([1, 3, 4, 5]) - duplicates removed
+ss.add(2)                                      # SortedSet([1, 2, 3, 4, 5])
+ss.remove(3)                                   # SortedSet([1, 2, 4, 5])
 
 # Range operations and element finding
 ss = SortedSet([10, 20, 30, 40, 50])
@@ -92,10 +94,27 @@ def find_floor(sorted_set, query):
     idx = sorted_set.bisect_right(query) - 1
     return sorted_set[idx] if idx >= 0 else None
 
+# Bisect operations - find insertion positions and ranks
+# Using ss = SortedSet([10, 20, 30, 40, 50])
+ss.bisect_left(35)                             # 3 (insertion position, rank of 35)
+ss.bisect_right(35)                            # 3 (position after 35 if it exists)
+ss.bisect_left(25)                             # 2 (elements < 25)
+ss.bisect_right(50)                            # 5 (total elements <= 50)
+
+# Calculate rank of element (0-indexed position)
+def get_rank(sorted_set, element):
+    return sorted_set.bisect_left(element)      # O(log n)
+
+# Check if element exists and get its rank
+def find_element_rank(sorted_set, element):
+    rank = sorted_set.bisect_left(element)
+    if rank < len(sorted_set) and sorted_set[rank] == element:
+        return rank  # Element exists at this rank
+    return -1        # Element doesn't exist
+
 # Range queries and iteration
-list(ss.irange(25, 45))                        # [30, 40]
-ss.bisect_left(35)                             # Count elements < 35
-ss[0], ss[-1]                                  # First, last elements
+list(ss.irange(25, 45))                        # [30, 40] - elements in range [25, 45]
+ss[0], ss[-1]                                  # (10, 50) - first, last elements
 
 # Iterate through elements
 for element in ss:                              # Iterate all elements in sorted order
@@ -129,6 +148,24 @@ sd = SortedDict({30: "Alice", 25: "Bob", 35: "Charlie"})
 
 sd[20] = "Dave"                                # Maintains sorted order - O(log n)
 sd[25] = "Eve"                                 # Updates existing key - O(log n)
+
+# Bisect operations on keys - find insertion positions and ranks
+# Using sd after updates: SortedDict({20: 'Dave', 25: 'Eve', 30: 'Alice', 35: 'Charlie'})
+sd.bisect_left(25)                             # 1 (insertion position for key 25)
+sd.bisect_right(30)                            # 3 (position after key 30)
+sd.bisect_left(15)                             # 0 (keys < 15)
+
+# Get rank of key in dictionary
+def get_key_rank(sorted_dict, key):
+    return sorted_dict.bisect_left(key)         # O(log n)
+
+# Find key rank and check existence
+def find_key_rank(sorted_dict, key):
+    rank = sorted_dict.bisect_left(key)
+    keys = list(sorted_dict.keys())
+    if rank < len(keys) and keys[rank] == key:
+        return rank  # Key exists at this rank
+    return -1        # Key doesn't exist
 
 # Range operations and iteration
 sd = SortedDict({10: "A", 20: "B", 30: "C", 40: "D", 50: "E"})
@@ -187,25 +224,39 @@ sl = SortedList([1, 2, 2, 3, 3, 3])
 sl.count(2)                                    # 2 - O(log n)
 sl.count(3)                                    # 3 - O(log n)
 
+# Bisect operations - find insertion positions and ranks (allows duplicates)
+sl = SortedList([10, 20, 20, 30, 40, 50, 60])  # [10, 20, 20, 30, 40, 50, 60]
+sl.bisect_left(20)                             # 1 (first position of 20)
+sl.bisect_right(20)                            # 3 (position after last 20)
+sl.bisect_left(25)                             # 3 (insertion point, rank if inserted)
+sl.bisect_right(35)                            # 4 (elements <= 35)
+
+# Calculate rank with duplicates
+def get_element_rank(sorted_list, element):
+    return sorted_list.bisect_left(element)     # O(log n) - rank of first occurrence
+
+# Count elements in range [a, b]
+def count_in_range(sorted_list, a, b):
+    return sorted_list.bisect_right(b) - sorted_list.bisect_left(a)  # O(log n)
+
 # Range operations and iteration
-sl = SortedList([10, 20, 30, 40, 50, 60])
-list(sl.irange(25, 45))                        # [30, 40]
-sl.bisect_left(25)                             # 2 (insertion point)
+# Using same data: sl = SortedList([10, 20, 20, 30, 40, 50, 60])
+list(sl.irange(15, 35))                        # [20, 20, 30]
 
 # Iterate through elements
 for element in sl:                             # Iterate all elements in sorted order
     print(element)
 
 # Iterate through range
-for element in sl.irange(25, 45):              # Iterate elements in range [25, 45]
-    print(element)
+for element in sl.irange(15, 35):              # Iterate elements in range [15, 35]
+    print(element)                             # Prints: 20, 20, 30
 
 # Access by index (unlike SortedSet)
 for i in range(len(sl)):                       # Access by index
-    print(f"Index {i}: {sl[i]}")
+    print(f"Index {i}: {sl[i]}")              # Index 0: 10, Index 1: 20, etc.
 
 # Get range as list for processing
-elements_in_range = list(sl.irange(25, 45))    # [30, 40]
+elements_in_range = list(sl.irange(15, 35))    # [20, 20, 30]
 
 # Find closest elements
 def find_floor_list(sorted_list, query):
